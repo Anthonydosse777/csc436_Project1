@@ -1,0 +1,13 @@
+# Environment / secrets
+.env
+.env.*
+
+# OS files
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Dependencies (none needed for this static site)
+node_modules/
