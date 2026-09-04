@@ -556,3 +556,11 @@ summary:focus-visible {
     transition: none !important;
   }
 }
+
+
+/* ---------- 12. FILTER STATE ----------
+   script.js adds this class to any card (or empty section) that
+   the current filter should hide. */
+.is-hidden {
+  display: none;
+}
