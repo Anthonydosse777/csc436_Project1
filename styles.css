@@ -235,10 +235,10 @@ summary:focus-visible {
 
 /* ---------- 5. FILTER BAR ----------
    Another flex row: the label sits beside the buttons, and the
-   buttons themselves wrap onto a second line on narrow screens. */
+   buttons themselves wrap onto a second line on narrow screens.
+   It scrolls normally on mobile and only sticks on desktop, where
+   the header is a predictable height (see the media queries). */
 .filter-bar {
-  position: sticky;
-  top: 61px;                 /* sits just under the sticky header */
   z-index: 4;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -493,4 +493,66 @@ summary:focus-visible {
 
 .footer-bottom p {
   margin: 0;
+}
+
+
+/* ============================================================
+   10. RESPONSIVE ENHANCEMENTS
+   Mobile-first: everything above is the phone layout, and these
+   min-width queries add to it as the screen gets wider.
+   ============================================================ */
+
+/* ---- Tablet and up (600px) ---- */
+@media (min-width: 600px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 1.9rem; }
+
+  .hero {
+    padding: 4rem 0;
+  }
+
+  .exercise-section,
+  .faq {
+    padding: 4rem 0;
+  }
+
+  /* The footer splits into two columns once there is room. */
+  .footer-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+}
+
+/* ---- Desktop (900px) ---- */
+@media (min-width: 900px) {
+  h1 { font-size: 3rem; }
+
+  /* The hero becomes two side-by-side flex columns: text on the
+     left takes 1.1 shares of the space, the artwork takes 1. */
+  .hero-inner {
+    flex-direction: row;
+    align-items: center;
+    gap: 3.5rem;
+  }
+
+  .hero-copy { flex: 1.1; }
+  .hero-art  { flex: 1; }
+
+  /* Now that the header is a single fixed-height row, the filter
+     bar can safely stick underneath it while you scroll. */
+  .filter-bar {
+    position: sticky;
+    top: 65px;
+  }
+}
+
+
+/* ---------- 11. MOTION PREFERENCE ----------
+   Respect a visitor's system setting for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
 }
