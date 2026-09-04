@@ -1,372 +1,604 @@
 /* ==========================================================================
-   GYM STARTER GUIDE — base stylesheet
-   No Flexbox, no Grid. Everything here relies on normal document flow:
-   block elements stack vertically, inline elements sit side by side.
+   GYM STARTER GUIDE — stylesheet
+   Written mobile-first: the rules outside any media query describe the phone
+   layout, and the @media blocks at the bottom add complexity for wider
+   screens. Flexbox lays out the navbar and the filter bar; CSS Grid lays out
+   the exercise card galleries and the intro.
    ========================================================================== */
 
 
 /* --------------------------------------------------------------------------
-   1. CUSTOM PROPERTIES (variables)
-   Every colour and size used in this file is named once, here. Change a value
-   in this block and it updates everywhere it is used further down.
-   ":root" is the <html> element — declaring them here makes them available
-   to every rule in the document.
+   1. CUSTOM PROPERTIES
+   Every colour and spacing value is named once here. ":root" is the <html>
+   element, so these are visible to every rule in the file.
    -------------------------------------------------------------------------- */
 :root {
-  /* Colours — dark background, light text, one energetic orange accent */
   --color-bg:         #16171c;  /* page background, near-black */
-  --color-surface:    #1f2129;  /* raised panels: cards, header, footer */
-  --color-border:     #32353f;  /* hairline borders, just lighter than surface */
-  --color-text:       #ecedf0;  /* main body text, off-white (not pure white) */
-  --color-text-muted: #a2a6b0;  /* secondary text: intros, answers, disclaimer */
-  --color-accent:     #ff6b2c;  /* the one bold colour: links, headings, rules */
-  --color-accent-dim: #c74f1c;  /* darker orange for pressed/active states */
+  --color-surface:    #1f2129;  /* raised panels: header, cards, footer */
+  --color-border:     #32353f;  /* hairline borders */
+  --color-text:       #ecedf0;  /* body text, off-white rather than pure white */
+  --color-text-muted: #a2a6b0;  /* secondary text */
+  --color-accent:     #ff6b2c;  /* the single bold colour */
+  --color-accent-dim: #c74f1c;  /* darker orange for pressed states */
 
-  /* Spacing — a small scale so padding and margins stay consistent */
-  --space-xs: 0.5rem;   /*  8px */
-  --space-sm: 1rem;     /* 16px */
-  --space-md: 2rem;     /* 32px */
-  --space-lg: 4rem;     /* 64px */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
 
-  /* Shape */
-  --radius: 10px;       /* corner rounding, shared by cards and buttons */
+  --radius: 10px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 
-  /* Type stacks. Body is the OS default UI sans-serif. Headings use a
-     geometric sans that is visually distinct from it, with fallbacks so the
-     page still looks deliberate on any machine. */
   --font-body:    system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-heading: "Avenir Next", "Futura", "Trebuchet MS", var(--font-body);
+}
+
+/* The light palette. The JavaScript toggle sets data-theme="light" on <html>,
+   which swaps these values; every rule below keeps referring to the same
+   variable names and updates automatically. */
+:root[data-theme="light"] {
+  --color-bg:         #f6f5f3;
+  --color-surface:    #ffffff;
+  --color-border:     #dcd8d2;
+  --color-text:       #1b1c20;
+  --color-text-muted: #5c5f68;
+  --color-accent:     #d1481a;
+  --color-accent-dim: #a3350f;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 
 /* --------------------------------------------------------------------------
    2. RESET
-   Browsers ship with their own default margins and sizing rules. These three
-   blocks flatten those defaults so our own spacing is the only spacing.
+   Flattens the browser's built-in spacing so ours is the only spacing.
    -------------------------------------------------------------------------- */
 
-/* border-box means an element's declared width INCLUDES its padding and
-   border, instead of adding them on top. Without this, a card with padding
-   ends up wider than you asked for. "*" plus the two pseudo-elements applies
-   it to literally everything. */
+/* border-box makes an element's width include its padding and border instead
+   of adding them on top — without it, a padded card ends up wider than asked. */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* Strip the default margin the browser puts on headings, paragraphs, lists
-   and the body itself, so nothing has spacing we did not write ourselves. */
-body,
-h1, h2, h3,
-p,
-ul, ol, dl, dd,
-figure {
+body, h1, h2, h3, p, ul, ol, dl, dd, figure {
   margin: 0;
   padding: 0;
 }
 
-/* Lists here are used for navigation and steps, not bullet lists. Removing
-   the marker is done per-list further down, so the ordered instruction steps
-   can keep their numbers. */
+/* These lists are navigation and link groups, not prose bullets. */
 nav ul {
   list-style: none;
+}
+
+/* THE RULE THAT PREVENTS SIDEWAYS SCROLLING ON PHONES.
+   Images carry an intrinsic width (these SVGs are 400px). Without this they
+   refuse to shrink and push the page wider than the screen. "max-width: 100%"
+   lets them shrink to their container; "height: auto" keeps the aspect ratio
+   so they never look squashed. */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 
 /* --------------------------------------------------------------------------
    3. PAGE BASICS
-   The body sets the defaults every other element inherits: colours, font,
-   and line spacing.
    -------------------------------------------------------------------------- */
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
-  font-size: 1rem;      /* 16px — the browser default, stated explicitly */
-  line-height: 1.6;     /* unitless: each line is 1.6x the element's font size */
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;   /* stops iOS inflating text in landscape */
 }
 
-/* Constrain how wide text can run and centre it. Lines longer than roughly
-   70 characters are measurably harder to read. "margin: 0 auto" centres a
-   block by splitting leftover horizontal space evenly — no Flexbox needed. */
+/* The main column. "min()" picks whichever is smaller: 1100px or the full
+   viewport minus 2rem of breathing room. On a phone that resolves to the
+   viewport, so the content never touches the screen edge. */
 main {
-  max-width: 70ch;
+  width: min(1100px, 100% - var(--space-md));
   margin: 0 auto;
-  padding: 0 var(--space-sm);
+  padding-bottom: var(--space-lg);
 }
 
-/* The skip link sits at the very top of the DOM for keyboard users. It is
-   pulled off-screen until focused, then springs into view. */
-body > a[href="#main"] {
+/* The skip link is the first tab stop. It sits off-screen until focused. */
+.skip-link {
   position: absolute;
-  left: -9999px;                    /* off-screen, but still focusable */
+  left: -9999px;
   background-color: var(--color-accent);
-  color: var(--color-bg);
+  color: #fff;
   padding: var(--space-xs) var(--space-sm);
   text-decoration: none;
+  border-radius: 0 0 var(--radius) 0;
+  z-index: 100;
 }
-body > a[href="#main"]:focus {
-  left: var(--space-sm);            /* pull it back on screen when tabbed to */
-  top: var(--space-xs);
+.skip-link:focus {
+  left: 0;
+  top: 0;
 }
 
 
 /* --------------------------------------------------------------------------
    4. HEADINGS
-   Sizes step down clearly so the hierarchy is obvious at a glance, not just
-   correct in the markup.
+   Sizes step down clearly so the hierarchy is visible, not just structural.
+   "clamp(min, preferred, max)" scales the size with the viewport while
+   refusing to go below the first value or above the third — one rule instead
+   of a font-size override in every media query.
    -------------------------------------------------------------------------- */
-
-/* Shared traits for all three levels. */
 h1, h2, h3 {
   font-family: var(--font-heading);
-  line-height: 1.2;                 /* tighter than body text: big type needs less gap */
+  line-height: 1.15;
   margin-bottom: var(--space-sm);
 }
 
-/* The page title. Uppercase and letter-spaced to feel bold and deliberate. */
 h1 {
-  font-size: 2.75rem;               /* 44px */
+  font-size: clamp(2rem, 7vw, 3.25rem);
   color: var(--color-accent);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
-/* Section titles. Noticeably smaller than the h1, with an accent rule beneath
-   to visually separate one section from the next. */
 h2 {
-  font-size: 1.875rem;              /* 30px */
+  font-size: clamp(1.5rem, 4vw, 2.125rem);
   padding-bottom: var(--space-xs);
   border-bottom: 2px solid var(--color-accent);
 }
 
-/* Exercise names inside cards. Close to body size but heavier and accented,
-   so a card reads as a unit with a clear label. */
 h3 {
-  font-size: 1.25rem;               /* 20px */
+  font-size: 1.1875rem;
   color: var(--color-accent);
 }
 
 
 /* --------------------------------------------------------------------------
-   5. HEADER
-   Full-width bar at the top: darker panel, centred contents.
+   5. HEADER + FLEXBOX NAVBAR
+   The header bar is the first of two Flexbox layouts on the page.
    -------------------------------------------------------------------------- */
-header {
+.site-header {
   background-color: var(--color-surface);
   border-bottom: 3px solid var(--color-accent);
-  padding: var(--space-md) var(--space-sm);
-  text-align: center;               /* centres both the title and the inline nav */
-  margin-bottom: var(--space-lg);
+  padding: var(--space-sm);
+  margin-bottom: var(--space-md);
 }
 
-/* The site title is a <p> wrapping a link, so it needs its own sizing rather
-   than inheriting heading styles. */
-header p {
+/* FLEXBOX #1 — the header shell.
+   On a phone this stacks (flex-direction: column) so the title, nav, and
+   toggle each get a full-width row. The desktop media query flips it to a
+   row and pushes the items apart. */
+.header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* centres the items on the cross axis */
+  gap: var(--space-sm);     /* even spacing without margin hacks */
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.site-title {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: var(--space-sm);
 }
-
-/* The title link should read as text, not as a link. */
-header p a {
+.site-title a {
   color: var(--color-text);
   text-decoration: none;
 }
-header p a:hover {
+.site-title a:hover {
   color: var(--color-accent);
 }
 
-
-/* --------------------------------------------------------------------------
-   6. NAVIGATION
-   The list items are switched to inline-block so they sit in a row. This is
-   the pre-Flexbox way of laying out a horizontal nav: inline-block keeps
-   them side by side while still accepting padding and margins.
-   -------------------------------------------------------------------------- */
-nav li {
-  display: inline-block;
-  margin: 0 var(--space-xs);        /* the gap between links */
+/* FLEXBOX #2 — the nav link row.
+   "flex-wrap: wrap" is what keeps six links usable on a narrow phone: they
+   flow onto a second line instead of overflowing the screen. */
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-xs);
 }
 
-/* Links styled as small pill-shaped buttons. Padding gives them a comfortable
-   click target; the transparent border reserves space so the hover border
-   does not shift the layout when it appears. */
-nav a {
-  display: inline-block;
+.nav-list a {
+  display: block;
   color: var(--color-text-muted);
-  text-decoration: none;            /* removes the default underline */
-  font-size: 0.9375rem;             /* 15px */
+  text-decoration: none;             /* removes the default underline */
+  font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: var(--space-xs) var(--space-sm);
-  border: 1px solid transparent;
+  padding: var(--space-xs) 0.75rem;
+  border: 1px solid transparent;     /* reserved now so hover cannot shift layout */
   border-radius: var(--radius);
 }
 
-/* Hover AND focus are styled together so keyboard users get the same clear
-   signal that mouse users do. */
-nav a:hover,
-nav a:focus {
+/* Hover and focus share a style so keyboard users get the same signal. */
+.nav-list a:hover,
+.nav-list a:focus {
   color: var(--color-accent);
   border-color: var(--color-accent);
 }
-
-/* A brief press state, so clicking feels responsive. */
-nav a:active {
+.nav-list a:active {
   color: var(--color-accent-dim);
 }
 
 
 /* --------------------------------------------------------------------------
-   7. SECTIONS
-   Generous vertical breathing room so the page does not read as one block.
+   6. THEME TOGGLE BUTTON
    -------------------------------------------------------------------------- */
-section {
+.theme-toggle {
+  font-family: inherit;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text);
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-xs) 0.75rem;
+  cursor: pointer;
+}
+.theme-toggle:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+
+/* --------------------------------------------------------------------------
+   7. INTRO
+   Single column on a phone; the desktop query turns this into a two-column
+   Grid with the illustration beside the text.
+   -------------------------------------------------------------------------- */
+.intro {
   margin-bottom: var(--space-lg);
 }
 
-/* The paragraph directly after a section heading is an intro line, so it is
-   dimmed and given extra space beneath it. The "+" combinator means "a <p>
-   that immediately follows an <h2>". */
-h2 + p {
+.eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-xs);
+}
+
+.lede {
+  font-size: 1.0625rem;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-md);
-}
-
-/* The intro section's welcome paragraph, set slightly larger to act as a lede. */
-#intro p {
-  font-size: 1.125rem;              /* 18px */
-  color: var(--color-text-muted);
-}
-
-
-/* --------------------------------------------------------------------------
-   8. EXERCISE CARDS
-   Each <article> becomes a raised panel. Articles are block elements, so with
-   no Flexbox or Grid involved they simply stack vertically, one per row.
-   -------------------------------------------------------------------------- */
-article {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-left: 4px solid var(--color-accent);  /* accent spine down the left edge */
-  border-radius: var(--radius);
-  padding: var(--space-sm);
-  margin-bottom: var(--space-sm);   /* the gap between stacked cards */
-
-  /* A soft shadow lifts the card off the background. The values are
-     x-offset, y-offset, blur, and a black at 30% opacity. */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* The description list holds the muscle group and difficulty. Setting both
-   parts to inline-block lets each label sit beside its value on one line
-   rather than stacking, which is the browser default for <dl>. */
-article dl {
-  font-size: 0.875rem;              /* 14px */
   margin-bottom: var(--space-sm);
 }
 
-/* The labels: small, uppercase, muted — clearly secondary to the value. */
-article dt {
-  display: inline-block;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-article dt::after {
-  content: ":";                     /* punctuation added by CSS, not typed in the HTML */
-}
-
-/* The values: accented and spaced away from the next pair. */
-article dd {
-  display: inline-block;
-  color: var(--color-accent);
-  font-weight: bold;
-  margin-right: var(--space-sm);    /* separates this pair from the following one */
-}
-
-/* The numbered instruction steps. Padding on the left makes room for the
-   numbers, which otherwise render outside the card's padding. */
-article ol {
-  padding-left: 1.25rem;
+.intro-text p:last-child {
   color: var(--color-text-muted);
 }
-article ol li {
-  margin-bottom: var(--space-xs);
+
+.intro-image {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  margin-top: var(--space-md);
+  width: 100%;
 }
 
 
 /* --------------------------------------------------------------------------
-   9. FAQ
-   <details> and <summary> are native collapsible elements — the open and
-   close behaviour is free, so only appearance is styled here.
+   8. FILTER BAR
+   The controls the JavaScript listens to.
    -------------------------------------------------------------------------- */
-details {
+.filter-bar {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   padding: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+/* This h2 must exist for the heading hierarchy, but it should not shout like
+   a section title, so the size and accent underline are overridden. */
+.filter-heading {
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  border-bottom: none;
+  padding-bottom: 0;
   margin-bottom: var(--space-xs);
 }
 
-/* The always-visible question. "cursor: pointer" signals it is clickable. */
-summary {
-  font-family: var(--font-heading);
-  font-weight: bold;
-  color: var(--color-text);
+/* FLEXBOX #3 — the filter buttons, wrapping on narrow screens. */
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.filter-btn {
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-xs) var(--space-sm);
   cursor: pointer;
 }
-summary:hover {
+.filter-btn:hover {
+  border-color: var(--color-accent);
   color: var(--color-accent);
 }
 
-/* The answer, revealed when the element is open. */
-details p {
+/* The active filter. JavaScript adds and removes this class. */
+.filter-btn.is-active {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+  font-weight: bold;
+}
+
+.filter-status {
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   margin-top: var(--space-xs);
 }
 
 
 /* --------------------------------------------------------------------------
-   10. FOOTER
-   Mirrors the header: same panel colour, centred, with a top accent rule.
+   9. SECTIONS
    -------------------------------------------------------------------------- */
-footer {
-  background-color: var(--color-surface);
-  border-top: 3px solid var(--color-accent);
-  padding: var(--space-md) var(--space-sm);
-  text-align: center;
-  margin-top: var(--space-lg);
+.exercise-section {
+  margin-bottom: var(--space-lg);
 }
 
-/* The footer heading is structural (it labels the region for screen readers)
-   but should not shout, so the h2's size and accent underline are overridden. */
-footer h2 {
-  font-size: 1.125rem;
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-footer p {
+.section-intro {
   color: var(--color-text-muted);
-  font-size: 0.875rem;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
+  max-width: 65ch;              /* caps line length for readability */
+}
+
+/* Hidden by the JavaScript when a filter empties an entire section. */
+.exercise-section[hidden] {
+  display: none;
 }
 
 
 /* --------------------------------------------------------------------------
-   11. FOCUS VISIBILITY
-   Last rule so it wins over the styles above. ":focus-visible" shows an
-   outline for keyboard navigation but not for mouse clicks. Never remove
-   this without replacing it — it is how keyboard users track their position.
+   10. CSS GRID — the exercise card gallery
+   This is the page's main Grid layout. "auto-fit" with "minmax" is a
+   responsive layout with no media query at all: each column is at least
+   260px and at most one equal fraction of the row, and the browser fits as
+   many as will comfortably fit. One column on a phone, two on a tablet,
+   three on a desktop — decided by the browser, not by breakpoints.
+   -------------------------------------------------------------------------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-sm);
+}
+
+
+/* --------------------------------------------------------------------------
+   11. EXERCISE CARDS
+   -------------------------------------------------------------------------- */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;             /* clips the image to the rounded corners */
+  box-shadow: var(--shadow);
+
+  /* A column Flexbox so the card body can stretch and keep every card in a
+     row the same height regardless of how much text it holds. */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cards the filter has ruled out. */
+.card[hidden] {
+  display: none;
+}
+
+.card-image {
+  width: 100%;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* "flex: 1" makes the body absorb any leftover vertical space in the card. */
+.card-body {
+  padding: var(--space-sm);
+  flex: 1;
+}
+
+/* The muscle and difficulty pairs. Both parts are inline-block so each label
+   sits beside its value instead of stacking, which is a <dl>'s default. */
+.card-meta {
+  font-size: 0.8125rem;
+  margin-bottom: var(--space-sm);
+}
+.card-meta dt {
+  display: inline-block;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.card-meta dt::after {
+  content: ":";                 /* punctuation from CSS, not typed in the HTML */
+}
+.card-meta dd {
+  display: inline-block;
+  color: var(--color-accent);
+  font-weight: bold;
+  margin-right: var(--space-xs);
+}
+
+/* Numbered steps. The left padding makes room for the numbers so they do not
+   sit outside the card's padding. */
+.card-steps {
+  padding-left: 1.1rem;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+.card-steps li {
+  margin-bottom: var(--space-xs);
+}
+
+
+/* --------------------------------------------------------------------------
+   12. FAQ
+   <details> and <summary> open and close natively — no JavaScript needed,
+   so only the appearance is styled here.
+   -------------------------------------------------------------------------- */
+.faq details {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.faq summary {
+  font-family: var(--font-heading);
+  font-weight: bold;
+  cursor: pointer;              /* signals that it is clickable */
+}
+.faq summary:hover {
+  color: var(--color-accent);
+}
+
+.faq details p {
+  color: var(--color-text-muted);
+  margin-top: var(--space-xs);
+  max-width: 65ch;
+}
+
+
+/* --------------------------------------------------------------------------
+   13. FOOTER
+   -------------------------------------------------------------------------- */
+.site-footer {
+  background-color: var(--color-surface);
+  border-top: 3px solid var(--color-accent);
+  padding: var(--space-md) var(--space-sm);
+  text-align: center;
+}
+
+/* Structural heading, deliberately quiet. */
+.site-footer h2 {
+  font-size: 1.0625rem;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.disclaimer {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  max-width: 60ch;
+  margin: 0 auto var(--space-sm);
+}
+
+/* FLEXBOX #4 — the footer links, centred and wrapping. */
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+.footer-links a {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+.footer-links a:hover {
+  color: var(--color-accent);
+}
+
+.colophon {
+  color: var(--color-text-muted);
+}
+
+
+/* --------------------------------------------------------------------------
+   14. FOCUS VISIBILITY
+   ":focus-visible" shows an outline for keyboard users but not on mouse
+   clicks. Never remove this without replacing it.
    -------------------------------------------------------------------------- */
 a:focus-visible,
+button:focus-visible,
 summary:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+
+/* ==========================================================================
+   15. MEDIA QUERIES
+   Mobile-first: everything above is the phone layout, and these add to it.
+   "min-width" means "from this width upward".
+   ========================================================================== */
+
+/* --- TABLET AND UP (640px) --------------------------------------------- */
+@media (min-width: 40em) {
+
+  /* More generous padding once there is room for it. */
+  .site-header {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .filter-bar {
+    padding: var(--space-md);
+  }
+
+  /* Put the filter label and its buttons on one line. */
+  .filter-heading {
+    margin-bottom: var(--space-sm);
+  }
+}
+
+/* --- DESKTOP AND UP (1024px) ------------------------------------------- */
+@media (min-width: 64em) {
+
+  /* The header becomes a single row: title on the left, nav in the middle,
+     theme toggle on the right. "space-between" spreads the leftover space
+     between the items rather than around them. */
+  .header-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* GRID #2 — the intro becomes two columns, text beside illustration.
+     "2fr 1fr" gives the text twice the width of the image. */
+  .intro {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-md);
+    align-items: center;
+  }
+
+  .intro-image {
+    margin-top: 0;
+  }
+
+  /* Slightly wider cards and a bigger gutter on large screens. */
+  .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   16. REDUCED MOTION
+   Respects the visitor's operating-system setting for people who get motion
+   sick from animation.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
