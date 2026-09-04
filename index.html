@@ -2,28 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gym Starter Guide — Beginner Workouts by Muscle Group</title>
-  <meta name="description" content="A beginner's reference for training push, pull, legs and core. Each exercise shows the muscles it works, a difficulty level, and how to do it correctly.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gym Starter Guide — Your First Eight Weeks Under the Bar</title>
+  <meta name="description" content="A beginner's guide to the gym: sixteen core exercises grouped into push, pull, legs, and core, with plain-language coaching cues and answers to the questions everyone is too embarrassed to ask.">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Lets keyboard users jump straight to the content, past the nav. -->
+  <!-- Skip link: first tab stop, lets keyboard users jump past the nav -->
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- ============ SITE HEADER ============
-       The logo and the nav sit in one flexbox row. -->
+  <!-- ============================================================
+       SITE HEADER — title, primary navigation, theme toggle
+       ============================================================ -->
   <header class="site-header">
-    <div class="container header-bar">
-      <a class="logo" href="#top">
-        <span class="logo-mark" aria-hidden="true"></span>
-        <span class="logo-text">Gym Starter <em>Guide</em></span>
-      </a>
+    <div class="header-inner">
+      <p class="site-title"><a href="#intro">Gym Starter Guide</a></p>
 
-      <nav class="site-nav" aria-label="Main">
+      <nav aria-label="Primary">
         <ul class="nav-list">
+          <li><a href="#intro">Start</a></li>
           <li><a href="#push">Push</a></li>
           <li><a href="#pull">Pull</a></li>
           <li><a href="#legs">Legs</a></li>
@@ -31,425 +30,421 @@
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </nav>
+
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false">
+        Light mode
+      </button>
     </div>
   </header>
 
   <main id="main">
 
-    <!-- ============ 1. HERO / INTRO ============ -->
-    <section class="hero" id="top">
-      <div class="container hero-inner">
-        <div class="hero-copy">
-          <p class="eyebrow">Beginner reference</p>
-          <h1>Learn the lifts before you chase the weight.</h1>
-          <p class="lede">
-            Sixteen exercises, split the way most beginner programs are written:
-            push, pull, legs and core. Every card tells you which muscles the lift
-            works, how hard it is to learn, and the two or three cues that matter
-            most. Start light, move well, add weight later.
-          </p>
-          <a class="btn" href="#push">Start with push day</a>
-        </div>
-        <div class="hero-art">
-          <img src="images/hero.svg" alt="A loaded barbell above four blocks labelled push, pull and legs" width="720" height="480">
-        </div>
+    <!-- ============================================================
+         SECTION 1: INTRO — the page's single h1
+         ============================================================ -->
+    <section id="intro" class="intro" aria-labelledby="intro-heading">
+      <div class="intro-text">
+        <p class="eyebrow">No supplements. No transformation photos.</p>
+        <h1 id="intro-heading">Your first eight weeks under the bar</h1>
+        <p class="lede">
+          Sixteen exercises cover nearly every muscle worth training when you are starting out.
+          Learn them, show up three times a week, and add a little weight whenever the last rep
+          stops feeling hard. That is the entire method — everything else is detail you can pick
+          up once you are already training.
+        </p>
+        <p>
+          The movements below are grouped the way most beginner programmes split them:
+          <strong>push</strong>, <strong>pull</strong>, <strong>legs</strong>, and <strong>core</strong>.
+          Pick one exercise from each group, do three sets of eight to twelve reps, and rest about
+          ninety seconds between sets.
+        </p>
+      </div>
+      <img class="intro-image" src="images/hero.svg" alt="Line illustration of a lifter mid-squat with a loaded barbell across their shoulders" width="400" height="260">
+    </section>
+
+    <!-- ============================================================
+         FILTER CONTROLS — drive the JavaScript difficulty filter
+         ============================================================ -->
+    <section id="filter" class="filter-bar" aria-labelledby="filter-heading">
+      <h2 id="filter-heading" class="filter-heading">Filter by difficulty</h2>
+      <div class="filter-buttons" role="group" aria-label="Filter exercises by difficulty">
+        <button type="button" class="filter-btn is-active" data-level="all" aria-pressed="true">All</button>
+        <button type="button" class="filter-btn" data-level="beginner" aria-pressed="false">Beginner</button>
+        <button type="button" class="filter-btn" data-level="intermediate" aria-pressed="false">Intermediate</button>
+        <button type="button" class="filter-btn" data-level="advanced" aria-pressed="false">Advanced</button>
+      </div>
+      <p id="filter-status" class="filter-status" role="status" aria-live="polite">Showing all 16 exercises.</p>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2: PUSH
+         ============================================================ -->
+    <section id="push" class="exercise-section" aria-labelledby="push-heading">
+      <h2 id="push-heading">Push</h2>
+      <p class="section-intro">
+        Anything where you move weight away from your body. These train the chest, the front of the
+        shoulders, and the triceps — the muscles that do the work when you push a heavy door open.
+      </p>
+
+      <div class="card-grid">
+
+        <article class="card" data-level="beginner" aria-labelledby="push-1-heading">
+          <img class="card-image" src="images/push-up.svg" alt="Line illustration of a person holding the top of a push-up with a straight back" width="400" height="260">
+          <div class="card-body">
+            <h3 id="push-1-heading">Push-Up</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Chest, triceps</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Set your hands slightly wider than your shoulders, body in one straight line from head to heels.</li>
+              <li>Lower until your chest is a fist's height from the floor, elbows angled back at about 45 degrees.</li>
+              <li>Press back up without letting your hips sag or pike upward.</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="card" data-level="beginner" aria-labelledby="push-2-heading">
+          <img class="card-image" src="images/bench-press.svg" alt="Line illustration of a lifter on a flat bench pressing a barbell upward" width="400" height="260">
+          <div class="card-body">
+            <h3 id="push-2-heading">Bench Press</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Chest, shoulders, triceps</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Pin your shoulder blades back against the bench and keep both feet flat on the floor.</li>
+              <li>Lower the bar under control to the middle of your chest, wrists stacked over your elbows.</li>
+              <li>Drive the bar back up. Use a spotter or the safety pins any time you train near your limit.</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="card" data-level="beginner" aria-labelledby="push-3-heading">
+          <img class="card-image" src="images/shoulder-press.svg" alt="Line illustration of a lifter pressing two dumbbells overhead while seated" width="400" height="260">
+          <div class="card-body">
+            <h3 id="push-3-heading">Shoulder Press</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Shoulders, triceps</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Start with the dumbbells at ear height, palms facing forward.</li>
+              <li>Press straight overhead until your arms lock out, keeping your ribs down.</li>
+              <li>If your lower back arches to help, the weight is too heavy — drop it and press again.</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="card" data-level="intermediate" aria-labelledby="push-4-heading">
+          <img class="card-image" src="images/tricep-dip.svg" alt="Line illustration of a person lowering into a dip between parallel bars" width="400" height="260">
+          <div class="card-body">
+            <h3 id="push-4-heading">Tricep Dip</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Triceps, lower chest</dd>
+              <dt>Difficulty</dt><dd>Intermediate</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Support yourself on the bars with your arms straight and your shoulders pulled down.</li>
+              <li>Lower until your elbows reach about 90 degrees, leaning forward slightly.</li>
+              <li>Press back to the top. Use the assisted dip machine until you can manage eight clean reps.</li>
+            </ol>
+          </div>
+        </article>
+
       </div>
     </section>
 
-    <!-- ============ FILTER BAR ============
-         The buttons are wired up in script.js. Each button carries a
-         data-filter value that matches the data-category on the cards. -->
-    <nav class="filter-bar" id="filterBar" aria-label="Filter exercises by muscle group">
-      <div class="container filter-inner">
-        <span class="filter-label">Show:</span>
-        <div class="filter-buttons">
-          <button type="button" class="filter-btn is-active" data-filter="all">All</button>
-          <button type="button" class="filter-btn" data-filter="push">Push</button>
-          <button type="button" class="filter-btn" data-filter="pull">Pull</button>
-          <button type="button" class="filter-btn" data-filter="legs">Legs</button>
-          <button type="button" class="filter-btn" data-filter="core">Core</button>
-        </div>
-      </div>
-    </nav>
+    <!-- ============================================================
+         SECTION 3: PULL
+         ============================================================ -->
+    <section id="pull" class="exercise-section" aria-labelledby="pull-heading">
+      <h2 id="pull-heading">Pull</h2>
+      <p class="section-intro">
+        Anything where you draw weight toward your body. These build the back and biceps, and they
+        are the counterweight that keeps all that pushing from rounding your shoulders forward.
+      </p>
 
-    <!-- ============ 2. PUSH ============ -->
-    <section class="exercise-section" id="push" data-category="push">
-      <div class="container">
-        <div class="section-head">
-          <h2>Push</h2>
-          <p>Chest, shoulders and triceps — anything where you press the weight away from you.</p>
-        </div>
+      <div class="card-grid">
 
-        <!-- CSS Grid gallery: the cards reflow on their own with auto-fit. -->
-        <div class="card-grid">
+        <article class="card" data-level="beginner" aria-labelledby="pull-1-heading">
+          <img class="card-image" src="images/lat-pulldown.svg" alt="Line illustration of a seated lifter pulling a cable bar down toward their chest" width="400" height="260">
+          <div class="card-body">
+            <h3 id="pull-1-heading">Lat Pulldown</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Lats, biceps</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Set the thigh pad so your legs stay anchored, and grip the bar wider than your shoulders.</li>
+              <li>Pull the bar to your collarbone by driving your elbows down, not by yanking with your hands.</li>
+              <li>Let the bar rise all the way back up so your lats get a full stretch each rep.</li>
+            </ol>
+          </div>
+        </article>
 
-          <article class="exercise-card" data-category="push">
-            <img src="images/bench-press.svg" alt="Lifter on a flat bench pressing a barbell upward" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Bench Press</h3>
-              <div class="card-meta">
-                <span class="tag">Chest, front delts, triceps</span>
-                <span class="level level-intermediate">Intermediate</span>
-              </div>
-              <ol class="steps">
-                <li>Lie flat, feet planted, and grip the bar a little wider than your shoulders.</li>
-                <li>Lower the bar slowly to the middle of your chest, keeping your elbows tucked at about 45 degrees.</li>
-                <li>Press back up until your arms are straight, without bouncing the bar off your chest.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="beginner" aria-labelledby="pull-2-heading">
+          <img class="card-image" src="images/seated-row.svg" alt="Line illustration of a seated lifter rowing a cable handle toward their waist" width="400" height="260">
+          <div class="card-body">
+            <h3 id="pull-2-heading">Seated Row</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Mid back, biceps</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Sit tall with a slight bend in your knees and your chest lifted.</li>
+              <li>Pull the handle to your belly button, squeezing your shoulder blades together at the end.</li>
+              <li>Return slowly. Do not let your torso rock backward and forward to move the weight.</li>
+            </ol>
+          </div>
+        </article>
 
-          <article class="exercise-card" data-category="push">
-            <img src="images/shoulder-press.svg" alt="Standing lifter pressing a barbell overhead" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Shoulder Press</h3>
-              <div class="card-meta">
-                <span class="tag">Shoulders, triceps</span>
-                <span class="level level-intermediate">Intermediate</span>
-              </div>
-              <ol class="steps">
-                <li>Stand with the bar or dumbbells at shoulder height and your feet under your hips.</li>
-                <li>Squeeze your glutes so your lower back does not arch, then press straight overhead.</li>
-                <li>Lower under control until your hands are back at your shoulders.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="advanced" aria-labelledby="pull-3-heading">
+          <img class="card-image" src="images/pull-up.svg" alt="Line illustration of a person hanging from a bar at the top of a pull-up" width="400" height="260">
+          <div class="card-body">
+            <h3 id="pull-3-heading">Pull-Up</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Lats, biceps, forearms</dd>
+              <dt>Difficulty</dt><dd>Advanced</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Hang from the bar with your hands just outside shoulder width and your shoulders engaged.</li>
+              <li>Pull until your chin clears the bar, keeping your legs still rather than kicking.</li>
+              <li>Lower all the way down. Use a resistance band or the assisted machine to build up to it.</li>
+            </ol>
+          </div>
+        </article>
 
-          <article class="exercise-card" data-category="push">
-            <img src="images/push-up.svg" alt="Person holding a push-up position with a flat back" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Push-Up</h3>
-              <div class="card-meta">
-                <span class="tag">Chest, triceps, core</span>
-                <span class="level level-beginner">Beginner</span>
-              </div>
-              <ol class="steps">
-                <li>Set your hands under your shoulders and squeeze your body into one straight line.</li>
-                <li>Lower your chest to just above the floor with your elbows angled back, not flared out.</li>
-                <li>Push the floor away and finish with your shoulder blades spread wide.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="beginner" aria-labelledby="pull-4-heading">
+          <img class="card-image" src="images/bicep-curl.svg" alt="Line illustration of a standing lifter curling a dumbbell toward their shoulder" width="400" height="260">
+          <div class="card-body">
+            <h3 id="pull-4-heading">Bicep Curl</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Biceps</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Stand with a dumbbell in each hand, palms facing forward and elbows tucked to your ribs.</li>
+              <li>Curl the weight up without letting your elbows drift ahead of your body.</li>
+              <li>Lower slowly — the way down builds as much as the way up.</li>
+            </ol>
+          </div>
+        </article>
 
-          <article class="exercise-card" data-category="push">
-            <img src="images/tricep-dip.svg" alt="Person lowering between two parallel dip bars" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Tricep Dip</h3>
-              <div class="card-meta">
-                <span class="tag">Triceps, lower chest</span>
-                <span class="level level-intermediate">Intermediate</span>
-              </div>
-              <ol class="steps">
-                <li>Support yourself on parallel bars or a bench with your arms locked straight.</li>
-                <li>Bend your elbows and lower until your upper arms are about parallel to the floor.</li>
-                <li>Press back to the top, keeping your shoulders down and away from your ears.</li>
-              </ol>
-            </div>
-          </article>
-
-        </div>
       </div>
     </section>
 
-    <!-- ============ 3. PULL ============ -->
-    <section class="exercise-section" id="pull" data-category="pull">
-      <div class="container">
-        <div class="section-head">
-          <h2>Pull</h2>
-          <p>Back and biceps — anything where you drag the weight toward you or pull yourself up.</p>
-        </div>
+    <!-- ============================================================
+         SECTION 4: LEGS
+         ============================================================ -->
+    <section id="legs" class="exercise-section" aria-labelledby="legs-heading">
+      <h2 id="legs-heading">Legs</h2>
+      <p class="section-intro">
+        The largest muscles you own, and the ones beginners skip most often. Training them is what
+        makes everything else — stairs, carrying groceries, standing up — quietly easier.
+      </p>
 
-        <div class="card-grid">
+      <div class="card-grid">
 
-          <article class="exercise-card" data-category="pull">
-            <img src="images/lat-pulldown.svg" alt="Seated lifter pulling a cable bar down to the chest" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Lat Pulldown</h3>
-              <div class="card-meta">
-                <span class="tag">Lats, upper back, biceps</span>
-                <span class="level level-beginner">Beginner</span>
-              </div>
-              <ol class="steps">
-                <li>Sit with your thighs locked under the pad and take a wide overhand grip.</li>
-                <li>Pull the bar to your collarbone by driving your elbows down, not by leaning back.</li>
-                <li>Let the bar rise slowly until your arms are straight again.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="beginner" aria-labelledby="legs-1-heading">
+          <img class="card-image" src="images/squat.svg" alt="Line illustration of a lifter at the bottom of a squat with a barbell on their shoulders" width="400" height="260">
+          <div class="card-body">
+            <h3 id="legs-1-heading">Goblet Squat</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Quads, glutes</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Hold a single dumbbell against your chest with both hands, feet about shoulder width.</li>
+              <li>Sit straight down between your knees, keeping your heels flat and your chest tall.</li>
+              <li>Stand back up by driving through the middle of your foot.</li>
+            </ol>
+          </div>
+        </article>
 
-          <article class="exercise-card" data-category="pull">
-            <img src="images/seated-row.svg" alt="Seated lifter pulling a cable handle toward the waist" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Seated Row</h3>
-              <div class="card-meta">
-                <span class="tag">Mid back, rear delts, biceps</span>
-                <span class="level level-beginner">Beginner</span>
-              </div>
-              <ol class="steps">
-                <li>Sit tall with a small bend in your knees and your feet flat on the plate.</li>
-                <li>Pull the handle to your belly button and squeeze your shoulder blades together.</li>
-                <li>Return slowly and keep your back straight instead of rocking back and forth.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="beginner" aria-labelledby="legs-2-heading">
+          <img class="card-image" src="images/leg-press.svg" alt="Line illustration of a lifter pressing a weighted sled with both legs" width="400" height="260">
+          <div class="card-body">
+            <h3 id="legs-2-heading">Leg Press</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Quads, glutes</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Place your feet shoulder width apart in the middle of the platform.</li>
+              <li>Lower until your knees reach about 90 degrees, never letting your lower back peel off the pad.</li>
+              <li>Press back out without snapping your knees straight at the top.</li>
+            </ol>
+          </div>
+        </article>
 
-          <article class="exercise-card" data-category="pull">
-            <img src="images/bicep-curl.svg" alt="Standing lifter curling a dumbbell" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Bicep Curl</h3>
-              <div class="card-meta">
-                <span class="tag">Biceps, forearms</span>
-                <span class="level level-beginner">Beginner</span>
-              </div>
-              <ol class="steps">
-                <li>Stand with a dumbbell in each hand and your elbows pinned to your sides.</li>
-                <li>Curl the weight up by bending only at the elbow — your upper arm stays still.</li>
-                <li>Lower all the way down, slower than you lifted it.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="intermediate" aria-labelledby="legs-3-heading">
+          <img class="card-image" src="images/lunge.svg" alt="Line illustration of a lifter in a forward lunge holding dumbbells at their sides" width="400" height="260">
+          <div class="card-body">
+            <h3 id="legs-3-heading">Walking Lunge</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Quads, glutes, hamstrings</dd>
+              <dt>Difficulty</dt><dd>Intermediate</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Hold a dumbbell in each hand and take a long step forward.</li>
+              <li>Drop your back knee toward the floor, keeping your torso upright the whole way.</li>
+              <li>Push off the front foot into your next step. Start with bodyweight until your balance settles.</li>
+            </ol>
+          </div>
+        </article>
 
-          <article class="exercise-card" data-category="pull">
-            <img src="images/pull-up.svg" alt="Person hanging from a bar at the top of a pull-up" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Pull-Up</h3>
-              <div class="card-meta">
-                <span class="tag">Lats, upper back, biceps</span>
-                <span class="level level-intermediate">Intermediate</span>
-              </div>
-              <ol class="steps">
-                <li>Hang from the bar with an overhand grip and your arms fully straight.</li>
-                <li>Pull until your chin clears the bar, keeping your ribs down and legs quiet.</li>
-                <li>Lower under control. Use a band or the assisted machine until you can do five clean reps.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="beginner" aria-labelledby="legs-4-heading">
+          <img class="card-image" src="images/calf-raise.svg" alt="Line illustration of a lifter rising onto the balls of their feet on a raised step" width="400" height="260">
+          <div class="card-body">
+            <h3 id="legs-4-heading">Calf Raise</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Calves</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Stand with the balls of your feet on a step and your heels hanging off the edge.</li>
+              <li>Drop your heels for a full stretch, then rise as high onto your toes as you can.</li>
+              <li>Pause at the top for a full second. Rushing this one wastes the set.</li>
+            </ol>
+          </div>
+        </article>
 
-        </div>
       </div>
     </section>
 
-    <!-- ============ 4. LEGS ============ -->
-    <section class="exercise-section" id="legs" data-category="legs">
-      <div class="container">
-        <div class="section-head">
-          <h2>Legs</h2>
-          <p>Quads, hamstrings, glutes and calves — the biggest muscles you own, so train them first when you are fresh.</p>
-        </div>
+    <!-- ============================================================
+         SECTION 5: CORE
+         ============================================================ -->
+    <section id="core" class="exercise-section" aria-labelledby="core-heading">
+      <h2 id="core-heading">Core</h2>
+      <p class="section-intro">
+        Your midsection's real job is resisting movement, not producing it. These four train it to
+        stay braced — which is what protects your back under every other lift on this page.
+      </p>
 
-        <div class="card-grid">
+      <div class="card-grid">
 
-          <article class="exercise-card" data-category="legs">
-            <img src="images/squat.svg" alt="Lifter squatting with a barbell across the shoulders" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Back Squat</h3>
-              <div class="card-meta">
-                <span class="tag">Quads, glutes, core</span>
-                <span class="level level-intermediate">Intermediate</span>
-              </div>
-              <ol class="steps">
-                <li>Rest the bar across your upper back and stand with your feet about shoulder-width apart.</li>
-                <li>Sit down and back, keeping your chest up and your knees tracking over your toes.</li>
-                <li>Stand up by pushing through your whole foot, driving your heels into the floor.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="beginner" aria-labelledby="core-1-heading">
+          <img class="card-image" src="images/plank.svg" alt="Line illustration of a person holding a forearm plank in a straight line" width="400" height="260">
+          <div class="card-body">
+            <h3 id="core-1-heading">Plank</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Whole core</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Set your forearms on the floor directly under your shoulders.</li>
+              <li>Squeeze your glutes and abs so your body holds one straight line.</li>
+              <li>Hold for thirty honest seconds. That beats two sagging minutes every time.</li>
+            </ol>
+          </div>
+        </article>
 
-          <article class="exercise-card" data-category="legs">
-            <img src="images/lunge.svg" alt="Lifter in a split lunge holding dumbbells" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Walking Lunge</h3>
-              <div class="card-meta">
-                <span class="tag">Quads, glutes, balance</span>
-                <span class="level level-beginner">Beginner</span>
-              </div>
-              <ol class="steps">
-                <li>Take a long step forward with a dumbbell in each hand.</li>
-                <li>Drop your back knee toward the floor until both knees are bent about 90 degrees.</li>
-                <li>Push through the front heel to stand, then step through with the other leg.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="beginner" aria-labelledby="core-2-heading">
+          <img class="card-image" src="images/crunch.svg" alt="Line illustration of a person curling their shoulders off the floor in a crunch" width="400" height="260">
+          <div class="card-body">
+            <h3 id="core-2-heading">Crunch</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Upper abs</dd>
+              <dt>Difficulty</dt><dd>Beginner</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Lie on your back with your knees bent and your feet flat.</li>
+              <li>Curl your shoulders off the floor using your abs, not by pulling on your neck.</li>
+              <li>Lower under control rather than dropping back down.</li>
+            </ol>
+          </div>
+        </article>
 
-          <article class="exercise-card" data-category="legs">
-            <img src="images/leg-press.svg" alt="Person pressing a weighted sled on an angled leg press" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Leg Press</h3>
-              <div class="card-meta">
-                <span class="tag">Quads, glutes, hamstrings</span>
-                <span class="level level-beginner">Beginner</span>
-              </div>
-              <ol class="steps">
-                <li>Sit back in the seat and place your feet shoulder-width apart on the platform.</li>
-                <li>Lower the sled until your knees reach about 90 degrees, keeping your hips on the seat.</li>
-                <li>Press back up without snapping your knees straight at the top.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="intermediate" aria-labelledby="core-3-heading">
+          <img class="card-image" src="images/russian-twist.svg" alt="Line illustration of a seated person rotating a weight from side to side" width="400" height="260">
+          <div class="card-body">
+            <h3 id="core-3-heading">Russian Twist</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Obliques</dd>
+              <dt>Difficulty</dt><dd>Intermediate</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Sit with your knees bent and lean back until you feel your abs switch on.</li>
+              <li>Rotate a weight from one hip to the other, turning through your ribs rather than your arms.</li>
+              <li>Keep your chest lifted. The moment your back rounds, stop the set.</li>
+            </ol>
+          </div>
+        </article>
 
-          <article class="exercise-card" data-category="legs">
-            <img src="images/calf-raise.svg" alt="Person rising onto the toes on a raised step" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Calf Raise</h3>
-              <div class="card-meta">
-                <span class="tag">Calves</span>
-                <span class="level level-beginner">Beginner</span>
-              </div>
-              <ol class="steps">
-                <li>Stand with the balls of your feet on a step and your heels hanging off the edge.</li>
-                <li>Rise as high onto your toes as you can and hold for a second at the top.</li>
-                <li>Lower your heels below the step for a slow stretch before the next rep.</li>
-              </ol>
-            </div>
-          </article>
+        <article class="card" data-level="intermediate" aria-labelledby="core-4-heading">
+          <img class="card-image" src="images/leg-raise.svg" alt="Line illustration of a person lying down raising both straight legs toward the ceiling" width="400" height="260">
+          <div class="card-body">
+            <h3 id="core-4-heading">Leg Raise</h3>
+            <dl class="card-meta">
+              <dt>Muscles</dt><dd>Lower abs, hip flexors</dd>
+              <dt>Difficulty</dt><dd>Intermediate</dd>
+            </dl>
+            <ol class="card-steps">
+              <li>Lie flat with your hands tucked under your hips for support.</li>
+              <li>Raise both legs until they point at the ceiling, keeping them close to straight.</li>
+              <li>Lower slowly and stop before your lower back lifts off the floor.</li>
+            </ol>
+          </div>
+        </article>
 
-        </div>
       </div>
     </section>
 
-    <!-- ============ 5. CORE ============ -->
-    <section class="exercise-section" id="core" data-category="core">
-      <div class="container">
-        <div class="section-head">
-          <h2>Core</h2>
-          <p>Abs, obliques and lower back — trained to resist movement, not just to crunch.</p>
-        </div>
+    <!-- ============================================================
+         SECTION 6: FAQ — native details/summary disclosure widgets
+         ============================================================ -->
+    <section id="faq" class="faq" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Questions everyone has</h2>
 
-        <div class="card-grid">
+      <details>
+        <summary>Is everyone watching me?</summary>
+        <p>No. They are looking at their phone between sets, exactly like you will be. The gym is the least observant room you will be in all week.</p>
+      </details>
 
-          <article class="exercise-card" data-category="core">
-            <img src="images/plank.svg" alt="Person holding a forearm plank with a straight body line" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Plank</h3>
-              <div class="card-meta">
-                <span class="tag">Abs, lower back, shoulders</span>
-                <span class="level level-beginner">Beginner</span>
-              </div>
-              <ol class="steps">
-                <li>Rest on your forearms and toes with your elbows under your shoulders.</li>
-                <li>Squeeze your glutes and abs so your hips do not sag or pike up.</li>
-                <li>Hold for 20 to 40 seconds while breathing normally.</li>
-              </ol>
-            </div>
-          </article>
+      <details>
+        <summary>How do I know the weight is right?</summary>
+        <p>The last two reps should be genuinely hard, but your technique should not change. If the final rep looks like the first, go heavier. If your back rounds at rep eight, go lighter.</p>
+      </details>
 
-          <article class="exercise-card" data-category="core">
-            <img src="images/crunch.svg" alt="Person curling the shoulders off the floor with knees bent" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Crunch</h3>
-              <div class="card-meta">
-                <span class="tag">Upper abs</span>
-                <span class="level level-beginner">Beginner</span>
-              </div>
-              <ol class="steps">
-                <li>Lie on your back with your knees bent and your feet flat on the floor.</li>
-                <li>Curl your shoulders a few inches off the ground — your lower back stays down.</li>
-                <li>Lower slowly and rest your hands lightly at your temples, never pulling on your neck.</li>
-              </ol>
-            </div>
-          </article>
+      <details>
+        <summary>How sore should I be?</summary>
+        <p>A dull ache for a day or two is normal, especially early on. Sharp pain, joint pain, or soreness lasting past four days means you did too much too soon.</p>
+      </details>
 
-          <article class="exercise-card" data-category="core">
-            <img src="images/leg-raise.svg" alt="Person lying flat and lifting straight legs upward" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Lying Leg Raise</h3>
-              <div class="card-meta">
-                <span class="tag">Lower abs, hip flexors</span>
-                <span class="level level-intermediate">Intermediate</span>
-              </div>
-              <ol class="steps">
-                <li>Lie flat with your hands under your hips for support.</li>
-                <li>Lift both legs, close to straight, until they point at the ceiling.</li>
-                <li>Lower them slowly and stop before your lower back peels off the floor.</li>
-              </ol>
-            </div>
-          </article>
+      <details>
+        <summary>Do I need protein powder?</summary>
+        <p>No. It is a convenient way to reach a protein target and nothing more — ordinary food does the same job. Skip every other supplement until you have trained consistently for six months.</p>
+      </details>
 
-          <article class="exercise-card" data-category="core">
-            <img src="images/russian-twist.svg" alt="Person seated in a V position twisting a ball to one side" width="400" height="260" loading="lazy">
-            <div class="card-body">
-              <h3>Russian Twist</h3>
-              <div class="card-meta">
-                <span class="tag">Obliques, abs</span>
-                <span class="level level-intermediate">Intermediate</span>
-              </div>
-              <ol class="steps">
-                <li>Sit with your knees bent and lean back until you feel your abs switch on.</li>
-                <li>Hold a plate or ball at your chest and rotate it to one hip, then the other.</li>
-                <li>Turn from your ribs rather than swinging your arms, and keep your chest tall.</li>
-              </ol>
-            </div>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 6. FAQ ============
-         <details>/<summary> gives expandable Q&A with no JavaScript. -->
-    <section class="faq" id="faq">
-      <div class="container">
-        <div class="section-head">
-          <h2>Beginner questions</h2>
-          <p>The five things people ask in their first month.</p>
-        </div>
-
-        <div class="faq-list">
-          <details>
-            <summary>How many days a week should I train?</summary>
-            <p>Three is plenty to start. A push day, a pull day and a leg day, with core added to any two of them, covers your whole body with a rest day in between each session.</p>
-          </details>
-
-          <details>
-            <summary>How much weight should I use?</summary>
-            <p>Pick a weight you could lift about ten times, and stop two reps short of failing. If your form breaks down before the last rep, the weight is too heavy — that is a form problem, not a toughness problem.</p>
-          </details>
-
-          <details>
-            <summary>How many sets and reps?</summary>
-            <p>Three sets of eight to twelve reps works for almost every exercise here. Rest 60 to 90 seconds between sets, and closer to two minutes on squats and presses.</p>
-          </details>
-
-          <details>
-            <summary>Is soreness a sign that it worked?</summary>
-            <p>Not really. Soreness mostly tells you that a movement was new to you. Progress is better measured by adding a rep or a small amount of weight from week to week.</p>
-          </details>
-
-          <details>
-            <summary>Do I need to warm up?</summary>
-            <p>Yes. Five minutes on a bike or rower, then two light sets of the first exercise. It takes almost no time and it makes the working sets feel much better.</p>
-          </details>
-        </div>
-      </div>
+      <details>
+        <summary>What if I miss a week?</summary>
+        <p>Come back and repeat your last session at the same weight. You lose far less than you think, and picking it back up is not the same as starting over.</p>
+      </details>
     </section>
 
   </main>
 
-  <!-- ============ FOOTER ============ -->
+  <!-- ============================================================
+       SITE FOOTER — disclaimer and contact links
+       ============================================================ -->
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <span class="logo-mark" aria-hidden="true"></span>
-        <p class="disclaimer">
-          Gym Starter Guide is a student project made for general education. It is not
-          medical advice — check with a doctor before starting a new training programme,
-          and ask a qualified coach to watch your first few heavy sets.
-        </p>
-      </div>
+    <h2>Gym Starter Guide</h2>
+    <p class="disclaimer">
+      General fitness information only — this is not medical advice. Check with a doctor before
+      starting a new training programme, especially if you have an existing injury or condition.
+    </p>
 
-      <nav class="footer-links" aria-label="Footer">
-        <h2 class="footer-heading">Contact</h2>
-        <ul>
-          <li><a href="mailto:hello@gymstarterguide.example">hello@gymstarterguide.example</a></li>
-          <li><a href="#top">Instagram</a></li>
-          <li><a href="#top">YouTube</a></li>
-        </ul>
-      </nav>
-    </div>
+    <nav aria-label="Footer">
+      <ul class="footer-links">
+        <li><a href="mailto:hello@gymstarterguide.example">Contact</a></li>
+        <li><a href="https://github.com/">GitHub</a></li>
+        <li><a href="#intro">Back to top</a></li>
+      </ul>
+    </nav>
 
-    <div class="container footer-bottom">
-      <p>&copy; 2026 Gym Starter Guide. Built with plain HTML, CSS and JavaScript.</p>
-    </div>
+    <p class="colophon"><small>Built for CSC 436 · Static site, no frameworks, no tracking.</small></p>
   </footer>
 
   <script src="script.js"></script>

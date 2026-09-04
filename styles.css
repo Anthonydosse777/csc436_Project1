@@ -1,566 +1,372 @@
-/* ============================================================
-   GYM STARTER GUIDE — styles.css
-   Written mobile-first: the base rules below style the phone
-   layout, and the media queries at the bottom of the file add
-   the tablet and desktop layouts on top.
-   ============================================================ */
+/* ==========================================================================
+   GYM STARTER GUIDE — base stylesheet
+   No Flexbox, no Grid. Everything here relies on normal document flow:
+   block elements stack vertically, inline elements sit side by side.
+   ========================================================================== */
 
 
-/* ---------- 1. DESIGN TOKENS ----------
-   All colours, the accent and the shared spacing values live in
-   one place as custom properties, so the whole site can be
-   restyled from here. */
+/* --------------------------------------------------------------------------
+   1. CUSTOM PROPERTIES (variables)
+   Every colour and size used in this file is named once, here. Change a value
+   in this block and it updates everywhere it is used further down.
+   ":root" is the <html> element — declaring them here makes them available
+   to every rule in the document.
+   -------------------------------------------------------------------------- */
 :root {
-  --bg:            #12151a;   /* page background        */
-  --surface:       #1a1f27;   /* cards and bars         */
-  --surface-2:     #222833;   /* hover / raised state   */
-  --border:        #2c3441;   /* hairline borders       */
-  --text:          #e8ecf2;   /* main text              */
-  --text-muted:    #98a2b3;   /* secondary text         */
-  --accent:        #ff5a1f;   /* the single bold accent */
-  --accent-soft:   rgba(255, 90, 31, 0.14);
+  /* Colours — dark background, light text, one energetic orange accent */
+  --color-bg:         #16171c;  /* page background, near-black */
+  --color-surface:    #1f2129;  /* raised panels: cards, header, footer */
+  --color-border:     #32353f;  /* hairline borders, just lighter than surface */
+  --color-text:       #ecedf0;  /* main body text, off-white (not pure white) */
+  --color-text-muted: #a2a6b0;  /* secondary text: intros, answers, disclaimer */
+  --color-accent:     #ff6b2c;  /* the one bold colour: links, headings, rules */
+  --color-accent-dim: #c74f1c;  /* darker orange for pressed/active states */
 
-  --radius:        14px;
-  --gap:           1.5rem;
-  --container:     1120px;
+  /* Spacing — a small scale so padding and margins stay consistent */
+  --space-xs: 0.5rem;   /*  8px */
+  --space-sm: 1rem;     /* 16px */
+  --space-md: 2rem;     /* 32px */
+  --space-lg: 4rem;     /* 64px */
 
-  --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  /* Shape */
+  --radius: 10px;       /* corner rounding, shared by cards and buttons */
+
+  /* Type stacks. Body is the OS default UI sans-serif. Headings use a
+     geometric sans that is visually distinct from it, with fallbacks so the
+     page still looks deliberate on any machine. */
+  --font-body:    system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-heading: "Avenir Next", "Futura", "Trebuchet MS", var(--font-body);
 }
 
 
-/* ---------- 2. RESET AND PAGE BASICS ----------
-   border-box makes padding count inside an element's width,
-   which is what stops cards overflowing on narrow screens. */
+/* --------------------------------------------------------------------------
+   2. RESET
+   Browsers ship with their own default margins and sizing rules. These three
+   blocks flatten those defaults so our own spacing is the only spacing.
+   -------------------------------------------------------------------------- */
+
+/* border-box means an element's declared width INCLUDES its padding and
+   border, instead of adding them on top. Without this, a card with padding
+   ends up wider than you asked for. "*" plus the two pseudo-elements applies
+   it to literally everything. */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-body {
+/* Strip the default margin the browser puts on headings, paragraphs, lists
+   and the body itself, so nothing has spacing we did not write ourselves. */
+body,
+h1, h2, h3,
+p,
+ul, ol, dl, dd,
+figure {
   margin: 0;
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 1rem;
-  line-height: 1.65;
-  /* Belt and braces against sideways scrolling on small phones. */
-  overflow-x: hidden;
+  padding: 0;
 }
 
-img {
-  display: block;
-  max-width: 100%;   /* images never push the layout wider than the screen */
-  height: auto;
+/* Lists here are used for navigation and steps, not bullet lists. Removing
+   the marker is done per-list further down, so the ordered instruction steps
+   can keep their numbers. */
+nav ul {
+  list-style: none;
 }
 
-h1, h2, h3 {
-  line-height: 1.2;
-  margin: 0 0 0.5rem;
+
+/* --------------------------------------------------------------------------
+   3. PAGE BASICS
+   The body sets the defaults every other element inherits: colours, font,
+   and line spacing.
+   -------------------------------------------------------------------------- */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1rem;      /* 16px — the browser default, stated explicitly */
+  line-height: 1.6;     /* unitless: each line is 1.6x the element's font size */
 }
 
-h1 { font-size: 2rem; letter-spacing: -0.5px; }
-h2 { font-size: 1.6rem; letter-spacing: -0.3px; }
-h3 { font-size: 1.15rem; }
+/* Constrain how wide text can run and centre it. Lines longer than roughly
+   70 characters are measurably harder to read. "margin: 0 auto" centres a
+   block by splitting leftover horizontal space evenly — no Flexbox needed. */
+main {
+  max-width: 70ch;
+  margin: 0 auto;
+  padding: 0 var(--space-sm);
+}
 
-p { margin: 0 0 1rem; }
-
-a {
-  color: var(--text);
+/* The skip link sits at the very top of the DOM for keyboard users. It is
+   pulled off-screen until focused, then springs into view. */
+body > a[href="#main"] {
+  position: absolute;
+  left: -9999px;                    /* off-screen, but still focusable */
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  padding: var(--space-xs) var(--space-sm);
   text-decoration: none;
 }
-
-a:hover,
-a:focus-visible {
-  color: var(--accent);
-}
-
-/* A visible outline on every keyboard-focused element. */
-a:focus-visible,
-button:focus-visible,
-summary:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-/* The skip link is hidden off-screen until it is tabbed to. */
-.skip-link {
-  position: absolute;
-  left: -9999px;
-}
-
-.skip-link:focus {
-  left: 1rem;
-  top: 1rem;
-  z-index: 10;
-  background: var(--accent);
-  color: #fff;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-}
-
-/* One shared wrapper that centres content and keeps it off the
-   screen edges. Used inside the header, every section and the footer. */
-.container {
-  width: 100%;
-  max-width: var(--container);
-  margin: 0 auto;
-  padding: 0 1.25rem;
+body > a[href="#main"]:focus {
+  left: var(--space-sm);            /* pull it back on screen when tabbed to */
+  top: var(--space-xs);
 }
 
 
-/* ---------- 3. HEADER AND NAV (FLEXBOX) ----------
-   FLEXBOX #1: the logo and the nav are pushed to opposite ends
-   with justify-content: space-between. On a phone the flex line
-   is allowed to wrap, so the links drop underneath the logo. */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: rgba(18, 21, 26, 0.95);
-  border-bottom: 1px solid var(--border);
+/* --------------------------------------------------------------------------
+   4. HEADINGS
+   Sizes step down clearly so the hierarchy is obvious at a glance, not just
+   correct in the markup.
+   -------------------------------------------------------------------------- */
+
+/* Shared traits for all three levels. */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: 1.2;                 /* tighter than body text: big type needs less gap */
+  margin-bottom: var(--space-sm);
 }
 
-.header-bar {
-  display: flex;
-  flex-wrap: wrap;                 /* links wrap to their own row on mobile */
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
-  padding-top: 0.85rem;
-  padding-bottom: 0.85rem;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-weight: 700;
-  font-size: 1.05rem;
-}
-
-/* The little orange bar next to the wordmark, drawn in CSS. */
-.logo-mark {
-  width: 26px;
-  height: 8px;
-  border-radius: 4px;
-  background: var(--accent);
-  box-shadow: 0 -7px 0 var(--surface-2), 0 7px 0 var(--surface-2);
-}
-
-.logo-text em {
-  font-style: normal;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-/* The nav list is its own flex row, and it wraps rather than
-   overflowing when the screen is narrow. */
-.nav-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 1.1rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 0.95rem;
-}
-
-.nav-list a {
-  color: var(--text-muted);
-  font-weight: 600;
-  padding: 0.2rem 0;
-}
-
-.nav-list a:hover,
-.nav-list a:focus-visible {
-  color: var(--accent);
-}
-
-
-/* ---------- 4. HERO ----------
-   FLEXBOX #2: the intro text and the illustration are a flex
-   column on phones and become two side-by-side columns on
-   desktop (see the media query at the bottom). */
-.hero {
-  border-bottom: 1px solid var(--border);
-  padding: 3rem 0;
-}
-
-.hero-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.hero-copy {
-  max-width: 34rem;
-}
-
-.eyebrow {
-  margin: 0 0 0.75rem;
-  color: var(--accent);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 2px;
+/* The page title. Uppercase and letter-spaced to feel bold and deliberate. */
+h1 {
+  font-size: 2.75rem;               /* 44px */
+  color: var(--color-accent);
   text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
-.lede {
-  color: var(--text-muted);
-  font-size: 1.05rem;
+/* Section titles. Noticeably smaller than the h1, with an accent rule beneath
+   to visually separate one section from the next. */
+h2 {
+  font-size: 1.875rem;              /* 30px */
+  padding-bottom: var(--space-xs);
+  border-bottom: 2px solid var(--color-accent);
 }
 
-.btn {
+/* Exercise names inside cards. Close to body size but heavier and accented,
+   so a card reads as a unit with a clear label. */
+h3 {
+  font-size: 1.25rem;               /* 20px */
+  color: var(--color-accent);
+}
+
+
+/* --------------------------------------------------------------------------
+   5. HEADER
+   Full-width bar at the top: darker panel, centred contents.
+   -------------------------------------------------------------------------- */
+header {
+  background-color: var(--color-surface);
+  border-bottom: 3px solid var(--color-accent);
+  padding: var(--space-md) var(--space-sm);
+  text-align: center;               /* centres both the title and the inline nav */
+  margin-bottom: var(--space-lg);
+}
+
+/* The site title is a <p> wrapping a link, so it needs its own sizing rather
+   than inheriting heading styles. */
+header p {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-sm);
+}
+
+/* The title link should read as text, not as a link. */
+header p a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+header p a:hover {
+  color: var(--color-accent);
+}
+
+
+/* --------------------------------------------------------------------------
+   6. NAVIGATION
+   The list items are switched to inline-block so they sit in a row. This is
+   the pre-Flexbox way of laying out a horizontal nav: inline-block keeps
+   them side by side while still accepting padding and margins.
+   -------------------------------------------------------------------------- */
+nav li {
   display: inline-block;
-  background: var(--accent);
-  color: #fff;
-  font-weight: 700;
-  padding: 0.8rem 1.5rem;
-  border-radius: 10px;
+  margin: 0 var(--space-xs);        /* the gap between links */
 }
 
-.btn:hover,
-.btn:focus-visible {
-  background: #ff7038;
-  color: #fff;
-}
-
-.hero-art img {
-  width: 100%;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-}
-
-
-/* ---------- 5. FILTER BAR ----------
-   Another flex row: the label sits beside the buttons, and the
-   buttons themselves wrap onto a second line on narrow screens.
-   It scrolls normally on mobile and only sticks on desktop, where
-   the header is a predictable height (see the media queries). */
-.filter-bar {
-  z-index: 4;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0.85rem 0;
-}
-
-.filter-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.filter-label {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+/* Links styled as small pill-shaped buttons. Padding gives them a comfortable
+   click target; the transparent border reserves space so the hover border
+   does not shift the layout when it appears. */
+nav a {
+  display: inline-block;
+  color: var(--color-text-muted);
+  text-decoration: none;            /* removes the default underline */
+  font-size: 0.9375rem;             /* 15px */
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
 }
 
-.filter-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+/* Hover AND focus are styled together so keyboard users get the same clear
+   signal that mouse users do. */
+nav a:hover,
+nav a:focus {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
 }
 
-.filter-btn {
-  background: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.45rem 1.1rem;
-  font: inherit;
-  font-size: 0.92rem;
-  font-weight: 600;
+/* A brief press state, so clicking feels responsive. */
+nav a:active {
+  color: var(--color-accent-dim);
+}
+
+
+/* --------------------------------------------------------------------------
+   7. SECTIONS
+   Generous vertical breathing room so the page does not read as one block.
+   -------------------------------------------------------------------------- */
+section {
+  margin-bottom: var(--space-lg);
+}
+
+/* The paragraph directly after a section heading is an intro line, so it is
+   dimmed and given extra space beneath it. The "+" combinator means "a <p>
+   that immediately follows an <h2>". */
+h2 + p {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+/* The intro section's welcome paragraph, set slightly larger to act as a lede. */
+#intro p {
+  font-size: 1.125rem;              /* 18px */
+  color: var(--color-text-muted);
+}
+
+
+/* --------------------------------------------------------------------------
+   8. EXERCISE CARDS
+   Each <article> becomes a raised panel. Articles are block elements, so with
+   no Flexbox or Grid involved they simply stack vertically, one per row.
+   -------------------------------------------------------------------------- */
+article {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent);  /* accent spine down the left edge */
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+  margin-bottom: var(--space-sm);   /* the gap between stacked cards */
+
+  /* A soft shadow lifts the card off the background. The values are
+     x-offset, y-offset, blur, and a black at 30% opacity. */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* The description list holds the muscle group and difficulty. Setting both
+   parts to inline-block lets each label sit beside its value on one line
+   rather than stacking, which is the browser default for <dl>. */
+article dl {
+  font-size: 0.875rem;              /* 14px */
+  margin-bottom: var(--space-sm);
+}
+
+/* The labels: small, uppercase, muted — clearly secondary to the value. */
+article dt {
+  display: inline-block;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+article dt::after {
+  content: ":";                     /* punctuation added by CSS, not typed in the HTML */
+}
+
+/* The values: accented and spaced away from the next pair. */
+article dd {
+  display: inline-block;
+  color: var(--color-accent);
+  font-weight: bold;
+  margin-right: var(--space-sm);    /* separates this pair from the following one */
+}
+
+/* The numbered instruction steps. Padding on the left makes room for the
+   numbers, which otherwise render outside the card's padding. */
+article ol {
+  padding-left: 1.25rem;
+  color: var(--color-text-muted);
+}
+article ol li {
+  margin-bottom: var(--space-xs);
+}
+
+
+/* --------------------------------------------------------------------------
+   9. FAQ
+   <details> and <summary> are native collapsible elements — the open and
+   close behaviour is free, so only appearance is styled here.
+   -------------------------------------------------------------------------- */
+details {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+  margin-bottom: var(--space-xs);
+}
+
+/* The always-visible question. "cursor: pointer" signals it is clickable. */
+summary {
+  font-family: var(--font-heading);
+  font-weight: bold;
+  color: var(--color-text);
   cursor: pointer;
 }
-
-.filter-btn:hover {
-  background: var(--surface-2);
-  color: var(--text);
+summary:hover {
+  color: var(--color-accent);
 }
 
-/* JavaScript adds .is-active to whichever button was clicked, so
-   the current filter is obvious at a glance. */
-.filter-btn.is-active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+/* The answer, revealed when the element is open. */
+details p {
+  color: var(--color-text-muted);
+  margin-top: var(--space-xs);
 }
 
 
-/* ---------- 6. SECTIONS AND THE CARD GRID ----------
-   CSS GRID: repeat(auto-fit, minmax(...)) fits as many cards per
-   row as will fit the container, so the gallery goes 3 → 2 → 1
-   columns on its own, with no media query for this part. */
-.exercise-section {
-  padding: 3rem 0;
-  border-bottom: 1px solid var(--border);
+/* --------------------------------------------------------------------------
+   10. FOOTER
+   Mirrors the header: same panel colour, centred, with a top accent rule.
+   -------------------------------------------------------------------------- */
+footer {
+  background-color: var(--color-surface);
+  border-top: 3px solid var(--color-accent);
+  padding: var(--space-md) var(--space-sm);
+  text-align: center;
+  margin-top: var(--space-lg);
 }
 
-.section-head {
-  margin-bottom: 2rem;
-  max-width: 46rem;
+/* The footer heading is structural (it labels the region for screen readers)
+   but should not shout, so the h2's size and accent underline are overridden. */
+footer h2 {
+  font-size: 1.125rem;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-/* Small orange rule above each section heading. */
-.section-head h2::before {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--accent);
-  margin-bottom: 0.9rem;
-}
-
-.section-head p {
-  color: var(--text-muted);
-  margin: 0;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-  gap: var(--gap);
+footer p {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  margin-bottom: var(--space-sm);
 }
 
 
-/* ---------- 7. EXERCISE CARDS ----------
-   The card itself is a flex column so that cards in the same row
-   stay the same height and the steps list always sits at the bottom. */
-.exercise-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-.exercise-card:hover {
-  border-color: var(--accent);
-}
-
-.exercise-card img {
-  width: 100%;
-  aspect-ratio: 400 / 260;   /* keeps every illustration the same shape */
-  object-fit: cover;
-  border-bottom: 1px solid var(--border);
-}
-
-.card-body {
-  padding: 1.25rem;
-}
-
-/* FLEXBOX #3: the muscle-group tag and the difficulty label sit
-   on one row, and the difficulty is pushed to the far right. */
-.card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 0.9rem;
-}
-
-.tag {
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 0.78rem;
-  font-weight: 700;
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
-}
-
-.level {
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-}
-
-.level-beginner { color: #6ee7a8; border-color: rgba(110, 231, 168, 0.35); }
-.level-intermediate { color: #ffc46b; border-color: rgba(255, 196, 107, 0.35); }
-
-.steps {
-  margin: 0;
-  padding-left: 1.15rem;
-  color: var(--text-muted);
-  font-size: 0.95rem;
-}
-
-.steps li + li {
-  margin-top: 0.45rem;
-}
-
-
-/* ---------- 8. FAQ ----------
-   <details> and <summary> handle the open/close on their own. */
-.faq {
-  padding: 3rem 0;
-}
-
-.faq-list {
-  display: grid;
-  gap: 0.75rem;
-  max-width: 46rem;
-}
-
-.faq details {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0.9rem 1.15rem;
-}
-
-.faq summary {
-  cursor: pointer;
-  font-weight: 700;
-  list-style-position: outside;
-}
-
-.faq summary::marker {
-  color: var(--accent);
-}
-
-.faq details p {
-  margin: 0.75rem 0 0;
-  color: var(--text-muted);
-}
-
-
-/* ---------- 9. FOOTER ----------
-   A flex column on mobile that becomes a two-column row on desktop. */
-.site-footer {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding-top: 2.5rem;
-  font-size: 0.95rem;
-}
-
-.footer-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding-bottom: 2rem;
-}
-
-.footer-brand {
-  max-width: 34rem;
-}
-
-.footer-brand .logo-mark {
-  margin-bottom: 1rem;
-}
-
-.disclaimer {
-  color: var(--text-muted);
-  margin: 0;
-}
-
-.footer-heading {
-  font-size: 0.85rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.footer-links ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.footer-links li + li {
-  margin-top: 0.35rem;
-}
-
-.footer-bottom {
-  border-top: 1px solid var(--border);
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-}
-
-.footer-bottom p {
-  margin: 0;
-}
-
-
-/* ============================================================
-   10. RESPONSIVE ENHANCEMENTS
-   Mobile-first: everything above is the phone layout, and these
-   min-width queries add to it as the screen gets wider.
-   ============================================================ */
-
-/* ---- Tablet and up (600px) ---- */
-@media (min-width: 600px) {
-  h1 { font-size: 2.5rem; }
-  h2 { font-size: 1.9rem; }
-
-  .hero {
-    padding: 4rem 0;
-  }
-
-  .exercise-section,
-  .faq {
-    padding: 4rem 0;
-  }
-
-  /* The footer splits into two columns once there is room. */
-  .footer-inner {
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 3rem;
-  }
-}
-
-/* ---- Desktop (900px) ---- */
-@media (min-width: 900px) {
-  h1 { font-size: 3rem; }
-
-  /* The hero becomes two side-by-side flex columns: text on the
-     left takes 1.1 shares of the space, the artwork takes 1. */
-  .hero-inner {
-    flex-direction: row;
-    align-items: center;
-    gap: 3.5rem;
-  }
-
-  .hero-copy { flex: 1.1; }
-  .hero-art  { flex: 1; }
-
-  /* Now that the header is a single fixed-height row, the filter
-     bar can safely stick underneath it while you scroll. */
-  .filter-bar {
-    position: sticky;
-    top: 65px;
-  }
-}
-
-
-/* ---------- 11. MOTION PREFERENCE ----------
-   Respect a visitor's system setting for reduced motion. */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    scroll-behavior: auto !important;
-    transition: none !important;
-  }
-}
-
-
-/* ---------- 12. FILTER STATE ----------
-   script.js adds this class to any card (or empty section) that
-   the current filter should hide. */
-.is-hidden {
-  display: none;
+/* --------------------------------------------------------------------------
+   11. FOCUS VISIBILITY
+   Last rule so it wins over the styles above. ":focus-visible" shows an
+   outline for keyboard navigation but not for mouse clicks. Never remove
+   this without replacing it — it is how keyboard users track their position.
+   -------------------------------------------------------------------------- */
+a:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }

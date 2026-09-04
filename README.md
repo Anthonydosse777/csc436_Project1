@@ -1,63 +1,68 @@
 # Gym Starter Guide
 
-A static, beginner-friendly reference site for the gym. Sixteen exercises are
-organised the way most starter programmes are written — **Push, Pull, Legs and
-Core** — and each one shows the muscles it works, a difficulty label, and two or
-three short cues for doing it correctly. A FAQ section answers the questions most
-people have in their first month.
+A single-page, dependency-free guide for people walking into a gym for the first time:
+sixteen core exercises, a three-day sample week, and plain answers to the questions
+beginners actually ask.
 
-Built for CSC 436 (Full-Stack Web Development) with semantic HTML, modern CSS
-(Flexbox **and** Grid) and vanilla JavaScript. No frameworks, no build step.
+## Run it
 
-## Live site
+No build step, no package manager. Either open the file directly:
 
-<!-- Paste the Netlify URL here after deploying -->
-**Live URL:** _(add your Netlify link here)_
+```bash
+open index.html
+```
+
+…or serve it locally so relative paths behave exactly as they will in production:
+
+```bash
+python3 -m http.server 8000
+# then visit http://localhost:8000
+```
+
+## Files
+
+| File | What's in it |
+| --- | --- |
+| `index.html` | All page content, plus an inline SVG sprite that supplies the muscle-group icons |
+| `styles.css` | Mobile-first stylesheet: design tokens, layout, components, then media queries |
+| `script.js` | The `EXERCISES` data array, card rendering, and the filter/search behaviour |
 
 ## Features
 
-- **Semantic HTML** — `header`, `nav`, `main`, `section`, `article`, `footer`, a
-  single `h1`, and heading levels that step down without skipping.
-- **Flexbox** — the header bar (logo left, links right, wrapping on mobile), the
-  hero layout, the filter bar, and the tag/difficulty row inside every card.
-- **CSS Grid** — the exercise galleries use
-  `repeat(auto-fit, minmax(min(260px, 100%), 1fr))`, so they reflow from three
-  columns to two to one without a media query.
-- **Mobile-first responsive design** — base styles target small screens, then
-  `min-width` media queries at 600px and 900px enhance the layout. No horizontal
-  scrolling at 375px.
-- **JavaScript interactivity** — filter buttons (All / Push / Pull / Legs / Core)
-  select the cards with `querySelectorAll`, listen for `click`, and show or hide
-  each card with a CSS class. The selected button is highlighted.
-- **Expandable FAQ** — built with native `<details>` / `<summary>`, no JS needed.
+- **Data-driven exercise grid** — cards are rendered from the `EXERCISES` array in `script.js`;
+  adding a movement is one line, not a block of duplicated markup.
+- **Filter and search** — muscle-group chips plus a live text search across name, equipment,
+  group, and coaching cue.
+- **Mobile-first responsive layout** — one column, then two at 40rem, then three at 64rem.
+- **Light and dark themes** — driven entirely by CSS custom properties and `prefers-color-scheme`.
+- **Accessible by default** — skip link, visible focus rings, `aria-pressed` on the filter chips,
+  a live region announcing result counts, and a `prefers-reduced-motion` guard.
+- **Zero dependencies** — no frameworks, no fonts fetched over the network, no tracking.
 
-## Running it locally
+## Adding an exercise
 
-It is a static site, so there is nothing to install:
+Append an object to `EXERCISES` in `script.js`:
 
-1. Download or clone the repository.
-2. Open `index.html` in any web browser (double-click it, or drag it into the
-   browser window).
-
-If you use VS Code, the **Live Server** extension is handy — right-click
-`index.html` and choose *Open with Live Server* to get automatic reloads.
-
-## File structure
-
-```
-.
-├── index.html      all page content and structure
-├── styles.css      all styling, mobile-first, numbered sections
-├── script.js       the muscle-group filter interaction
-├── images/         SVG illustrations (one per exercise, plus hero + favicon)
-└── README.md
+```js
+{ name: 'Face Pull', group: 'shoulders', equipment: 'Cable', level: 'Beginner',
+  cue: 'Pull toward your forehead, thumbs back, and pause for a second at the end.' }
 ```
 
-## Credits
+`group` must be one of `chest`, `back`, `legs`, `shoulders`, `arms`, `core` — those keys map to
+both the filter chips and the icons in the sprite. To introduce a new group, add a `<symbol>`
+with a matching `icon-<group>` id in `index.html`, an entry in `GROUP_LABELS`, and a chip button.
 
-All illustrations are original SVG line drawings made for this project, so
-there are no third-party image licences to attribute.
+## Deploying
+
+The site is fully static, so any host works. For Netlify, drag the project folder onto the
+dashboard, or connect the repo with:
+
+- **Build command:** _(leave empty)_
+- **Publish directory:** `.`
+
+Live URL: _add once deployed_
 
 ## Disclaimer
 
-This site is a student project for general education. It is not medical advice.
+General fitness information only — not medical advice. Anyone starting a new training programme
+should check with a doctor first.
