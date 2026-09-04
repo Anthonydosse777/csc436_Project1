@@ -1,119 +1,121 @@
-/* Gym Starter Guide — exercise data, rendering, and filtering.
-   The grid is built from EXERCISES so adding a movement is a one-line change. */
+/* ==========================================================================
+   GYM STARTER GUIDE — interactivity
+   Two features, both plain vanilla JavaScript with no libraries:
+     1. A difficulty filter that shows and hides exercise cards.
+     2. A light/dark theme toggle that remembers the visitor's choice.
+   Each one selects elements, listens for an event, and changes the page.
+   ========================================================================== */
 
-const EXERCISES = [
-  { name: 'Bench Press',        group: 'chest',     equipment: 'Barbell',   level: 'Beginner',
-    cue: 'Shoulder blades pinned back, bar to mid-chest, drive through your feet.' },
-  { name: 'Push-Up',            group: 'chest',     equipment: 'Bodyweight', level: 'Beginner',
-    cue: 'Body in one straight line. Elbows at 45°, not flared out to the sides.' },
-  { name: 'Chest Fly',          group: 'chest',     equipment: 'Cable',     level: 'Beginner',
-    cue: 'Soft bend in the elbows the whole way. Hug, don’t press.' },
-  { name: 'Lat Pulldown',       group: 'back',      equipment: 'Machine',   level: 'Beginner',
-    cue: 'Pull the bar to your collarbone with your elbows, not your hands.' },
-  { name: 'Seated Row',         group: 'back',      equipment: 'Cable',     level: 'Beginner',
-    cue: 'Chest tall, squeeze the shoulder blades together at the end of each rep.' },
-  { name: 'Pull-Up',            group: 'back',      equipment: 'Bodyweight', level: 'Advanced',
-    cue: 'Use a band or the assisted machine until you can manage five clean reps.' },
-  { name: 'Goblet Squat',       group: 'legs',      equipment: 'Dumbbell',  level: 'Beginner',
-    cue: 'Hold the weight at your chest, sit down between your knees, heels flat.' },
-  { name: 'Romanian Deadlift',  group: 'legs',      equipment: 'Barbell',   level: 'Intermediate',
-    cue: 'Push your hips back, bar close to your legs, stop when your hamstrings pull.' },
-  { name: 'Leg Press',          group: 'legs',      equipment: 'Machine',   level: 'Beginner',
-    cue: 'Feet shoulder-width. Never let your lower back round off the pad.' },
-  { name: 'Walking Lunge',      group: 'legs',      equipment: 'Dumbbell',  level: 'Intermediate',
-    cue: 'Long step, back knee toward the floor, torso upright the whole time.' },
-  { name: 'Calf Raise',         group: 'legs',      equipment: 'Machine',   level: 'Beginner',
-    cue: 'Full stretch at the bottom, hard squeeze at the top. Slow it down.' },
-  { name: 'Shoulder Press',     group: 'shoulders', equipment: 'Dumbbell',  level: 'Beginner',
-    cue: 'Press straight overhead without arching your lower back to help.' },
-  { name: 'Lateral Raise',      group: 'shoulders', equipment: 'Dumbbell',  level: 'Beginner',
-    cue: 'Light weight, lead with the elbows, stop level with your shoulders.' },
-  { name: 'Bicep Curl',         group: 'arms',      equipment: 'Dumbbell',  level: 'Beginner',
-    cue: 'Elbows glued to your ribs. If they drift forward, the weight is too heavy.' },
-  { name: 'Tricep Pushdown',    group: 'arms',      equipment: 'Cable',     level: 'Beginner',
-    cue: 'Upper arms still, extend fully, control the way back up.' },
-  { name: 'Plank',              group: 'core',      equipment: 'Bodyweight', level: 'Beginner',
-    cue: 'Squeeze glutes and abs. Thirty honest seconds beats two minutes of sagging.' }
-];
+/* "defer"-like safety: this script tag sits at the end of <body>, so the DOM
+   is already parsed by the time these selectors run. */
 
-const GROUP_LABELS = {
-  chest: 'Chest', back: 'Back', legs: 'Legs',
-  shoulders: 'Shoulders', arms: 'Arms', core: 'Core'
-};
 
-const grid        = document.getElementById('exercise-grid');
-const chips       = document.querySelectorAll('.chip');
-const searchInput = document.getElementById('search');
-const countEl     = document.getElementById('result-count');
-const noResults   = document.getElementById('no-results');
+/* --------------------------------------------------------------------------
+   1. DIFFICULTY FILTER
+   -------------------------------------------------------------------------- */
 
-let activeGroup = 'all';
-let query       = '';
+/* SELECT the elements we need. querySelectorAll returns a NodeList, which we
+   spread into a real array so array methods like filter() are available. */
+const filterButtons = [...document.querySelectorAll('.filter-btn')];
+const cards         = [...document.querySelectorAll('.card')];
+const sections      = [...document.querySelectorAll('.exercise-section')];
+const statusMessage = document.getElementById('filter-status');
 
-function escapeHtml(str) {
-  return str.replace(/[&<>"']/g, ch => (
-    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]
-  ));
+/**
+ * Show only the cards matching the chosen difficulty.
+ * @param {string} level - "all", "beginner", "intermediate", or "advanced".
+ */
+function applyFilter(level) {
+  let visibleCount = 0;
+
+  // CHANGE THE PAGE: hide or show each card.
+  cards.forEach(card => {
+    // Every card carries its level in a data-level attribute in the HTML,
+    // which the browser exposes here as card.dataset.level.
+    const matches = level === 'all' || card.dataset.level === level;
+
+    // The "hidden" property is the accessible way to hide something: it
+    // removes the element from the page AND from screen reader output.
+    card.hidden = !matches;
+
+    if (matches) visibleCount++;
+  });
+
+  // If a filter empties a whole section, hide its heading too — otherwise
+  // you get a "Push" heading sitting above nothing.
+  sections.forEach(section => {
+    const sectionCards = [...section.querySelectorAll('.card')];
+    const hasVisible   = sectionCards.some(card => !card.hidden);
+    section.hidden     = !hasVisible;
+  });
+
+  // Update the live status line. Its aria-live="polite" in the HTML means
+  // screen readers announce this change without interrupting the user.
+  const label = level === 'all' ? '' : ` ${level}`;
+  statusMessage.textContent = visibleCount === 1
+    ? `Showing 1${label} exercise.`
+    : `Showing all ${visibleCount}${label} exercises.`;
 }
 
-function cardMarkup(ex) {
-  return `
-    <li class="card" data-group="${ex.group}">
-      <div class="card-head">
-        <span class="card-icon" aria-hidden="true">
-          <svg><use href="#icon-${ex.group}"></use></svg>
-        </span>
-        <div>
-          <h3>${escapeHtml(ex.name)}</h3>
-          <span class="card-group">${GROUP_LABELS[ex.group]}</span>
-        </div>
-      </div>
-      <p>${escapeHtml(ex.cue)}</p>
-      <div class="card-meta">
-        <span class="tag">${escapeHtml(ex.equipment)}</span>
-        <span class="tag">${escapeHtml(ex.level)}</span>
-      </div>
-    </li>`;
-}
-
-function matches(ex) {
-  const inGroup = activeGroup === 'all' || ex.group === activeGroup;
-  if (!inGroup) return false;
-  if (!query) return true;
-
-  const haystack = `${ex.name} ${ex.equipment} ${GROUP_LABELS[ex.group]} ${ex.cue}`.toLowerCase();
-  return haystack.includes(query);
-}
-
-function render() {
-  const visible = EXERCISES.filter(matches);
-
-  grid.innerHTML = visible.map(cardMarkup).join('');
-  noResults.hidden = visible.length > 0;
-
-  const label = activeGroup === 'all' ? 'exercises' : `${GROUP_LABELS[activeGroup].toLowerCase()} exercises`;
-  countEl.textContent = visible.length
-    ? `Showing ${visible.length} ${label}${query ? ` matching “${query}”` : ''}.`
-    : '';
-}
-
-chips.forEach(chip => {
-  chip.addEventListener('click', () => {
-    activeGroup = chip.dataset.filter;
-
-    chips.forEach(c => {
-      const on = c === chip;
-      c.classList.toggle('is-active', on);
-      c.setAttribute('aria-pressed', String(on));
+/* LISTEN for clicks on each filter button. */
+filterButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    // Move the active styling and the aria-pressed state onto this button.
+    filterButtons.forEach(other => {
+      const isActive = other === button;
+      other.classList.toggle('is-active', isActive);
+      other.setAttribute('aria-pressed', String(isActive));
     });
 
-    render();
+    applyFilter(button.dataset.level);
   });
 });
 
-searchInput.addEventListener('input', () => {
-  query = searchInput.value.trim().toLowerCase();
-  render();
+
+/* --------------------------------------------------------------------------
+   2. THEME TOGGLE
+   Sets data-theme="light" on the <html> element. The stylesheet defines a
+   light palette under :root[data-theme="light"], so flipping this one
+   attribute recolours the entire page.
+   -------------------------------------------------------------------------- */
+
+const themeButton = document.getElementById('theme-toggle');
+const rootElement = document.documentElement;   // the <html> element
+
+/**
+ * Apply a theme and update the button's label and pressed state.
+ * @param {string} theme - "light" or "dark".
+ */
+function applyTheme(theme) {
+  if (theme === 'light') {
+    rootElement.setAttribute('data-theme', 'light');
+    themeButton.textContent = 'Dark mode';       // offers the OTHER option
+    themeButton.setAttribute('aria-pressed', 'true');
+  } else {
+    rootElement.removeAttribute('data-theme');
+    themeButton.textContent = 'Light mode';
+    themeButton.setAttribute('aria-pressed', 'false');
+  }
+
+  // Remember the choice so it survives a reload. localStorage can throw in
+  // private browsing, so the write is wrapped in try/catch.
+  try {
+    localStorage.setItem('theme', theme);
+  } catch (error) {
+    /* Storage unavailable — the toggle still works for this visit. */
+  }
+}
+
+/* LISTEN for clicks and flip to whichever theme is not active. */
+themeButton.addEventListener('click', () => {
+  const isLightNow = rootElement.getAttribute('data-theme') === 'light';
+  applyTheme(isLightNow ? 'dark' : 'light');
 });
 
-render();
+/* On load, restore a previously saved choice. */
+try {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') applyTheme('light');
+} catch (error) {
+  /* Storage unavailable — fall back to the default dark theme. */
+}
