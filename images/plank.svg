@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" role="img" aria-label="Person holding a forearm plank with a straight body line"><rect width="400" height="260" fill="#161a21"/><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="10">
+<line x1="30" y1="212" x2="370" y2="212" stroke="#2a313c" stroke-width="6"/>
+<circle cx="112" cy="146" r="15" fill="#e8ecf2"/>
+<polyline points="140,156 240,178 322,200" stroke="#e8ecf2" stroke-width="12"/>
+<polyline points="142,158 130,192 176,196" stroke="#e8ecf2" stroke-width="11"/>
+<polyline points="322,200 344,208" stroke="#e8ecf2" stroke-width="11"/>
+<line x1="128" y1="138" x2="336" y2="184" stroke="#ff5a1f" stroke-width="5" stroke-dasharray="14 12"/></g></svg>

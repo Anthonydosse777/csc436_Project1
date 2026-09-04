@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" role="img" aria-label="Person seated in a V position twisting a ball to one side"><rect width="400" height="260" fill="#161a21"/><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="10">
+<line x1="40" y1="214" x2="360" y2="214" stroke="#2a313c" stroke-width="6"/>
+<polyline points="200,196 184,146" stroke="#e8ecf2" stroke-width="12"/>
+<circle cx="180" cy="128" r="15" fill="#e8ecf2"/>
+<polyline points="200,196 252,166 266,190" stroke="#e8ecf2" stroke-width="11"/>
+<polyline points="188,152 224,160" stroke="#e8ecf2" stroke-width="11"/>
+<circle cx="244" cy="162" r="17" fill="#ff5a1f"/>
+<path d="M136 174 A 44 44 0 0 1 152 138" stroke="#ff5a1f" stroke-width="6"/>
+<path d="M142 148 L150 132 L164 142" stroke="#ff5a1f" stroke-width="6"/></g></svg>

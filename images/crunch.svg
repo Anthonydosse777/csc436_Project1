@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" role="img" aria-label="Person curling the shoulders off the floor with knees bent"><rect width="400" height="260" fill="#161a21"/><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="10">
+<line x1="40" y1="208" x2="360" y2="208" stroke="#2a313c" stroke-width="6"/>
+<polyline points="186,200 216,150 252,192" stroke="#e8ecf2" stroke-width="11"/>
+<polyline points="252,192 286,178" stroke="#e8ecf2" stroke-width="12"/>
+<circle cx="300" cy="164" r="15" fill="#e8ecf2"/>
+<polyline points="282,182 294,152" stroke="#e8ecf2" stroke-width="10"/>
+<path d="M318 128 A 42 42 0 0 0 286 108" stroke="#ff5a1f" stroke-width="6"/>
+<path d="M296 98 L282 110 L296 120" stroke="#ff5a1f" stroke-width="6"/></g></svg>

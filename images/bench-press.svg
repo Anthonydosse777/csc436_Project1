@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" role="img" aria-label="Lifter on a flat bench pressing a barbell upward"><rect width="400" height="260" fill="#161a21"/><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="10">
+<line x1="30" y1="215" x2="370" y2="215" stroke="#2a313c" stroke-width="6"/>
+<rect x="110" y="150" width="195" height="14" rx="7" fill="#2a313c"/>
+<line x1="140" y1="164" x2="140" y2="215" stroke="#2a313c"/>
+<line x1="275" y1="164" x2="275" y2="215" stroke="#2a313c"/>
+<circle cx="298" cy="132" r="15" fill="#e8ecf2"/>
+<polyline points="282,146 195,148" stroke="#e8ecf2" stroke-width="12"/>
+<polyline points="195,148 158,180 168,214" stroke="#e8ecf2" stroke-width="11"/>
+<polyline points="272,146 258,116 268,92" stroke="#e8ecf2" stroke-width="11"/>
+<line x1="190" y1="88" x2="352" y2="88" stroke="#ff5a1f" stroke-width="9"/>
+<rect x="196" y="64" width="12" height="48" rx="4" fill="#ff5a1f"/>
+<rect x="334" y="64" width="12" height="48" rx="4" fill="#ff5a1f"/></g></svg>
