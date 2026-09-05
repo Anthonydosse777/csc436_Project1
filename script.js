@@ -51,10 +51,11 @@ function applyFilter(level) {
 
   // Update the live status line. Its aria-live="polite" in the HTML means
   // screen readers announce this change without interrupting the user.
-  const label = level === 'all' ? '' : ` ${level}`;
+  const label  = level === 'all' ? '' : ` ${level}`;
+  const prefix = level === 'all' ? 'Showing all' : 'Showing';
   statusMessage.textContent = visibleCount === 1
     ? `Showing 1${label} exercise.`
-    : `Showing all ${visibleCount}${label} exercises.`;
+    : `${prefix} ${visibleCount}${label} exercises.`;
 }
 
 /* LISTEN for clicks on each filter button. */
@@ -118,4 +119,43 @@ try {
   if (savedTheme === 'light') applyTheme('light');
 } catch (error) {
   /* Storage unavailable — fall back to the default dark theme. */
+}
+
+
+/* --------------------------------------------------------------------------
+   3. SCROLL REVEAL
+   Fades each section in as it scrolls into view. This uses IntersectionObserver,
+   the browser's built-in way of asking "is this element on screen yet?" — it is
+   far cheaper than listening to every scroll event and measuring positions.
+   -------------------------------------------------------------------------- */
+
+const revealTargets = document.querySelectorAll('.reveal');
+
+/* Respect the visitor's motion preference. If their operating system asks for
+   reduced motion, everything is shown immediately with no animation at all. */
+const prefersReducedMotion =
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+  // No animation, or an older browser without the API: just show everything.
+  revealTargets.forEach(target => target.classList.add('is-visible'));
+} else {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      // isIntersecting becomes true once the element enters the viewport.
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+
+        // Reveal each section only once, then stop watching it.
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    // Start the animation slightly before the element is fully on screen,
+    // so it has finished by the time the visitor is looking at it.
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  revealTargets.forEach(target => observer.observe(target));
 }

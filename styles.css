@@ -392,6 +392,21 @@ h3 {
      row the same height regardless of how much text it holds. */
   display: flex;
   flex-direction: column;
+
+  /* The card's own animation: it rises slightly and its border picks up the
+     accent colour. Listing the properties explicitly (rather than "all")
+     keeps the browser from animating things we did not intend. */
+  transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 350ms ease,
+              border-color 350ms ease;
+}
+
+/* translateY moves the card up 6px. Transform is used instead of margin
+   because it runs on the GPU and does not force the page to re-layout. */
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-accent);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
 }
 
 /* Cards the filter has ruled out. */
@@ -399,9 +414,49 @@ h3 {
   display: none;
 }
 
+/* The photos arrive in mixed shapes — some portrait, some landscape. This
+   wrapper forces every one into the same 4:3 window so the grid stays tidy.
+   "overflow: hidden" is also what lets the image zoom inside its frame on
+   hover without pushing the card's layout around. */
+.card-figure {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* "object-fit: cover" fills the frame and crops the overflow rather than
+   squashing the photo out of proportion. */
 .card-image {
   width: 100%;
-  border-bottom: 1px solid var(--color-border);
+  height: 100%;
+  object-fit: cover;
+
+  /* THE HOVER ANIMATION. The transition says: any change to transform or
+     filter should play out over 600ms rather than snapping instantly.
+     "cubic-bezier" is the easing curve — slow at the edges, quick through
+     the middle, which reads as expensive rather than mechanical. */
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+              filter    600ms ease;
+  filter: saturate(0.9) brightness(0.85);
+}
+
+/* A gradient scrim over the bottom of every photo. It darkens the base of
+   the image so the heading underneath always has contrast to sit against,
+   whatever the photo happens to be doing. */
+.card-figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.45), transparent 55%);
+  pointer-events: none;             /* clicks pass straight through */
+}
+
+/* On hover the photo scales up 8% inside its fixed frame and brightens.
+   Because the frame clips the overflow, the card itself never moves. */
+.card:hover .card-image {
+  transform: scale(1.08);
+  filter: saturate(1.05) brightness(1);
 }
 
 /* "flex: 1" makes the body absorb any leftover vertical space in the card. */
@@ -600,5 +655,272 @@ summary:focus-visible {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+
+/* ==========================================================================
+   17. MODERN POLISH — hero treatment, motion, and micro-interactions
+   Everything below is presentation only; removing it would leave the page
+   fully functional, just plainer.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   17a. THE HERO
+   The intro becomes a full-bleed panel with the gym photograph behind it.
+   -------------------------------------------------------------------------- */
+.intro {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  padding: var(--space-lg) var(--space-md);
+  isolation: isolate;               /* keeps the layers below stacked locally */
+}
+
+/* Layer 1: the photograph itself, positioned behind the text.
+   "z-index: -1" pushes it under the content without taking it out of flow. */
+.intro-image {
+  position: absolute;
+  inset: 0;                         /* shorthand for top/right/bottom/left: 0 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+
+  /* A very slow drift. The animation is defined at the bottom of this file. */
+  animation: hero-drift 24s ease-in-out infinite alternate;
+}
+
+/* Layer 2: a dark gradient between photo and text. Without this the white
+   text would be unreadable wherever the photo is bright — this is a
+   legibility requirement, not decoration. */
+.intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(105deg,
+      rgba(10, 11, 14, 0.95) 0%,
+      rgba(10, 11, 14, 0.82) 45%,
+      rgba(10, 11, 14, 0.55) 100%);
+}
+
+/* In light mode the same scrim would fight the palette, so it lightens. */
+:root[data-theme="light"] .intro::before {
+  background:
+    linear-gradient(105deg,
+      rgba(255, 255, 255, 0.96) 0%,
+      rgba(255, 255, 255, 0.85) 45%,
+      rgba(255, 255, 255, 0.6) 100%);
+}
+
+/* The hero text sits above both layers and is capped for readability. */
+.intro-text {
+  position: relative;
+  max-width: 46ch;
+}
+
+/* The accent bar that sweeps in under the eyebrow label. */
+.eyebrow::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 3px;
+  margin-top: var(--space-xs);
+  background-color: var(--color-accent);
+  transform-origin: left;
+  animation: sweep-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+
+/* --------------------------------------------------------------------------
+   17b. SECTION HEADINGS
+   An accent block that grows on hover, so section titles feel alive.
+   -------------------------------------------------------------------------- */
+.exercise-section h2 {
+  position: relative;
+  padding-left: 0;
+  transition: padding-left 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.exercise-section h2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 0;
+  height: 0.8em;
+  background-color: var(--color-accent);
+  border-radius: 2px;
+  transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.exercise-section:hover h2 {
+  padding-left: 0.85rem;
+}
+.exercise-section:hover h2::before {
+  width: 5px;
+}
+
+
+/* --------------------------------------------------------------------------
+   17c. BUTTON AND LINK MICRO-INTERACTIONS
+   -------------------------------------------------------------------------- */
+.filter-btn,
+.theme-toggle,
+.nav-list a,
+.footer-links a {
+  transition: color 200ms ease,
+              background-color 200ms ease,
+              border-color 200ms ease,
+              transform 200ms ease;
+}
+
+/* A small lift on hover, and a press-down on click, so the controls feel
+   physical rather than static. */
+.filter-btn:hover,
+.theme-toggle:hover {
+  transform: translateY(-2px);
+}
+.filter-btn:active,
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+/* An underline that grows out from the left instead of appearing at once.
+   scaleX(0) hides it by squashing it to zero width; the hover scales it to
+   full. Animating a transform is far cheaper than animating width. */
+.nav-list a {
+  position: relative;
+}
+.nav-list a::after {
+  content: "";
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.25rem;
+  height: 2px;
+  background-color: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-list a:hover::after,
+.nav-list a:focus::after {
+  transform: scaleX(1);
+}
+
+
+/* --------------------------------------------------------------------------
+   17d. FAQ ROWS
+   -------------------------------------------------------------------------- */
+.faq details {
+  transition: border-color 250ms ease, background-color 250ms ease;
+}
+.faq details:hover {
+  border-color: var(--color-accent);
+}
+
+/* A chevron built from CSS that rotates when the row opens. */
+.faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  list-style: none;                 /* hides the default triangle */
+}
+.faq summary::-webkit-details-marker {
+  display: none;                    /* the Safari equivalent */
+}
+.faq summary::after {
+  content: "+";
+  flex: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-accent);
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Rotating a "+" by 45 degrees turns it into an "×". */
+.faq details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+/* The answer fades and slides down as the row opens. */
+.faq details[open] p {
+  animation: fade-up 350ms ease both;
+}
+
+
+/* --------------------------------------------------------------------------
+   17e. SCROLL REVEAL
+   Sections start invisible and slightly lowered. The JavaScript adds the
+   "is-visible" class as each one scrolls into view, and the transition
+   below animates the change.
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* --------------------------------------------------------------------------
+   17f. KEYFRAMES
+   Named animation sequences referenced by the rules above.
+   -------------------------------------------------------------------------- */
+
+/* The hero photo drifts and scales almost imperceptibly. */
+@keyframes hero-drift {
+  from { transform: scale(1.04) translate3d(0, 0, 0); }
+  to   { transform: scale(1.12) translate3d(-1.5%, -1.5%, 0); }
+}
+
+/* The accent bar under the eyebrow grows out from the left. */
+@keyframes sweep-in {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* A short rise-and-fade, used by the FAQ answers. */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* --------------------------------------------------------------------------
+   17g. MOTION SAFETY
+   This repeats the reduced-motion block deliberately: it must come after
+   every animation above so it can switch them all off. Visitors who ask
+   their operating system for less motion get a completely static page,
+   with the reveal sections forced visible so nothing is left hidden.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .intro-image,
+  .eyebrow::after,
+  .faq details[open] p {
+    animation: none !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .card:hover,
+  .card:hover .card-image,
+  .filter-btn:hover,
+  .theme-toggle:hover {
+    transform: none !important;
   }
 }
