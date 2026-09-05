@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" role="img" aria-label="Person holding a push-up position with a flat back"><rect width="400" height="260" fill="#161a21"/><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="10">
-<line x1="30" y1="216" x2="370" y2="216" stroke="#2a313c" stroke-width="6"/>
-<circle cx="118" cy="140" r="15" fill="#e8ecf2"/>
-<polyline points="146,150 250,178 330,202" stroke="#e8ecf2" stroke-width="12"/>
-<polyline points="150,152 140,182 158,208" stroke="#e8ecf2" stroke-width="11"/>
-<polyline points="330,202 348,212" stroke="#e8ecf2" stroke-width="11"/>
-<path d="M96 196 L96 154" stroke="#ff5a1f" stroke-width="7"/>
-<path d="M88 164 L96 150 L104 164" stroke="#ff5a1f" stroke-width="7"/></g></svg>
