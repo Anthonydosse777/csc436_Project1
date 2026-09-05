@@ -7,6 +7,15 @@
   <meta name="description" content="A beginner's guide to the gym: sixteen core exercises grouped into push, pull, legs, and core, with plain-language coaching cues and answers to the questions everyone is too embarrassed to ask.">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Safety net: the scroll-reveal sections start transparent and are shown
+       by JavaScript. If JavaScript is unavailable, this forces them visible so
+       the page is never blank. -->
+  <noscript>
+    <style>
+      .reveal { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
 </head>
 <body>
 
@@ -59,7 +68,7 @@
           ninety seconds between sets.
         </p>
       </div>
-      <img class="intro-image" src="images/hero.svg" alt="Line illustration of a lifter mid-squat with a loaded barbell across their shoulders" width="400" height="260">
+      <img class="intro-image" src="images/photos/hero.jpg" alt="A loaded barbell and a kettlebell resting on the rubber floor of a gym" width="400" height="260">
     </section>
 
     <!-- ============================================================
@@ -79,7 +88,7 @@
     <!-- ============================================================
          SECTION 2: PUSH
          ============================================================ -->
-    <section id="push" class="exercise-section" aria-labelledby="push-heading">
+    <section id="push" class="exercise-section reveal" aria-labelledby="push-heading">
       <h2 id="push-heading">Push</h2>
       <p class="section-intro">
         Anything where you move weight away from your body. These train the chest, the front of the
@@ -89,7 +98,9 @@
       <div class="card-grid">
 
         <article class="card" data-level="beginner" aria-labelledby="push-1-heading">
-          <img class="card-image" src="images/push-up.svg" alt="Line illustration of a person holding the top of a push-up with a straight back" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/push-up.jpg" alt="An athlete at the bottom of a push-up, gripping a hex dumbbell on a wooden gym floor" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="push-1-heading">Push-Up</h3>
             <dl class="card-meta">
@@ -105,7 +116,9 @@
         </article>
 
         <article class="card" data-level="beginner" aria-labelledby="push-2-heading">
-          <img class="card-image" src="images/bench-press.svg" alt="Line illustration of a lifter on a flat bench pressing a barbell upward" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/bench-press.jpg" alt="A lifter pressing a loaded barbell while lying on a flat bench" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="push-2-heading">Bench Press</h3>
             <dl class="card-meta">
@@ -121,7 +134,9 @@
         </article>
 
         <article class="card" data-level="beginner" aria-labelledby="push-3-heading">
-          <img class="card-image" src="images/shoulder-press.svg" alt="Line illustration of a lifter pressing two dumbbells overhead while seated" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/shoulder-press.jpg" alt="An athlete seated on a bench pressing two heavy dumbbells overhead" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="push-3-heading">Shoulder Press</h3>
             <dl class="card-meta">
@@ -137,17 +152,19 @@
         </article>
 
         <article class="card" data-level="intermediate" aria-labelledby="push-4-heading">
-          <img class="card-image" src="images/tricep-dip.svg" alt="Line illustration of a person lowering into a dip between parallel bars" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/tricep-pushdown.jpg" alt="A lifter pushing a rope attachment downward on a cable machine" width="400" height="260">
+          </div>
           <div class="card-body">
-            <h3 id="push-4-heading">Tricep Dip</h3>
+            <h3 id="push-4-heading">Tricep Pushdown</h3>
             <dl class="card-meta">
-              <dt>Muscles</dt><dd>Triceps, lower chest</dd>
+              <dt>Muscles</dt><dd>Triceps</dd>
               <dt>Difficulty</dt><dd>Intermediate</dd>
             </dl>
             <ol class="card-steps">
-              <li>Support yourself on the bars with your arms straight and your shoulders pulled down.</li>
-              <li>Lower until your elbows reach about 90 degrees, leaning forward slightly.</li>
-              <li>Press back to the top. Use the assisted dip machine until you can manage eight clean reps.</li>
+              <li>Set the cable high and grip the rope with your elbows tucked against your ribs.</li>
+              <li>Push down until your arms lock out, keeping your upper arms completely still.</li>
+              <li>Let the rope rise back slowly. If your shoulders roll forward, drop the weight.</li>
             </ol>
           </div>
         </article>
@@ -158,7 +175,7 @@
     <!-- ============================================================
          SECTION 3: PULL
          ============================================================ -->
-    <section id="pull" class="exercise-section" aria-labelledby="pull-heading">
+    <section id="pull" class="exercise-section reveal" aria-labelledby="pull-heading">
       <h2 id="pull-heading">Pull</h2>
       <p class="section-intro">
         Anything where you draw weight toward your body. These build the back and biceps, and they
@@ -168,7 +185,9 @@
       <div class="card-grid">
 
         <article class="card" data-level="beginner" aria-labelledby="pull-1-heading">
-          <img class="card-image" src="images/lat-pulldown.svg" alt="Line illustration of a seated lifter pulling a cable bar down toward their chest" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/lat-pulldown.jpg" alt="An athlete pulling a lat pulldown bar down toward their chest" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="pull-1-heading">Lat Pulldown</h3>
             <dl class="card-meta">
@@ -184,23 +203,27 @@
         </article>
 
         <article class="card" data-level="beginner" aria-labelledby="pull-2-heading">
-          <img class="card-image" src="images/seated-row.svg" alt="Line illustration of a seated lifter rowing a cable handle toward their waist" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/seated-row.jpg" alt="An athlete drawing a cable handle toward their torso in a blue-lit gym" width="400" height="260">
+          </div>
           <div class="card-body">
-            <h3 id="pull-2-heading">Seated Row</h3>
+            <h3 id="pull-2-heading">Cable Row</h3>
             <dl class="card-meta">
               <dt>Muscles</dt><dd>Mid back, biceps</dd>
               <dt>Difficulty</dt><dd>Beginner</dd>
             </dl>
             <ol class="card-steps">
-              <li>Sit tall with a slight bend in your knees and your chest lifted.</li>
-              <li>Pull the handle to your belly button, squeezing your shoulder blades together at the end.</li>
-              <li>Return slowly. Do not let your torso rock backward and forward to move the weight.</li>
+              <li>Set a mid-height cable, brace your feet, and keep a slight bend in your knees.</li>
+              <li>Draw the handle to your waist, squeezing your shoulder blades together at the end.</li>
+              <li>Return slowly. Do not let your torso rock back and forth to move the weight.</li>
             </ol>
           </div>
         </article>
 
         <article class="card" data-level="advanced" aria-labelledby="pull-3-heading">
-          <img class="card-image" src="images/pull-up.svg" alt="Line illustration of a person hanging from a bar at the top of a pull-up" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/pull-up.jpg" alt="Rear view of an athlete pulling up to a bar with their back muscles engaged" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="pull-3-heading">Pull-Up</h3>
             <dl class="card-meta">
@@ -216,7 +239,9 @@
         </article>
 
         <article class="card" data-level="beginner" aria-labelledby="pull-4-heading">
-          <img class="card-image" src="images/bicep-curl.svg" alt="Line illustration of a standing lifter curling a dumbbell toward their shoulder" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/bicep-curl.jpg" alt="An athlete curling a hex dumbbell in a dimly lit gym" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="pull-4-heading">Bicep Curl</h3>
             <dl class="card-meta">
@@ -237,7 +262,7 @@
     <!-- ============================================================
          SECTION 4: LEGS
          ============================================================ -->
-    <section id="legs" class="exercise-section" aria-labelledby="legs-heading">
+    <section id="legs" class="exercise-section reveal" aria-labelledby="legs-heading">
       <h2 id="legs-heading">Legs</h2>
       <p class="section-intro">
         The largest muscles you own, and the ones beginners skip most often. Training them is what
@@ -247,7 +272,9 @@
       <div class="card-grid">
 
         <article class="card" data-level="beginner" aria-labelledby="legs-1-heading">
-          <img class="card-image" src="images/squat.svg" alt="Line illustration of a lifter at the bottom of a squat with a barbell on their shoulders" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/squat.jpg" alt="Two people performing bodyweight squats in an industrial gym" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="legs-1-heading">Goblet Squat</h3>
             <dl class="card-meta">
@@ -263,7 +290,9 @@
         </article>
 
         <article class="card" data-level="beginner" aria-labelledby="legs-2-heading">
-          <img class="card-image" src="images/leg-press.svg" alt="Line illustration of a lifter pressing a weighted sled with both legs" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/leg-press.jpg" alt="An athlete pressing the platform of a leg press machine" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="legs-2-heading">Leg Press</h3>
             <dl class="card-meta">
@@ -279,7 +308,9 @@
         </article>
 
         <article class="card" data-level="intermediate" aria-labelledby="legs-3-heading">
-          <img class="card-image" src="images/lunge.svg" alt="Line illustration of a lifter in a forward lunge holding dumbbells at their sides" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/lunge.jpg" alt="An athlete holding dumbbells at the bottom of a lunge on gym turf" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="legs-3-heading">Walking Lunge</h3>
             <dl class="card-meta">
@@ -295,7 +326,9 @@
         </article>
 
         <article class="card" data-level="beginner" aria-labelledby="legs-4-heading">
-          <img class="card-image" src="images/calf-raise.svg" alt="Line illustration of a lifter rising onto the balls of their feet on a raised step" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/calf-raise.jpg" alt="Close-up of an athlete's lower legs beside a hex dumbbell on a gym floor" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="legs-4-heading">Calf Raise</h3>
             <dl class="card-meta">
@@ -316,7 +349,7 @@
     <!-- ============================================================
          SECTION 5: CORE
          ============================================================ -->
-    <section id="core" class="exercise-section" aria-labelledby="core-heading">
+    <section id="core" class="exercise-section reveal" aria-labelledby="core-heading">
       <h2 id="core-heading">Core</h2>
       <p class="section-intro">
         Your midsection's real job is resisting movement, not producing it. These four train it to
@@ -326,7 +359,9 @@
       <div class="card-grid">
 
         <article class="card" data-level="beginner" aria-labelledby="core-1-heading">
-          <img class="card-image" src="images/plank.svg" alt="Line illustration of a person holding a forearm plank in a straight line" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/plank.jpg" alt="An athlete holding a straight-arm plank on a gym floor" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="core-1-heading">Plank</h3>
             <dl class="card-meta">
@@ -342,7 +377,9 @@
         </article>
 
         <article class="card" data-level="beginner" aria-labelledby="core-2-heading">
-          <img class="card-image" src="images/crunch.svg" alt="Line illustration of a person curling their shoulders off the floor in a crunch" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/crunch.jpg" alt="An athlete performing a crunch on a mat with hands behind the head" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="core-2-heading">Crunch</h3>
             <dl class="card-meta">
@@ -358,7 +395,9 @@
         </article>
 
         <article class="card" data-level="intermediate" aria-labelledby="core-3-heading">
-          <img class="card-image" src="images/russian-twist.svg" alt="Line illustration of a seated person rotating a weight from side to side" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/russian-twist.jpg" alt="An athlete holding an orange medicine ball in a seated twist position" width="400" height="260">
+          </div>
           <div class="card-body">
             <h3 id="core-3-heading">Russian Twist</h3>
             <dl class="card-meta">
@@ -374,17 +413,19 @@
         </article>
 
         <article class="card" data-level="intermediate" aria-labelledby="core-4-heading">
-          <img class="card-image" src="images/leg-raise.svg" alt="Line illustration of a person lying down raising both straight legs toward the ceiling" width="400" height="260">
+          <div class="card-figure">
+            <img class="card-image" src="images/photos/leg-raise.jpg" alt="An athlete performing a decline sit-up on an angled bench" width="400" height="260">
+          </div>
           <div class="card-body">
-            <h3 id="core-4-heading">Leg Raise</h3>
+            <h3 id="core-4-heading">Decline Sit-Up</h3>
             <dl class="card-meta">
-              <dt>Muscles</dt><dd>Lower abs, hip flexors</dd>
+              <dt>Muscles</dt><dd>Abs, hip flexors</dd>
               <dt>Difficulty</dt><dd>Intermediate</dd>
             </dl>
             <ol class="card-steps">
-              <li>Lie flat with your hands tucked under your hips for support.</li>
-              <li>Raise both legs until they point at the ceiling, keeping them close to straight.</li>
-              <li>Lower slowly and stop before your lower back lifts off the floor.</li>
+              <li>Hook your feet under the pads of a decline bench and cross your arms at your chest.</li>
+              <li>Curl up using your abs rather than swinging your arms for momentum.</li>
+              <li>Lower under control. Start on a shallow decline and increase the angle over time.</li>
             </ol>
           </div>
         </article>
@@ -395,7 +436,7 @@
     <!-- ============================================================
          SECTION 6: FAQ — native details/summary disclosure widgets
          ============================================================ -->
-    <section id="faq" class="faq" aria-labelledby="faq-heading">
+    <section id="faq" class="faq reveal" aria-labelledby="faq-heading">
       <h2 id="faq-heading">Questions everyone has</h2>
 
       <details>
