@@ -13,13 +13,17 @@
    element, so these are visible to every rule in the file.
    -------------------------------------------------------------------------- */
 :root {
-  --color-bg:         #16171c;  /* page background, near-black */
-  --color-surface:    #1f2129;  /* raised panels: header, cards, footer */
-  --color-border:     #32353f;  /* hairline borders */
-  --color-text:       #ecedf0;  /* body text, off-white rather than pure white */
-  --color-text-muted: #a2a6b0;  /* secondary text */
-  --color-accent:     #ff6b2c;  /* the single bold colour */
-  --color-accent-dim: #c74f1c;  /* darker orange for pressed states */
+  --color-bg:         #0a0a0b;  /* page background, near-black */
+  --color-surface:    #151517;  /* raised panels: header, cards, footer */
+  --color-border:     #2b2b2f;  /* hairline borders */
+  --color-text:       #f4f2ed;  /* body text, warm off-white rather than pure white */
+  --color-text-muted: #a9a49a;  /* secondary text, warmed to sit under the gold */
+  --color-accent:     #d4af37;  /* gold — the single bold colour */
+  --color-accent-dim: #a8862a;  /* deeper gold for pressed states */
+
+  /* Text placed ON the gold. Gold is a light colour, so anything sitting on
+     top of it must be near-black to stay readable. */
+  --color-on-accent:  #0a0a0b;
 
   --space-xs: 0.5rem;
   --space-sm: 1rem;
@@ -37,14 +41,20 @@
    which swaps these values; every rule below keeps referring to the same
    variable names and updates automatically. */
 :root[data-theme="light"] {
-  --color-bg:         #f6f5f3;
-  --color-surface:    #ffffff;
-  --color-border:     #dcd8d2;
-  --color-text:       #1b1c20;
-  --color-text-muted: #5c5f68;
-  --color-accent:     #d1481a;
-  --color-accent-dim: #a3350f;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  --color-bg:         #ffffff;
+  --color-surface:    #faf9f6;
+  --color-border:     #e3ded3;
+  --color-text:       #141310;
+  --color-text-muted: #5b564c;
+
+  /* A deeper gold. The bright gold used on black would be almost invisible
+     against white, so the light theme drops the brightness to keep text
+     readable while staying recognisably the same colour. */
+  --color-accent:     #8a6a12;
+  --color-accent-dim: #6b5210;
+  --color-on-accent:  #ffffff;
+
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
 }
 
 
@@ -109,7 +119,7 @@ main {
   position: absolute;
   left: -9999px;
   background-color: var(--color-accent);
-  color: #fff;
+  color: var(--color-on-accent);
   padding: var(--space-xs) var(--space-sm);
   text-decoration: none;
   border-radius: 0 0 var(--radius) 0;
@@ -333,7 +343,7 @@ h3 {
 .filter-btn.is-active {
   background-color: var(--color-accent);
   border-color: var(--color-accent);
-  color: #fff;
+  color: var(--color-on-accent);
   font-weight: bold;
 }
 
@@ -438,7 +448,7 @@ h3 {
      the middle, which reads as expensive rather than mechanical. */
   transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
               filter    600ms ease;
-  filter: saturate(0.9) brightness(0.85);
+  filter: saturate(0.55) brightness(0.82);
 }
 
 /* A gradient scrim over the bottom of every photo. It darkens the base of
@@ -456,7 +466,7 @@ h3 {
    Because the frame clips the overflow, the card itself never moves. */
 .card:hover .card-image {
   transform: scale(1.08);
-  filter: saturate(1.05) brightness(1);
+  filter: saturate(0.85) brightness(1);
 }
 
 /* "flex: 1" makes the body absorb any leftover vertical space in the card. */
@@ -705,9 +715,9 @@ summary:focus-visible {
   z-index: -1;
   background:
     linear-gradient(105deg,
-      rgba(10, 11, 14, 0.95) 0%,
-      rgba(10, 11, 14, 0.82) 45%,
-      rgba(10, 11, 14, 0.55) 100%);
+      rgba(6, 6, 7, 0.95) 0%,
+      rgba(6, 6, 7, 0.84) 45%,
+      rgba(6, 6, 7, 0.58) 100%);
 }
 
 /* In light mode the same scrim would fight the palette, so it lightens. */

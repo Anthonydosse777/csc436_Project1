@@ -90,11 +90,11 @@ const rootElement = document.documentElement;   // the <html> element
 function applyTheme(theme) {
   if (theme === 'light') {
     rootElement.setAttribute('data-theme', 'light');
-    themeButton.textContent = 'Dark mode';       // offers the OTHER option
+    themeButton.textContent = 'Black background';  // offers the OTHER option
     themeButton.setAttribute('aria-pressed', 'true');
   } else {
     rootElement.removeAttribute('data-theme');
-    themeButton.textContent = 'Light mode';
+    themeButton.textContent = 'White background';
     themeButton.setAttribute('aria-pressed', 'false');
   }
 
