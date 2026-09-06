@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" role="img" aria-labelledby="t-mid-chest">
+  <title id="t-mid-chest">Mid Chest highlighted in gold on a simple front-view body outline</title>
+
+  <!-- The shared body outline, drawn faintly so the highlight reads first. -->
+  <g fill="#9a958c" fill-opacity="0.16" stroke="#9a958c" stroke-opacity="0.45"
+     stroke-width="1" stroke-linejoin="round">
+    <circle cx="100" cy="17" r="10"/>
+    <rect x="95" y="25" width="10" height="9" rx="3"/>
+    <path d="M78 34 L122 34 L126 40 L120 70 L116 90 L84 90 L80 70 L74 40 Z"/>
+    <rect x="82" y="86" width="36" height="18" rx="6"/>
+    <rect x="64" y="38" width="12" height="34" rx="6"/>
+    <rect x="63" y="68" width="11" height="30" rx="5"/>
+    <rect x="124" y="38" width="12" height="34" rx="6"/>
+    <rect x="126" y="68" width="11" height="30" rx="5"/>
+    <rect x="83" y="100" width="16" height="28" rx="7"/>
+    <rect x="85" y="124" width="13" height="23" rx="6"/>
+    <rect x="101" y="100" width="16" height="28" rx="7"/>
+    <rect x="102" y="124" width="13" height="23" rx="6"/>
+  </g>
+
+
+  <!-- THE HIGHLIGHT: the one region this card is about. -->
+  <g fill="#d4af37" fill-opacity="0.92" stroke="#a8862a" stroke-width="1" stroke-linejoin="round">
+    <path d="M79 49 H121 L120 59 H80 Z"/>
+  </g>
+
+  <!-- Leader line and label, pointing at the highlighted region. -->
+  <line x1="142" y1="54" x2="120" y2="54" stroke="#a8862a" stroke-opacity="0.7" stroke-width="1"/>
+  <text x="145" y="57" font-family="system-ui, -apple-system, Helvetica, Arial, sans-serif"
+        font-size="9" fill="#a8862a">Mid Chest</text>
+  <text x="6" y="145" font-family="system-ui, -apple-system, Helvetica, Arial, sans-serif"
+        font-size="7" fill="#9a958c" fill-opacity="0.8">front view</text>
+</svg>

@@ -17,7 +17,10 @@
 /* SELECT the elements we need. querySelectorAll returns a NodeList, which we
    spread into a real array so array methods like filter() are available. */
 const filterButtons = [...document.querySelectorAll('.filter-btn')];
-const cards         = [...document.querySelectorAll('.card')];
+// Scoped to the exercise sections on purpose. The anatomy cards in the
+// "Know Your Muscles" section reuse the .card class for its styling, but
+// they are not exercises, so the difficulty filter must leave them alone.
+const cards         = [...document.querySelectorAll('.exercise-section .card')];
 const sections      = [...document.querySelectorAll('.exercise-section')];
 const statusMessage = document.getElementById('filter-status');
 

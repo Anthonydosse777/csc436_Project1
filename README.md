@@ -2,8 +2,9 @@
 
 A single-page static site for people walking into a gym for the first time. Sixteen
 core exercises grouped into push, pull, legs, and core, each with a photograph,
-muscle and difficulty labels, and plain-language coaching cues — plus straight answers
-to the questions beginners are usually too self-conscious to ask.
+muscle and difficulty labels, and plain-language coaching cues — plus a
+muscle-by-muscle anatomy breakdown and straight answers to the questions beginners are
+usually too self-conscious to ask.
 
 Built for **CSC 436 · Full-Stack Web Development · Project 1: Static Foundations**.
 
@@ -34,11 +35,12 @@ python3 -m http.server 8000
 | `styles.css` | Design tokens, layout, components, animations, and media queries |
 | `script.js` | Difficulty filter, background toggle, and scroll reveal |
 | `images/photos/` | Seventeen photographs (Pexels licence) |
+| `images/anatomy/` | Twenty-one muscle diagrams (hand-built SVG, one per muscle part) |
 | `images/favicon.svg` | Site icon |
 
 ## How the project meets the brief
 
-**Semantic structure.** One `<h1>`, no skipped heading levels, and seven `<section>`
+**Semantic structure.** One `<h1>`, no skipped heading levels, and eight `<section>`
 elements inside `<main>`, wrapped by `<header>`, two labelled `<nav>` elements, and a
 `<footer>`. Each exercise is an `<article>`; muscle and difficulty are a `<dl>` because
 they are genuinely name/value pairs. Every section is named with `aria-labelledby` so
@@ -52,6 +54,13 @@ links. `flex-wrap: wrap` is what keeps six nav links usable on a narrow screen.
 use `repeat(auto-fit, minmax(260px, 1fr))`, so the column count responds to the
 available width with no media query at all — one column on a phone, two on a tablet,
 three on a desktop, decided by the browser.
+
+**Know Your Muscles.** A deeper anatomy section that splits each muscle group into its
+individual parts — seven groups, twenty-one parts, each with a diagram, a plain-English
+description, and the lifts that target it. Every group is a native `<details>` element,
+so it starts collapsed and opens with no JavaScript. The cards reuse the exercise-card
+classes, so they inherit the same `auto-fit` grid; the difficulty filter is scoped to
+`.exercise-section .card` so it leaves them alone.
 
 **Responsive design.** Written mobile-first: the rules outside any media query describe
 the phone layout, and two `min-width` breakpoints (40em and 64em) add to it. No
@@ -76,7 +85,7 @@ photographs. No placeholder text.
 - Skip link as the first tab stop
 - Visible `:focus-visible` outlines on every interactive element
 - `aria-pressed` on the filter and toggle buttons; `aria-live` on the status line
-- Alt text on every image describing the actual photograph
+- Alt text on every image describing the actual photograph or diagram
 - `prefers-reduced-motion` disables every animation and forces revealed sections visible
 - A `<noscript>` fallback so the page is never blank if JavaScript fails
 - Both themes meet WCAG AA contrast; the lowest measured pair is 4.81:1

@@ -752,13 +752,15 @@ summary:focus-visible {
    17b. SECTION HEADINGS
    An accent block that grows on hover, so section titles feel alive.
    -------------------------------------------------------------------------- */
-.exercise-section h2 {
+.exercise-section h2,
+.muscle-section h2 {
   position: relative;
   padding-left: 0;
   transition: padding-left 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.exercise-section h2::before {
+.exercise-section h2::before,
+.muscle-section h2::before {
   content: "";
   position: absolute;
   left: 0;
@@ -770,10 +772,12 @@ summary:focus-visible {
   transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.exercise-section:hover h2 {
+.exercise-section:hover h2,
+.muscle-section:hover h2 {
   padding-left: 0.85rem;
 }
-.exercise-section:hover h2::before {
+.exercise-section:hover h2::before,
+.muscle-section:hover h2::before {
   width: 5px;
 }
 
@@ -933,4 +937,153 @@ summary:focus-visible {
   .theme-toggle:hover {
     transform: none !important;
   }
+}
+
+
+/* ==========================================================================
+   18. MUSCLE BREAKDOWN — the "Know Your Muscles" anatomy section
+   This section deliberately REUSES the exercise-card classes (.card-grid,
+   .card, .card-figure, .card-image, .card-steps) so the anatomy cards inherit
+   the same responsive grid, borders, hover lift, and type as the rest of the
+   page. Only the genuine differences are written below.
+   ========================================================================== */
+
+/* Matches the bottom spacing of .exercise-section. The new section uses its
+   own class so the difficulty filter in script.js leaves it alone — an
+   anatomy diagram is not beginner or advanced. */
+.muscle-section {
+  margin-bottom: var(--space-lg);
+}
+
+
+/* --------------------------------------------------------------------------
+   18a. THE COLLAPSIBLE GROUPS
+   One <details> per muscle group, closed until clicked. This is the same
+   native disclosure widget as the FAQ, so opening and closing costs no
+   JavaScript — and it stops seven groups from filling the whole page at once.
+   -------------------------------------------------------------------------- */
+.muscle-group {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  transition: border-color 250ms ease;
+}
+.muscle-group:hover {
+  border-color: var(--color-accent);
+}
+
+/* FLEXBOX #5 — the clickable row: group name on the left, part count pushed
+   to the right, "+" marker last. */
+.muscle-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  list-style: none;                 /* hides the default triangle */
+}
+.muscle-summary::-webkit-details-marker {
+  display: none;                    /* the Safari equivalent */
+}
+
+/* The h3 sits inside the summary so the outline stays h2 > h3 > h4. Its
+   default bottom margin would knock the flex row off centre. */
+.muscle-summary h3 {
+  margin-bottom: 0;
+}
+
+/* "3 parts". margin-left: auto absorbs all the spare space in the flex row,
+   which pushes this and the marker after it to the right-hand edge. */
+.muscle-count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+/* The same "+" that rotates into an "x", copied from the FAQ rows so both
+   disclosure widgets on the page behave identically. */
+.muscle-summary::after {
+  content: "+";
+  flex: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-accent);
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.muscle-group[open] .muscle-summary::after {
+  transform: rotate(45deg);
+}
+
+/* The one-line note above each group's cards. */
+.muscle-note {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  max-width: 65ch;
+  margin: var(--space-sm) 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   18b. THE MUSCLE-PART CARDS
+   The cards themselves are .card elements inside a .card-grid, so the
+   auto-fit/minmax grid from block 10 lays them out with no new rules at all.
+   -------------------------------------------------------------------------- */
+
+/* .card-figure was built for photographs: it crops them to fill a 4:3 frame,
+   desaturates them, zooms on hover, and lays a dark gradient over the bottom.
+   All four would damage a labelled diagram, so they are switched off here. */
+.muscle-figure {
+  background-color: var(--color-bg);
+}
+.muscle-figure::after {
+  display: none;                    /* no gradient scrim over a diagram */
+}
+
+/* "contain" fits the whole drawing inside the frame instead of cropping it. */
+.muscle-diagram {
+  object-fit: contain;
+  padding: var(--space-xs);
+  filter: none;
+}
+.card:hover .muscle-diagram {
+  transform: none;                  /* the photo zoom would cut off the label */
+  filter: none;
+}
+
+/* h4 is new to this page. It is matched to the h3 style, one step smaller. */
+.muscle-card h4 {
+  font-family: var(--font-heading);
+  font-size: 1.0625rem;
+  line-height: 1.15;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-xs);
+}
+
+/* The plain-English explanation. */
+.muscle-what {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+/* Borrows the look of the .card-meta labels without needing the <dl> markup. */
+.muscle-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+.muscle-label::after {
+  content: ":";                     /* punctuation from CSS, as elsewhere */
+}
+
+/* The list reuses .card-steps for its size, colour, and indent. "::marker"
+   styles the bullet itself, so the dots pick up the accent colour while the
+   text stays muted. */
+.muscle-exercises li::marker {
+  color: var(--color-accent);
 }
