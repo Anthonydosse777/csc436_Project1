@@ -1037,6 +1037,14 @@ summary:focus-visible {
    All four would damage a labelled diagram, so they are switched off here. */
 .muscle-figure {
   background-color: var(--color-bg);
+
+  /* A fixed height instead of the 4:3 aspect-ratio .card-figure uses. A ratio
+     ties the frame's height to the card's width, so the two-part groups
+     (Biceps) would draw bodies half again as large as the four-part ones
+     (Legs). A fixed height draws every silhouette at exactly the same size,
+     whatever width its column happens to be. */
+  aspect-ratio: auto;
+  height: 190px;
 }
 .muscle-figure::after {
   display: none;                    /* no gradient scrim over a diagram */
