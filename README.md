@@ -7,15 +7,15 @@ to the questions beginners are usually too self-conscious to ask.
 
 Built for **CSC 436 · Full-Stack Web Development · Project 1: Static Foundations**.
 
-**Live site:** _add the Netlify URL here once deployed_
+**Live site:** [gainsforyou.netlify.app](https://gainsforyou.netlify.app)
 
 ## Running it locally
 
 There is no build step and no package manager. Clone the repository and open the file:
 
 ```bash
-git clone <your-repo-url>
-cd gym-starter-guide
+git clone https://github.com/Anthonydosse777/csc436_Project1.git
+cd csc436_Project1
 open index.html
 ```
 
