@@ -1032,33 +1032,55 @@ summary:focus-visible {
    auto-fit/minmax grid from block 10 lays them out with no new rules at all.
    -------------------------------------------------------------------------- */
 
-/* .card-figure was built for photographs: it crops them to fill a 4:3 frame,
-   desaturates them, zooms on hover, and lays a dark gradient over the bottom.
-   All four would damage a labelled diagram, so they are switched off here. */
+/* The frame keeps .card-figure's 4:3 ratio, which is deliberate: every
+   anatomy photo was cropped to exactly 4:3, so the frame never crops one and
+   the gold overlay can never drift off the muscle it is marking. */
 .muscle-figure {
   background-color: var(--color-bg);
-
-  /* A fixed height instead of the 4:3 aspect-ratio .card-figure uses. A ratio
-     ties the frame's height to the card's width, so the two-part groups
-     (Biceps) would draw bodies half again as large as the four-part ones
-     (Legs). A fixed height draws every silhouette at exactly the same size,
-     whatever width its column happens to be. */
-  aspect-ratio: auto;
-  height: 190px;
+  position: relative;               /* the overlay below is positioned to this */
 }
 .muscle-figure::after {
-  display: none;                    /* no gradient scrim over a diagram */
+  display: none;                    /* no gradient scrim over a marked-up photo */
 }
 
-/* "contain" fits the whole drawing inside the frame instead of cropping it. */
-.muscle-diagram {
-  object-fit: contain;
-  padding: var(--space-xs);
+/* .card-image dims and desaturates the exercise photos so the heading beneath
+   stays readable. An anatomy photo is the lesson, not a backdrop, so it is
+   shown at full strength — you cannot see striations through a 0.55 filter. */
+.muscle-photo {
   filter: none;
 }
-.card:hover .muscle-diagram {
-  transform: none;                  /* the photo zoom would cut off the label */
+
+/* The hover zoom is switched off here, and this one is not cosmetic: scaling
+   the photo but not the overlay would slide the gold highlight off the
+   muscle. Both must stay still. */
+.card:hover .muscle-photo {
+  transform: none;
   filter: none;
+}
+
+/* THE GOLD HIGHLIGHT.
+   The SVG is stretched over the photo and shares its 800x600 coordinate
+   space, so a path drawn at (400,300) always lands on the same freckle.
+   "slice" is the SVG spelling of object-fit: cover — matching the <img> —
+   which keeps the two locked together if the frame is ever a different
+   shape from the photo. */
+.muscle-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;             /* clicks pass through to the card */
+}
+
+/* Fill is translucent on purpose: a solid block would hide the very muscle
+   separation the photo is here to show. The outline does the pointing. */
+.muscle-overlay path {
+  fill: var(--color-accent);
+  fill-opacity: 0.28;
+  stroke: var(--color-accent);
+  stroke-width: 3;
+  stroke-opacity: 0.95;
+  stroke-linejoin: round;
 }
 
 /* h4 is new to this page. It is matched to the h3 style, one step smaller. */
@@ -1094,4 +1116,23 @@ summary:focus-visible {
    text stays muted. */
 .muscle-exercises li::marker {
   color: var(--color-accent);
+}
+
+
+/* --------------------------------------------------------------------------
+   18c. PHOTO CREDITS
+   The licence on two of the photographs requires naming the photographer, so
+   this row is a requirement rather than a decoration. It reuses the same
+   <details> styling as the muscle groups and simply sits last.
+   -------------------------------------------------------------------------- */
+.muscle-credits {
+  margin-top: var(--space-md);
+}
+
+/* Links inherit the muted list colour otherwise, which would hide them. */
+.muscle-credits a {
+  color: var(--color-accent);
+}
+.muscle-credits a:hover {
+  color: var(--color-accent-dim);
 }

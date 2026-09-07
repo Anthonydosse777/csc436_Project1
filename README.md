@@ -35,7 +35,7 @@ python3 -m http.server 8000
 | `styles.css` | Design tokens, layout, components, animations, and media queries |
 | `script.js` | Difficulty filter, background toggle, and scroll reveal |
 | `images/photos/` | Seventeen photographs (Pexels licence) |
-| `images/anatomy/` | Twenty-one muscle diagrams (hand-built SVG, one per muscle part) |
+| `images/anatomy/` | Five anatomy photographs, each reused by several muscle-part cards |
 | `images/favicon.svg` | Site icon |
 
 ## How the project meets the brief
@@ -56,11 +56,22 @@ available width with no media query at all — one column on a phone, two on a t
 three on a desktop, decided by the browser.
 
 **Know Your Muscles.** A deeper anatomy section that splits each muscle group into its
-individual parts — seven groups, twenty-one parts, each with a diagram, a plain-English
+individual parts — seven groups, twenty-one parts, each with a photograph, a plain-English
 description, and the lifts that target it. Every group is a native `<details>` element,
 so it starts collapsed and opens with no JavaScript. The cards reuse the exercise-card
 classes, so they inherit the same `auto-fit` grid; the difficulty filter is scoped to
 `.exercise-section .card` so it leaves them alone.
+
+**Marking a muscle on a photograph.** Each card shows a real lifter with one muscle
+outlined in gold by an inline `<svg>` sitting on top of the `<img>`. Both share the
+800x600 coordinate space every photo was cropped to, and the overlay uses
+`preserveAspectRatio="slice"` to match the image's `object-fit: cover`, so the outline
+cannot drift off the muscle at any screen size — which is also why the card's hover zoom
+is switched off here. The fill is only 28% opaque so the muscle separation stays visible
+underneath. Five photographs serve all twenty-one cards, so the browser fetches five
+files rather than twenty-one, and reusing one body per region lets you compare where the
+parts sit relative to each other. Photographers are credited on the page itself, as two
+of the four sources are CC BY-SA and adding an overlay makes each card an adapted work.
 
 **Responsive design.** Written mobile-first: the rules outside any media query describe
 the phone layout, and two `min-width` breakpoints (40em and 64em) add to it. No

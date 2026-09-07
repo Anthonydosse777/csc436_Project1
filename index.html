@@ -478,11 +478,19 @@
          page. <details>/<summary> is the browser's own disclosure widget, so
          this needs no JavaScript at all (same technique as the FAQ above).
 
-         DIAGRAMS: images/anatomy/*.svg are simple hand-built outlines — one
-         shared body silhouette with the relevant part filled in gold. They are
-         deliberately schematic, not photographs. To swap in proper anatomical
-         illustrations later, replace the file at the same path and keep the
-         200x150 (4:3) viewBox so the card frames stay aligned.
+         IMAGES: each card is a photograph of a real lifter with the muscle
+         outlined in gold by an inline <svg> laid over it. Five photographs
+         cover all twenty-one parts (images/anatomy/*.jpg) — a browser
+         downloads five files rather than twenty-one, and reusing one body per
+         region lets you compare where the parts sit relative to each other.
+
+         Every photo was cropped to exactly 4:3 and every overlay is drawn in
+         the same 800x600 coordinate space, which is what keeps the highlight
+         on the muscle at any screen size. To swap a photo, crop the
+         replacement to 4:3 and re-check the paths against it.
+
+         Photographers are credited at the foot of the section — the licences
+         require it. See also the "Photo credits" block below.
          ============================================================ -->
     <section id="muscle-breakdown" class="muscle-section reveal" aria-labelledby="muscle-breakdown-heading">
       <h2 id="muscle-breakdown-heading">Know Your Muscles</h2>
@@ -509,10 +517,18 @@
         <div class="card-grid">
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/front-delt.svg"
-                   alt="Body outline seen from the front with the front of both shoulders highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/front-torso.jpg"
+                   alt="Front view of a bodybuilder's torso, with the front of the shoulder outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M240,118 L300,140 L302,200 L262,210 L236,176 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Front Delt</h4>
@@ -530,10 +546,18 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/side-delt.svg"
-                   alt="Body outline seen from the front with the outer cap of both shoulders highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/front-torso.jpg"
+                   alt="Front view of a bodybuilder's torso, with the outer cap of the shoulder outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M172,140 L196,101 L233,108 L239,157 L214,192 L179,178 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Side Delt</h4>
@@ -551,10 +575,19 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/rear-delt.svg"
-                   alt="Body outline seen from behind with the back of both shoulders highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-arms.jpg"
+                   alt="Bodybuilder in a back double-biceps pose, with the back of both shoulders outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M500,240 L556,232 L572,274 L534,302 L500,288 Z"/>
+                <path d="M300,240 L244,232 L228,274 L266,302 L300,288 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Rear Delt</h4>
@@ -590,10 +623,18 @@
         <div class="card-grid">
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/upper-chest.svg"
-                   alt="Body outline seen from the front with the top of the chest, just under the collarbone, highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/front-torso.jpg"
+                   alt="Front view of a bodybuilder's torso, with the top of the chest just under the collarbone outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M250,182 L360,164 L474,180 L470,214 L360,200 L252,216 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Upper Chest</h4>
@@ -611,10 +652,18 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/mid-chest.svg"
-                   alt="Body outline seen from the front with the middle of the chest highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/front-torso.jpg"
+                   alt="Front view of a bodybuilder's torso, with the middle of the chest outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M252,222 L360,206 L476,220 L472,258 L360,246 L256,266 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Mid Chest</h4>
@@ -632,10 +681,18 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/lower-chest.svg"
-                   alt="Body outline seen from the front with the bottom edge of the chest highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/front-torso.jpg"
+                   alt="Front view of a bodybuilder's torso, with the bottom edge of the chest outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M256,272 L360,252 L474,264 L468,304 L358,296 L260,318 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Lower Chest</h4>
@@ -670,10 +727,19 @@
         <div class="card-grid">
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/lats.svg"
-                   alt="Body outline seen from behind with the wide muscles down both sides of the back highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-upper.jpg"
+                   alt="Back view of a bodybuilder, with the fan-shaped muscles down both sides of the back outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M250,135 L340,215 L350,340 L308,370 L262,290 L240,190 Z"/>
+                <path d="M565,130 L475,210 L465,340 L506,368 L553,288 L575,185 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Lats</h4>
@@ -691,10 +757,18 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/traps.svg"
-                   alt="Body outline seen from behind with the diamond of muscle between the neck and shoulder blades highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-upper.jpg"
+                   alt="Back view of a bodybuilder, with the diamond of muscle between the neck and shoulder blades outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M400,32 L470,58 L556,104 L516,168 L432,212 L400,222 L368,212 L284,168 L244,104 L330,58 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Traps</h4>
@@ -712,10 +786,18 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/lower-back.svg"
-                   alt="Body outline seen from behind with the column of muscle above the hips highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-upper.jpg"
+                   alt="Back view of a bodybuilder, with the columns of muscle either side of the lower spine outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M345,365 L470,363 L478,470 L338,472 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Lower Back</h4>
@@ -750,10 +832,18 @@
         <div class="card-grid">
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/biceps-long-head.svg"
-                   alt="Body outline seen from the front with the outer strip of both upper arms highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-arms.jpg"
+                   alt="Bodybuilder in a back double-biceps pose, with the outer half of the upper arm's biceps outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M606,222 L668,216 L672,246 L608,250 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Long Head</h4>
@@ -771,10 +861,18 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/biceps-short-head.svg"
-                   alt="Body outline seen from the front with the inner strip of both upper arms highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-arms.jpg"
+                   alt="Bodybuilder in a back double-biceps pose, with the inner half of the upper arm's biceps outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M545,236 L600,224 L604,252 L548,262 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Short Head</h4>
@@ -809,10 +907,18 @@
         <div class="card-grid">
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/triceps-long-head.svg"
-                   alt="Body outline seen from behind with the inner strip of the back of both upper arms highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-arms.jpg"
+                   alt="Bodybuilder in a back double-biceps pose, with the inner section of the triceps outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M534,266 L588,256 L594,296 L540,306 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Long Head</h4>
@@ -830,10 +936,18 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/triceps-lateral-head.svg"
-                   alt="Body outline seen from behind with the outer strip of the back of both upper arms highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-arms.jpg"
+                   alt="Bodybuilder in a back double-biceps pose, with the outer section of the triceps outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M596,252 L664,244 L670,280 L600,290 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Lateral Head</h4>
@@ -851,10 +965,18 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/triceps-medial-head.svg"
-                   alt="Body outline seen from behind with the area just above both elbows highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-arms.jpg"
+                   alt="Bodybuilder in a back double-biceps pose, with the lower triceps near the elbow outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M640,280 L692,268 L698,298 L646,308 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Medial Head</h4>
@@ -889,10 +1011,19 @@
         <div class="card-grid">
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/quads.svg"
-                   alt="Body outline seen from the front with the front of both thighs highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/front-legs.jpg"
+                   alt="Front view of a bodybuilder's legs, with the fronts of both thighs outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M195,55 L300,45 L292,270 L210,278 Z"/>
+                <path d="M352,50 L468,58 L452,288 L360,292 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Quads</h4>
@@ -910,10 +1041,19 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/hamstrings.svg"
-                   alt="Body outline seen from behind with the back of both thighs highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-legs.jpg"
+                   alt="Back view of a bodybuilder on stage, with the backs of both thighs outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M445,415 L515,412 L512,540 L452,538 Z"/>
+                <path d="M522,412 L598,415 L590,540 L528,540 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Hamstrings</h4>
@@ -931,10 +1071,19 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/glutes.svg"
-                   alt="Body outline seen from behind with the hips and backside highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/back-legs.jpg"
+                   alt="Back view of a bodybuilder on stage, with the muscles of the backside outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M443,335 L518,330 L520,410 L440,405 Z"/>
+                <path d="M522,330 L600,332 L600,408 L522,410 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Glutes</h4>
@@ -952,10 +1101,19 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/calves.svg"
-                   alt="Body outline seen from behind with the back of both lower legs highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/front-legs.jpg"
+                   alt="Front view of a bodybuilder's legs, with both calf muscles outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M196,320 L262,318 L255,430 L205,432 Z"/>
+                <path d="M356,330 L424,332 L416,440 L364,438 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Calves</h4>
@@ -991,10 +1149,18 @@
         <div class="card-grid">
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/upper-abs.svg"
-                   alt="Body outline seen from the front with the stomach between the ribs and the navel highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/front-torso.jpg"
+                   alt="Front view of a bodybuilder's torso, with the abdominal muscles above the navel outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M282,330 L400,315 L470,325 L466,415 L398,408 L284,420 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Upper Abs</h4>
@@ -1012,10 +1178,18 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/lower-abs.svg"
-                   alt="Body outline seen from the front with the stomach below the navel highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/front-torso.jpg"
+                   alt="Front view of a bodybuilder's torso, with the abdominal muscles below the navel outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M288,428 L398,418 L466,425 L462,515 L396,522 L292,512 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Lower Abs</h4>
@@ -1033,10 +1207,19 @@
           </article>
 
           <article class="card muscle-card">
+            <!-- Photograph + gold highlight. The <svg> below shares the
+                 800x600 coordinate space the photo was cropped to, so the
+                 outlined area stays on the muscle at any card width. The
+                 fill is semi-transparent so the striations still show. -->
             <div class="card-figure muscle-figure">
-              <img class="card-image muscle-diagram" src="images/anatomy/obliques.svg"
-                   alt="Body outline seen from the front with the muscles down both sides of the waist highlighted"
-                   width="200" height="150" loading="lazy">
+              <img class="card-image muscle-photo" src="images/anatomy/front-torso.jpg"
+                   alt="Front view of a bodybuilder's torso, with the muscles down both sides of the waist outlined in gold"
+                   width="800" height="600" loading="lazy">
+              <svg class="muscle-overlay" viewBox="0 0 800 600" aria-hidden="true"
+                   preserveAspectRatio="xMidYMid slice">
+                <path d="M236,338 L272,332 L276,498 L242,490 Z"/>
+                <path d="M472,322 L516,314 L518,462 L476,470 Z"/>
+              </svg>
             </div>
             <div class="card-body">
               <h4>Obliques</h4>
@@ -1054,6 +1237,47 @@
           </article>
 
         </div>
+      </details>
+
+      <!-- ---------- PHOTO CREDITS ----------
+           Not optional. Two of these photographs are Creative Commons
+           BY-SA, which grants the right to reuse and adapt them only on
+           condition that the photographer is named and the licence linked.
+           Drawing an overlay on top makes each card an adapted work, so the
+           credit belongs on the page that shows it, not buried in a README.
+           ------------------------------------------------------------- -->
+      <details class="muscle-group muscle-credits">
+        <summary class="muscle-summary">
+          <h3 id="mb-credits-heading">Photo credits</h3>
+          <span class="muscle-count">4 sources</span>
+        </summary>
+
+        <p class="muscle-note">
+          The anatomy photographs are reused under the licences below. Muscle outlines added
+          for this guide.
+        </p>
+
+        <ul class="card-steps muscle-exercises">
+          <li>
+            Front torso and legs — Cem Erkara, by FoPen,
+            <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>,
+            via Wikimedia Commons.
+          </li>
+          <li>
+            Upper back — Andrew James Robert Howarth,
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>,
+            via Wikimedia Commons.
+          </li>
+          <li>
+            Back double-biceps — Airman Halley Burgess, 131st Bomb Wing,
+            U.S. Air Force. Public domain.
+          </li>
+          <li>
+            Rear stage pose — Ilgar Jafarov,
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>,
+            via Wikimedia Commons.
+          </li>
+        </ul>
       </details>
 
     </section>
