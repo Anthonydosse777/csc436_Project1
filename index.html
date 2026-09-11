@@ -37,6 +37,7 @@
           <li><a href="#legs">Legs</a></li>
           <li><a href="#core">Core</a></li>
           <li><a href="#faq">FAQ</a></li>
+          <li><a class="nav-page" href="nutrition.html">Nutrition</a></li>
         </ul>
       </nav>
 
@@ -72,17 +73,19 @@
     </section>
 
     <!-- ============================================================
-         FILTER CONTROLS — drive the JavaScript difficulty filter
+         EXPERIENCE LEVEL — drives the JavaScript tip toggle.
+         This deliberately never hides an exercise. Every visitor sees all
+         sixteen movements; picking a level layers extra coaching notes onto
+         each card instead of taking anything away.
          ============================================================ -->
     <section id="filter" class="filter-bar" aria-labelledby="filter-heading">
-      <h2 id="filter-heading" class="filter-heading">Filter by difficulty</h2>
-      <div class="filter-buttons" role="group" aria-label="Filter exercises by difficulty">
-        <button type="button" class="filter-btn is-active" data-level="all" aria-pressed="true">All</button>
-        <button type="button" class="filter-btn" data-level="beginner" aria-pressed="false">Beginner</button>
+      <h2 id="filter-heading" class="filter-heading">Your experience level</h2>
+      <div class="filter-buttons" role="group" aria-label="Choose your experience level">
+        <button type="button" class="filter-btn is-active" data-level="beginner" aria-pressed="true">Beginner</button>
         <button type="button" class="filter-btn" data-level="intermediate" aria-pressed="false">Intermediate</button>
         <button type="button" class="filter-btn" data-level="advanced" aria-pressed="false">Advanced</button>
       </div>
-      <p id="filter-status" class="filter-status" role="status" aria-live="polite">Showing all 16 exercises.</p>
+      <p id="filter-status" class="filter-status" role="status" aria-live="polite">All sixteen exercises, with the plain steps for each one.</p>
     </section>
 
     <!-- ============================================================
@@ -112,6 +115,19 @@
               <li>Lower until your chest is a fist's height from the floor, elbows angled back at about 45 degrees.</li>
               <li>Press back up without letting your hips sag or pike upward.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Once fifteen clean reps feel easy, do not just add reps — slow the lowering to a three-count and pause an inch off the floor.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Add load: feet on a bench, or a plate on your upper back, going up in the smallest increment you have. Deficit push-ups off dumbbells buy you extra range.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -130,6 +146,19 @@
               <li>Lower the bar under control to the middle of your chest, wrists stacked over your elbows.</li>
               <li>Drive the bar back up. Use a spotter or the safety pins any time you train near your limit.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Progressive overload: add the smallest plates you have — 2.5&nbsp;kg total — only after you hit the top of your rep range on every set.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Pause a full second on the chest to kill the bounce, or run a heavy top set of three to five reps and then a back-off set of eight to ten.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -148,6 +177,19 @@
               <li>Press straight overhead until your arms lock out, keeping your ribs down.</li>
               <li>If your lower back arches to help, the weight is too heavy — drop it and press again.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Overload here is slow. Expect to sit on the same dumbbells for weeks, and jump by one to two kilos when you do move.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Do not grind these to failure — the shoulder joint pays for it. Stop a rep short and add a set instead of chasing the last one.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -166,6 +208,19 @@
               <li>Push down until your arms lock out, keeping your upper arms completely still.</li>
               <li>Let the rope rise back slowly. If your shoulders roll forward, drop the weight.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">This is an accessory, not a main lift. Earn a hard squeeze and a full lockout at your current weight before you touch the pin.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Do not overload it. If the stack is lifting you onto your toes you are rowing, not extending — use slow negatives or a drop set instead.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -199,6 +254,19 @@
               <li>Pull the bar to your collarbone by driving your elbows down, not by yanking with your hands.</li>
               <li>Let the bar rise all the way back up so your lats get a full stretch each rep.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Progressive overload: one plate on the stack, or hold the bar at your collarbone for a full second on every rep.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Treat this as volume alongside pull-ups rather than a replacement. Heavy near-max pulldowns teach you very little.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -217,6 +285,19 @@
               <li>Draw the handle to your waist, squeezing your shoulder blades together at the end.</li>
               <li>Return slowly. Do not let your torso rock back and forth to move the weight.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Add weight only while your torso stays still. The moment you start rocking to move the handle, drop back down a plate.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Single-arm rows expose the weaker side. Do that side first and match the strong side to whatever it managed.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -235,6 +316,19 @@
               <li>Pull until your chin clears the bar, keeping your legs still rather than kicking.</li>
               <li>Lower all the way down. Use a resistance band or the assisted machine to build up to it.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Cannot do one yet? Use a band or the assisted machine and take the assistance down a notch every week or two.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Progressive overload: once you clear ten clean reps, add load with a dip belt or a dumbbell between your feet, a couple of kilos at a time.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -253,6 +347,19 @@
               <li>Curl the weight up without letting your elbows drift ahead of your body.</li>
               <li>Lower slowly — the way down builds as much as the way up.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Small muscle, small jumps. Go up one to two kilos, and only while your elbows stay pinned to your sides.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Do not ego-load these — swinging hands the work to your back. Slow the negative, or curl lying back on an incline bench for a full stretch.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -286,6 +393,19 @@
               <li>Sit straight down between your knees, keeping your heels flat and your chest tall.</li>
               <li>Stand back up by driving through the middle of your foot.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Progressive overload: a heavier bell, or a two-second pause at the bottom of every rep before you stand up.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">This one has a ceiling — you run out of dumbbell long before you run out of legs. Move to a barbell front or back squat.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -304,6 +424,19 @@
               <li>Lower until your knees reach about 90 degrees, never letting your lower back peel off the pad.</li>
               <li>Press back out without snapping your knees straight at the top.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Progressive overload: add a plate per side once the last rep still feels like you had two more in you.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Easy to pile plates on with half a rep. Keep the depth honest — hips planted, lower back flat — before the weight goes up.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -322,6 +455,19 @@
               <li>Drop your back knee toward the floor, keeping your torso upright the whole way.</li>
               <li>Push off the front foot into your next step. Start with bodyweight until your balance settles.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Progressive overload: add steps before you add weight, then carry dumbbells at your sides.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Balance caps the load here, not your legs. Bulgarian split squats or a deficit lunge hit the same muscles far harder.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -340,6 +486,19 @@
               <li>Drop your heels for a full stretch, then rise as high onto your toes as you can.</li>
               <li>Pause at the top for a full second. Rushing this one wastes the set.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Calves want reps — fifteen to twenty a set, with a full pause stretched at the bottom of each one.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Range beats load. Two seconds down, one second squeezed at the top, and stop bouncing off the bottom.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -373,6 +532,19 @@
               <li>Squeeze your glutes and abs so your body holds one straight line.</li>
               <li>Hold for thirty honest seconds. That beats two sagging minutes every time.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">More time is not overload — past a minute you are only getting uncomfortable. Reach one arm out in front of you instead.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Swap to harder anti-movement work: long-lever planks, ab wheel rollouts, or dead bugs holding a light weight.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -391,6 +563,19 @@
               <li>Curl your shoulders off the floor using your abs, not by pulling on your neck.</li>
               <li>Lower under control rather than dropping back down.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Slow the movement before you add reps. Ten controlled crunches do more than twenty fast ones.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Diminishing returns at bodyweight. Cable crunches or a weighted decline let you actually load the abs and progress them.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -409,6 +594,19 @@
               <li>Rotate a weight from one hip to the other, turning through your ribs rather than your arms.</li>
               <li>Keep your chest lifted. The moment your back rounds, stop the set.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Progressive overload: slow each rotation to a two-count and pause at each hip before you reach for a heavier ball.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Do not load these heavily — the spare force goes into your lower back. Cable or band rotations give you the same job with less cost.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -427,6 +625,19 @@
               <li>Curl up using your abs rather than swinging your arms for momentum.</li>
               <li>Lower under control. Start on a shallow decline and increase the angle over time.</li>
             </ol>
+            <div class="card-tips" hidden>
+              <h4 class="card-tips-heading">Taking it further</h4>
+              <ul class="tip-list">
+                <li class="tip" data-tip="intermediate">
+                  <span class="tip-tag">Intermediate</span>
+                  <span class="tip-text">Progressive overload: a steeper decline first, then hold a plate against your chest.</span>
+                </li>
+                <li class="tip" data-tip="advanced">
+                  <span class="tip-tag">Advanced</span>
+                  <span class="tip-text">Hold the plate overhead rather than at your chest — it lengthens the lever without stacking as much load on your spine.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 
@@ -456,7 +667,7 @@
 
       <details>
         <summary>Do I need protein powder?</summary>
-        <p>No. It is a convenient way to reach a protein target and nothing more — ordinary food does the same job. Skip every other supplement until you have trained consistently for six months.</p>
+        <p>No. It is a convenient way to reach a protein target and nothing more — ordinary food does the same job. Skip every other supplement until you have trained consistently for six months. The <a href="nutrition.html#protein">nutrition page</a> works out how much protein you actually need.</p>
       </details>
 
       <details>
@@ -480,7 +691,8 @@
     <nav aria-label="Footer">
       <ul class="footer-links">
         <li><a href="mailto:hello@gymstarterguide.example">Contact</a></li>
-        <li><a href="https://github.com/">GitHub</a></li>
+        <li><a href="https://github.com/Anthonydosse777/csc436_Project1">GitHub</a></li>
+        <li><a href="nutrition.html">Nutrition guide</a></li>
         <li><a href="#intro">Back to top</a></li>
       </ul>
     </nav>

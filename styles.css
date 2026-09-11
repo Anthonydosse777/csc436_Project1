@@ -96,6 +96,21 @@ img {
 /* --------------------------------------------------------------------------
    3. PAGE BASICS
    -------------------------------------------------------------------------- */
+
+/* Nav links jump within the page. An instant jump between sections that all
+   share the same dark background is easy to miss — it can look as if the
+   click did nothing — so the page glides there instead. The reduced-motion
+   block in section 16 switches this back to an instant jump. */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Where a jump lands: a little space above the section, so its heading is
+   not pressed against the top edge of the screen. */
+section[id] {
+  scroll-margin-top: var(--space-md);
+}
+
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
@@ -395,7 +410,6 @@ h3 {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  overflow: hidden;             /* clips the image to the rounded corners */
   box-shadow: var(--shadow);
 
   /* A column Flexbox so the card body can stretch and keep every card in a
@@ -403,20 +417,18 @@ h3 {
   display: flex;
   flex-direction: column;
 
-  /* The card's own animation: it rises slightly and its border picks up the
-     accent colour. Listing the properties explicitly (rather than "all")
-     keeps the browser from animating things we did not intend. */
+  /* The card's own animation. Listing the properties explicitly (rather than
+     "all") keeps the browser from animating things we did not intend. */
   transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
               box-shadow 350ms ease,
               border-color 350ms ease;
 }
 
-/* translateY moves the card up 6px. Transform is used instead of margin
-   because it runs on the GPU and does not force the page to re-layout. */
+/* The hover lift itself lives in section 18, where the card is given real
+   perspective and tilts toward the pointer. Setting a transform here as well
+   would win on specificity and flatten it back out. */
 .card:hover {
-  transform: translateY(-6px);
   border-color: var(--color-accent);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
 }
 
 /* Cards the filter has ruled out. */
@@ -426,6 +438,9 @@ h3 {
 
 /* The photos arrive in mixed shapes — some portrait, some landscape. This
    wrapper forces every one into the same 4:3 window so the grid stays tidy.
+   It also rounds and clips its own top corners (see section 18) because the
+   card can no longer clip for it — clipping would destroy the 3D space the
+   card's children live in.
    "overflow: hidden" is also what lets the image zoom inside its frame on
    hover without pushing the card's layout around. */
 .card-figure {
@@ -509,6 +524,63 @@ h3 {
 }
 
 
+/* The "Taking it further" block. JavaScript unhides this when the visitor
+   picks intermediate or advanced; on beginner it stays out of the page
+   entirely, so a card looks exactly as it did before. */
+.card-tips {
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.card-tips-heading {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-xs);
+}
+
+/* list-style: none because these are tips, not ordered steps — the gold tag
+   on each one already does the job a bullet would. */
+.tip-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.tip {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+/* The tier tag. inline-block so its padding applies and the text beside it
+   wraps around it rather than under it. */
+.tip-tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-dim);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  margin-right: 0.35rem;
+  white-space: nowrap;
+}
+
+/* Advanced notes read as the stronger of the two, so the tag is filled. */
+.tip[data-tip="advanced"] .tip-tag {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+
 /* --------------------------------------------------------------------------
    12. FAQ
    <details> and <summary> open and close natively — no JavaScript needed,
@@ -535,6 +607,11 @@ h3 {
   color: var(--color-text-muted);
   margin-top: var(--space-xs);
   max-width: 65ch;
+}
+
+/* Links inside an answer, in the accent rather than the browser's blue. */
+.faq details a {
+  color: var(--color-accent);
 }
 
 
@@ -590,7 +667,8 @@ h3 {
    -------------------------------------------------------------------------- */
 a:focus-visible,
 button:focus-visible,
-summary:focus-visible {
+summary:focus-visible,
+input:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
@@ -623,15 +701,6 @@ summary:focus-visible {
 /* --- DESKTOP AND UP (1024px) ------------------------------------------- */
 @media (min-width: 64em) {
 
-  /* The header becomes a single row: title on the left, nav in the middle,
-     theme toggle on the right. "space-between" spreads the leftover space
-     between the items rather than around them. */
-  .header-inner {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
   /* GRID #2 — the intro becomes two columns, text beside illustration.
      "2fr 1fr" gives the text twice the width of the image. */
   .intro {
@@ -649,6 +718,39 @@ summary:focus-visible {
   .card-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--space-md);
+  }
+}
+
+/* --- WIDE DESKTOP AND UP (1280px) -------------------------------------- */
+@media (min-width: 80em) {
+
+  /* The header becomes a single row: title on the left, nav in the middle,
+     theme toggle on the right. "space-between" spreads the leftover space
+     between the items rather than around them.
+     This waits until 1280px rather than 1024px because the title, seven
+     nav links, and the toggle need about 1,030px side by side — below that
+     they wrapped into a ragged second line, so the tidy stacked header is
+     kept instead. */
+  .header-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* The title and toggle keep their natural width and never wrap; the nav
+     sits between them. */
+  .site-title,
+  .theme-toggle {
+    flex: none;
+    white-space: nowrap;
+  }
+
+  /* A slightly tighter nav so all seven links fit on the one row. */
+  .nav-list {
+    gap: 0.25rem;
+  }
+  .nav-list a {
+    padding-inline: 0.5rem;
   }
 }
 
@@ -752,13 +854,15 @@ summary:focus-visible {
    17b. SECTION HEADINGS
    An accent block that grows on hover, so section titles feel alive.
    -------------------------------------------------------------------------- */
-.exercise-section h2 {
+.exercise-section h2,
+.page-section h2 {
   position: relative;
   padding-left: 0;
   transition: padding-left 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.exercise-section h2::before {
+.exercise-section h2::before,
+.page-section h2::before {
   content: "";
   position: absolute;
   left: 0;
@@ -770,11 +874,31 @@ summary:focus-visible {
   transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.exercise-section:hover h2 {
+.exercise-section:hover h2,
+.page-section:hover h2 {
   padding-left: 0.85rem;
 }
-.exercise-section:hover h2::before {
+.exercise-section:hover h2::before,
+.page-section:hover h2::before {
   width: 5px;
+}
+
+/* ":target" matches the section whose id is in the address bar — the one a
+   nav link just jumped to. It keeps the hover accent switched on and plays
+   a short gold glow on the heading, so the visitor can see where they
+   landed. */
+.exercise-section:target h2,
+.page-section:target h2 {
+  padding-left: 0.85rem;
+}
+.exercise-section:target h2::before,
+.page-section:target h2::before {
+  width: 5px;
+}
+.exercise-section:target h2,
+.page-section:target h2,
+.faq:target h2 {
+  animation: target-glow 1.6s ease-out 0.3s both;
 }
 
 
@@ -883,6 +1007,14 @@ summary:focus-visible {
   transform: translateY(0);
 }
 
+/* A nav link aims at where a section is drawn right now. A section that has
+   not revealed yet is drawn 30px low, so the jump would land 30px short and
+   then the section would rise into the top edge of the screen. Adding the
+   same 30px to its landing space cancels that out. */
+.reveal:not(.is-visible) {
+  scroll-margin-top: calc(var(--space-md) + 30px);
+}
+
 
 /* --------------------------------------------------------------------------
    17f. KEYFRAMES
@@ -899,6 +1031,13 @@ summary:focus-visible {
 @keyframes sweep-in {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
+}
+
+/* The heading of a section a nav link just jumped to turns gold and glows,
+   then settles back to its normal colour. */
+@keyframes target-glow {
+  0%   { color: var(--color-accent); text-shadow: 0 0 18px rgba(212, 175, 55, 0.7); }
+  100% { color: var(--color-text); }
 }
 
 /* A short rise-and-fade, used by the FAQ answers. */
@@ -931,6 +1070,1400 @@ summary:focus-visible {
   .card:hover .card-image,
   .filter-btn:hover,
   .theme-toggle:hover {
+    transform: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   18. DIMENSION — the 3D treatment
+   Everything below gives the flat page a sense of physical depth. The trick
+   is that CSS has two separate ways of faking three dimensions, and this
+   section uses both:
+
+     1. LIGHTING — layered box-shadows, a lit top edge, and a shaded bottom
+        edge. This is what makes a panel read as "raised" even though it
+        never moves. No transforms involved.
+     2. GEOMETRY — real perspective projection with rotateX/rotateY and
+        translateZ, so the cards genuinely turn in space as the pointer
+        moves across them.
+
+   Both are presentation only. Delete this section and the page still works,
+   it just goes flat again.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   18a. DEPTH TOKENS
+   Real objects do not cast one shadow, they cast several: a tight dark
+   contact shadow where the object nearly touches the surface, and wider,
+   softer ones further out. Stacking three shadows per token is what
+   separates "has a drop shadow" from "is sitting above the page".
+   -------------------------------------------------------------------------- */
+:root {
+  --depth-1:
+    0 1px 1px rgba(0, 0, 0, 0.30),
+    0 2px 4px rgba(0, 0, 0, 0.26),
+    0 6px 12px rgba(0, 0, 0, 0.22);
+  --depth-2:
+    0 2px 2px rgba(0, 0, 0, 0.32),
+    0 6px 12px rgba(0, 0, 0, 0.30),
+    0 16px 28px rgba(0, 0, 0, 0.30);
+  --depth-3:
+    0 4px 6px rgba(0, 0, 0, 0.36),
+    0 14px 24px rgba(0, 0, 0, 0.34),
+    0 32px 56px rgba(0, 0, 0, 0.42);
+
+  /* The bevel: one hairline of light along the top edge and one of shadow
+     along the bottom. This is the single cheapest 3D cue in CSS — it implies
+     a light source above the page, which the box-shadows then agree with. */
+  --edge-light: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --edge-dark:  inset 0 -1px 0 rgba(0, 0, 0, 0.55);
+
+  /* The solid colour of a button's extruded side wall. */
+  --btn-edge: #050506;
+
+  /* Faces. A flat fill looks like paper; a slight gradient looks like a
+     surface catching light from one direction. */
+  --surface-face: linear-gradient(160deg, #1e1e23 0%, var(--color-surface) 55%, #101012 100%);
+  --accent-face:  linear-gradient(160deg, #f2da7d 0%, var(--color-accent) 45%, var(--color-accent-dim) 100%);
+
+  /* The moving highlight that follows the pointer across a card. */
+  --glare: rgba(255, 255, 255, 0.16);
+}
+
+/* The light theme needs the same geometry with completely different light.
+   Dark-theme shadows are near-black because the page is near-black; on white
+   the identical values would look like soot, so these are much weaker and
+   tinted with the warm text colour instead of pure black. */
+:root[data-theme="light"] {
+  --depth-1:
+    0 1px 1px rgba(20, 19, 16, 0.05),
+    0 2px 4px rgba(20, 19, 16, 0.06),
+    0 6px 12px rgba(20, 19, 16, 0.07);
+  --depth-2:
+    0 2px 2px rgba(20, 19, 16, 0.06),
+    0 6px 12px rgba(20, 19, 16, 0.09),
+    0 16px 28px rgba(20, 19, 16, 0.10);
+  --depth-3:
+    0 4px 6px rgba(20, 19, 16, 0.08),
+    0 14px 24px rgba(20, 19, 16, 0.12),
+    0 32px 56px rgba(20, 19, 16, 0.16);
+
+  --edge-light: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --edge-dark:  inset 0 -1px 0 rgba(20, 19, 16, 0.10);
+
+  --btn-edge: #d6d0c1;
+
+  --surface-face: linear-gradient(160deg, #ffffff 0%, var(--color-surface) 55%, #f0ece2 100%);
+  --accent-face:  linear-gradient(160deg, #a8811a 0%, var(--color-accent) 45%, var(--color-accent-dim) 100%);
+
+  --glare: rgba(255, 255, 255, 0.75);
+}
+
+
+/* --------------------------------------------------------------------------
+   18b. THE ROOM
+   A faint pool of light at the top of the page and a second at the bottom.
+   "background-attachment: fixed" pins them to the viewport rather than the
+   document, so the content appears to travel through the light as it
+   scrolls instead of dragging the light along with it.
+   -------------------------------------------------------------------------- */
+body {
+  background-image:
+    radial-gradient(120% 70% at 50% -10%, rgba(212, 175, 55, 0.10), transparent 62%),
+    radial-gradient(100% 60% at 50% 108%, rgba(212, 175, 55, 0.05), transparent 60%);
+  background-attachment: fixed;
+}
+
+:root[data-theme="light"] body {
+  background-image:
+    radial-gradient(120% 70% at 50% -10%, rgba(138, 106, 18, 0.09), transparent 62%),
+    radial-gradient(100% 60% at 50% 108%, rgba(20, 19, 16, 0.05), transparent 60%);
+}
+
+
+/* --------------------------------------------------------------------------
+   18c. EXTRUDED TYPE
+   A stack of text-shadows offset one pixel at a time, each slightly darker,
+   builds the side wall of a letter. The last two shadows in the stack are
+   not part of the extrusion — they are the shadow the letters cast onto the
+   page, which is what stops the extrusion looking like a printing error.
+   -------------------------------------------------------------------------- */
+h1 {
+  text-shadow:
+    0 1px 0 #b8952c,
+    0 2px 0 #a3831f,
+    0 3px 0 #8a6e18,
+    0 4px 0 #705912,
+    0 5px 0 #57450e,
+    0 6px 10px rgba(0, 0, 0, 0.55),
+    0 14px 30px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="light"] h1 {
+  text-shadow:
+    0 1px 0 #7b5f10,
+    0 2px 0 #6c530e,
+    0 3px 0 #5c470c,
+    0 4px 0 #4b3a0a,
+    0 5px 8px rgba(20, 19, 16, 0.30),
+    0 12px 24px rgba(20, 19, 16, 0.18);
+}
+
+/* Section titles get a much shallower version — enough to lift them off the
+   background without competing with the h1. */
+.exercise-section h2,
+.page-section h2,
+.faq h2 {
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.45),
+    0 6px 14px rgba(0, 0, 0, 0.40);
+}
+
+:root[data-theme="light"] .exercise-section h2,
+:root[data-theme="light"] .page-section h2,
+:root[data-theme="light"] .faq h2 {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 4px rgba(20, 19, 16, 0.12);
+}
+
+.site-title a {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* The accent block beside a section heading becomes a solid bar with a lit
+   face and its own cast shadow, so it reads as a physical tab. */
+.exercise-section h2::before,
+.page-section h2::before {
+  background-image: var(--accent-face);
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+
+/* --------------------------------------------------------------------------
+   18d. RAISED PANELS
+   The header, the hero, and the footer become slabs floating over the page.
+   -------------------------------------------------------------------------- */
+.site-header {
+  background-image: var(--surface-face);
+  box-shadow: var(--depth-2), var(--edge-light);
+  position: relative;
+  z-index: 10;                    /* keeps its shadow over the content below */
+}
+
+.intro {
+  background-image: var(--surface-face);
+  box-shadow: var(--depth-3), var(--edge-light);
+}
+
+/* A rim of light along the top edge of the hero and a shadow gathering at
+   its base — the hero is the deepest object on the page, so it gets the
+   strongest treatment. */
+.intro::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -60px 80px -60px rgba(0, 0, 0, 0.9);
+}
+
+:root[data-theme="light"] .intro::after {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -60px 80px -60px rgba(20, 19, 16, 0.28);
+}
+
+.site-footer {
+  background-image: var(--surface-face);
+  box-shadow: var(--depth-2), var(--edge-light);
+  position: relative;
+}
+
+/* The filter bar goes the other way: instead of rising, it is sunk into the
+   page. Swapping the shadow direction to "inset" and putting the light edge
+   at the BOTTOM (the opposite of every raised panel above) is the whole
+   trick — the same light source now falls into a recess. */
+.filter-bar {
+  background-image: linear-gradient(180deg, #0c0c0e 0%, #17171b 100%);
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.65),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+    0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+:root[data-theme="light"] .filter-bar {
+  background-image: linear-gradient(180deg, #efece3 0%, #faf9f6 100%);
+  box-shadow:
+    inset 0 3px 8px rgba(20, 19, 16, 0.10),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+
+/* --------------------------------------------------------------------------
+   18e. THE CARDS — real perspective, not a painted illusion
+   This is the only place on the page using genuine 3D geometry.
+
+   "perspective(1000px)" inside the transform sets how far the viewer is from
+   the card: smaller numbers exaggerate the effect, larger ones flatten it.
+   Putting it on the card itself rather than on the grid gives every card its
+   own vanishing point, so a card at the edge of a wide row tilts exactly
+   like one in the middle.
+
+   "transform-style: preserve-3d" then tells the browser to keep the card's
+   children in that same 3D space instead of flattening them into the card's
+   surface — which is what lets the heading physically lift off the card on
+   hover, rather than just scaling up.
+
+   The rotation angles come in through --rx and --ry, which the JavaScript
+   sets from the pointer position. They default to 0deg, so with JavaScript
+   off the cards still lift, they just do not tilt.
+   -------------------------------------------------------------------------- */
+.card {
+  --rx: 0deg;      /* pitch: set from the pointer's vertical position */
+  --ry: 0deg;      /* yaw:   set from the pointer's horizontal position */
+  --lift: 0px;
+
+  position: relative;
+  overflow: visible;              /* preserve-3d cannot survive clipping */
+  transform-style: preserve-3d;
+  transform:
+    perspective(1000px)
+    rotateX(var(--rx))
+    rotateY(var(--ry))
+    translateY(var(--lift));
+
+  background-image: var(--surface-face);
+  box-shadow: var(--depth-1), var(--edge-light);
+
+  /* Short on the transform so the tilt tracks the pointer without lag, long
+     on the shadow so the light changes more slowly than the geometry. */
+  transition:
+    transform 200ms ease-out,
+    box-shadow 350ms ease,
+    border-color 350ms ease;
+}
+
+/* Because the card no longer clips its children, the photo frame has to
+   round its own top corners or it would poke out past the card's. */
+.card-figure {
+  border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
+  box-shadow: inset 0 -2px 6px rgba(0, 0, 0, 0.55);
+}
+
+/* The moving highlight. A radial gradient centred on --gx/--gy, which the
+   JavaScript points at the cursor, so the card looks like it is catching a
+   light as it turns. */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    40% 40% at var(--gx, 50%) var(--gy, 50%),
+    var(--glare),
+    transparent 70%);
+  transition: opacity 300ms ease;
+}
+
+/* The contact shadow on the "floor" beneath the card. It sits entirely below
+   the card's box, spreads as the card rises, and is the cue that sells the
+   lift — a raised object throws a bigger, softer shadow, not a darker one. */
+.card::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -20px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6), transparent 72%);
+  filter: blur(5px);
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 350ms ease, transform 350ms ease;
+}
+
+:root[data-theme="light"] .card::after {
+  background: radial-gradient(ellipse at center, rgba(20, 19, 16, 0.30), transparent 72%);
+}
+
+.card:hover,
+.card:focus-within {
+  --lift: -12px;
+  border-color: var(--color-accent);
+  box-shadow:
+    var(--depth-3),
+    var(--edge-light),
+    0 0 0 1px rgba(212, 175, 55, 0.30);
+}
+
+.card:hover::before,
+.card:focus-within::before {
+  opacity: 1;
+}
+
+.card:hover::after,
+.card:focus-within::after {
+  opacity: 0.75;
+  transform: translateY(8px) scale(1.12);
+}
+
+/* The layers inside the card. Each element is pushed a different distance
+   toward the viewer, so as the card turns they slide against each other —
+   parallax. The heading travels furthest, which is why the card reads as
+   having real thickness rather than being a tilted photograph. */
+.card-body {
+  transform-style: preserve-3d;
+}
+
+.card-body h3,
+.card-meta,
+.card-steps {
+  transform: translateZ(0);
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card:hover .card-body h3,
+.card:focus-within .card-body h3 {
+  transform: translateZ(34px);
+}
+
+.card:hover .card-meta,
+.card:focus-within .card-meta {
+  transform: translateZ(18px);
+}
+
+.card:hover .card-steps,
+.card:focus-within .card-steps {
+  transform: translateZ(8px);
+}
+
+
+/* --------------------------------------------------------------------------
+   18f. PHYSICAL BUTTONS
+   A button with a solid, unblurred bottom shadow reads as an extruded slab
+   with a visible side wall. Pressing it then means two things happening at
+   once: the button moves DOWN by exactly the height of that wall, and the
+   wall shrinks to nothing. Get those two numbers to match and the button
+   genuinely looks like it travels into the page.
+   -------------------------------------------------------------------------- */
+.filter-btn,
+.theme-toggle {
+  background-image: var(--surface-face);
+  box-shadow:
+    0 4px 0 var(--btn-edge),
+    0 6px 12px rgba(0, 0, 0, 0.45),
+    var(--edge-light);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    color 200ms ease,
+    border-color 200ms ease;
+}
+
+.filter-btn:hover,
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 var(--btn-edge),
+    0 10px 18px rgba(0, 0, 0, 0.5),
+    var(--edge-light);
+}
+
+/* The press. translateY(4px) down, side wall down to 0 — the button is now
+   flat against the page. */
+.filter-btn:active,
+.theme-toggle:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 0 0 var(--btn-edge),
+    0 1px 3px rgba(0, 0, 0, 0.5),
+    inset 0 2px 5px rgba(0, 0, 0, 0.45);
+}
+
+/* The chosen level stays pressed-looking but keeps a gold face, so it is
+   clearly the switch that is currently thrown. */
+.filter-btn.is-active {
+  background-image: var(--accent-face);
+  box-shadow:
+    0 4px 0 var(--color-accent-dim),
+    0 6px 12px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.filter-btn.is-active:hover {
+  box-shadow:
+    0 6px 0 var(--color-accent-dim),
+    0 10px 18px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* On the dark theme this label is near-black on gold, so a hairline of light
+   under it reads as an embossed edge. On the light theme the label is white,
+   where the same white shadow would only blur it — it needs the opposite. */
+:root[data-theme="light"] .filter-btn.is-active {
+  text-shadow: 0 1px 1px rgba(20, 19, 16, 0.35);
+}
+
+/* Nav links lift off the header instead of just changing colour. */
+.nav-list a:hover,
+.nav-list a:focus {
+  transform: translateY(-2px);
+  background-color: rgba(212, 175, 55, 0.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* The tier tags become small raised chips. */
+.tip-tag {
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.tip[data-tip="advanced"] .tip-tag {
+  background-image: var(--accent-face);
+  box-shadow: 0 2px 0 var(--color-accent-dim), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+
+/* --------------------------------------------------------------------------
+   18g. FAQ ROWS THAT PRESS IN
+   Closed rows sit above the page. Opening one flips its shadows to inset, so
+   the row you opened is the one recessed into the page — the state is legible
+   from the lighting alone, before you read a word of it.
+   -------------------------------------------------------------------------- */
+.faq details {
+  background-image: var(--surface-face);
+  box-shadow: var(--depth-1), var(--edge-light);
+  transition:
+    transform 200ms ease,
+    box-shadow 250ms ease,
+    border-color 250ms ease;
+}
+
+.faq details:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--depth-2), var(--edge-light);
+}
+
+.faq details[open],
+.faq details[open]:hover {
+  transform: none;
+  background-image: linear-gradient(180deg, #0e0e10 0%, #17171b 100%);
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme="light"] .faq details[open],
+:root[data-theme="light"] .faq details[open]:hover {
+  background-image: linear-gradient(180deg, #efece3 0%, #faf9f6 100%);
+  box-shadow:
+    inset 0 3px 8px rgba(20, 19, 16, 0.10),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* The +/x marker gets its own extrusion so it looks carved rather than typed. */
+.faq summary::after {
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+
+/* --------------------------------------------------------------------------
+   18h. A 3D SCROLL REVEAL
+   The sections no longer just slide up — they hinge into place. The origin
+   is the section's top edge, so each one starts with its bottom tipped back
+   into the page and swings up to land flat.
+
+   The angle is negative on purpose. A positive rotateX tips the bottom edge
+   TOWARD the viewer, and perspective then draws it wider than the screen —
+   on a phone that made every not-yet-revealed section force a sideways
+   scroll. Tipped away, the bottom edge is drawn narrower, never wider.
+   -------------------------------------------------------------------------- */
+.reveal {
+  transform: perspective(1400px) translateY(30px) rotateX(-7deg);
+  transform-origin: 50% 0%;
+}
+
+.reveal.is-visible {
+  transform: perspective(1400px) translateY(0) rotateX(0deg);
+}
+
+
+/* --------------------------------------------------------------------------
+   18i. MOTION AND INPUT SAFETY
+   Two different reasons to switch the geometry off, and both must come after
+   every rule above so they can win.
+   -------------------------------------------------------------------------- */
+
+/* Touch screens have no hovering pointer to tilt toward, and a tap would fire
+   the hover state and leave a card stuck mid-turn. Keep the lighting, drop
+   the geometry. */
+@media (hover: none), (pointer: coarse) {
+  .card,
+  .card:hover,
+  .card:focus-within {
+    --rx: 0deg !important;
+    --ry: 0deg !important;
+    transform: none;
+  }
+
+  .card:hover .card-body h3,
+  .card:hover .card-meta,
+  .card:hover .card-steps {
+    transform: none;
+  }
+
+  .card::before {
+    display: none;
+  }
+}
+
+/* And the visitor's own preference wins over all of it. */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card:hover,
+  .card:focus-within,
+  .card:hover .card-body h3,
+  .card:hover .card-meta,
+  .card:hover .card-steps,
+  .faq details:hover,
+  .nav-list a:hover,
+  .filter-btn:hover,
+  .filter-btn:active,
+  .theme-toggle:hover,
+  .theme-toggle:active {
+    transform: none !important;
+  }
+
+  .card::after {
+    transform: none !important;
+  }
+
+  .reveal,
+  .reveal.is-visible {
+    transform: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   19. NUTRITION PAGE
+   Everything the second page adds. It reuses the tokens, panels, buttons,
+   filter bar, FAQ, and scroll reveal defined above, so only its own
+   components live here.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   19a. TOKENS
+   The plate colours are an illustration, so they stay the same in both
+   themes. The "sunk" face is the recessed look of the filter bar, named
+   here so the calculator result and the checklist can share it.
+   -------------------------------------------------------------------------- */
+:root {
+  --plate-veg:     #6b8e3d;   /* olive, the one colour that is not gold */
+  --plate-protein: #d4af37;
+  --plate-carbs:   #e6d3a3;   /* wheat */
+
+  --sunk-face:   linear-gradient(180deg, #0c0c0e 0%, #17171b 100%);
+  --sunk-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.65), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme="light"] {
+  --sunk-face:   linear-gradient(180deg, #efece3 0%, #faf9f6 100%);
+  --sunk-shadow: inset 0 3px 8px rgba(20, 19, 16, 0.10), inset 0 -1px 0 rgba(255, 255, 255, 0.9);
+}
+
+
+/* --------------------------------------------------------------------------
+   19b. SHARED PIECES
+   -------------------------------------------------------------------------- */
+
+/* The nav link that changes page rather than scrolling within it, marked in
+   gold so it does not read as one more section of the current page. */
+.nav-list .nav-page {
+  color: var(--color-accent);
+  border-color: var(--color-accent-dim);
+}
+
+.page-section {
+  margin-bottom: var(--space-lg);
+}
+
+/* The filter bar is normally a full section with a large gap below it. Here
+   it sits inside the foods section, directly above the cards it filters. */
+.filter-bar--inline {
+  margin-bottom: var(--space-md);
+}
+
+/* A gold call-to-action button, extruded like the level buttons. */
+.button-primary {
+  align-self: flex-start;           /* keeps it button-sized inside the form's column */
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--color-on-accent);
+  background-color: var(--color-accent);
+  background-image: var(--accent-face);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: var(--space-xs) var(--space-md);
+  cursor: pointer;
+  box-shadow:
+    0 4px 0 var(--color-accent-dim),
+    0 6px 12px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 var(--color-accent-dim),
+    0 10px 18px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+.button-primary:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 var(--color-accent-dim), inset 0 2px 5px rgba(0, 0, 0, 0.35);
+}
+
+/* A quieter button for secondary actions, matching the theme toggle. */
+.button-secondary {
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  background-image: var(--surface-face);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-xs) var(--space-sm);
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--btn-edge), var(--edge-light);
+  transition: color 200ms ease, border-color 200ms ease, transform 120ms ease;
+}
+.button-secondary:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.button-secondary:active {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 var(--btn-edge);
+}
+
+
+/* --------------------------------------------------------------------------
+   19c. INTRO WITH STATS
+   This hero has no photograph, so the dark scrim that normally keeps text
+   readable over a photo is swapped for a soft pool of gold light behind
+   the numbers. The desktop two-column Grid comes from the .intro rules in
+   section 15.
+   -------------------------------------------------------------------------- */
+.intro--stats::before {
+  background:
+    radial-gradient(60% 90% at 90% 50%, rgba(212, 175, 55, 0.16), transparent 70%),
+    linear-gradient(105deg, rgba(6, 6, 7, 0.6) 0%, rgba(6, 6, 7, 0.2) 100%);
+}
+
+:root[data-theme="light"] .intro--stats::before {
+  background:
+    radial-gradient(60% 90% at 90% 50%, rgba(138, 106, 18, 0.12), transparent 70%),
+    linear-gradient(105deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 100%);
+}
+
+/* GRID — the stat list. "auto-fit" with a 13rem minimum gives one column on
+   a phone, three across on a tablet, and one again in the narrow right-hand
+   column on desktop, without a single media query. */
+.hero-stats {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+/* Each stat is its own small Grid: number on the left, meaning on the
+   right. grid-area places the <dd> first visually while the HTML keeps
+   the natural label-then-value order for screen readers. */
+.hero-stat {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  grid-template-areas: "value label";
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+:root[data-theme="light"] .hero-stat {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.hero-stat dt {
+  grid-area: label;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.hero-stat dd {
+  grid-area: value;
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1;
+  color: var(--color-accent);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+}
+
+@media (min-width: 64em) {
+  .hero-stats {
+    margin-top: 0;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   19d. THE PLATE
+   The plate is one element: a circle painted with a conic-gradient, which
+   sweeps colour around the centre like the hand of a clock. Each colour
+   stop is an angle, so "half" is literally 0deg to 180deg. The thin bands
+   of surface colour between segments are the gaps between foods.
+   -------------------------------------------------------------------------- */
+
+/* GRID — plate beside its legend from tablet width, stacked on a phone. */
+.plate-layout {
+  display: grid;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+@media (min-width: 40em) {
+  .plate-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  }
+}
+
+.plate-figure {
+  text-align: center;
+}
+
+.plate-figure figcaption {
+  margin-top: var(--space-md);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.plate {
+  position: relative;
+  width: min(80%, 20rem);
+  aspect-ratio: 1;
+  margin: 0.75rem auto 0;           /* room for the rim drawn by box-shadow */
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--color-surface) 0deg 1deg,
+    var(--plate-veg)     1deg 179deg,
+    var(--color-surface) 179deg 181deg,
+    var(--plate-protein) 181deg 269deg,
+    var(--color-surface) 269deg 271deg,
+    var(--plate-carbs)   271deg 359deg,
+    var(--color-surface) 359deg 360deg);
+
+  /* The rim: a solid spread shadow in the surface colour, a hairline edge
+     around that, then the plate's own cast shadow on the table. */
+  box-shadow:
+    0 0 0 0.75rem var(--color-surface),
+    0 0 0 calc(0.75rem + 1px) var(--color-border),
+    inset 0 4px 12px rgba(0, 0, 0, 0.35),
+    var(--depth-3);
+}
+
+/* Dark pills keep every label readable whatever colour sits underneath. */
+.plate-label {
+  position: absolute;
+  transform: translate(-50%, -50%);   /* centres the pill on its left/top point */
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  color: #f4f2ed;
+  background-color: rgba(10, 10, 11, 0.72);
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+.plate-label--veg     { left: 75%; top: 50%; }
+.plate-label--protein { left: 30%; top: 70%; }
+.plate-label--carbs   { left: 30%; top: 30%; }
+
+.plate-legend {
+  list-style: none;
+  display: grid;
+  gap: var(--space-sm);
+}
+
+/* FLEXBOX — each legend row: a fixed swatch beside flexible text. */
+.plate-legend li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.plate-legend h3 {
+  font-size: 1.0625rem;
+  margin-bottom: 0.25rem;
+}
+
+.plate-legend p {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.plate-share {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.swatch {
+  flex: none;                       /* never squashed by long text beside it */
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 1.1rem;               /* lines up with the h3, below the small label */
+  border-radius: 50%;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.swatch--veg     { background-color: var(--plate-veg); }
+.swatch--protein { background-color: var(--plate-protein); }
+.swatch--carbs   { background-color: var(--plate-carbs); }
+.swatch--fat {
+  background-color: transparent;
+  border: 2px dashed var(--color-accent);
+  box-shadow: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   19e. PROTEIN CALCULATOR
+   -------------------------------------------------------------------------- */
+
+/* GRID — form and result side by side from tablet width. */
+.calc {
+  display: grid;
+  gap: var(--space-md);
+  padding: var(--space-sm);
+  background-color: var(--color-surface);
+  background-image: var(--surface-face);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--depth-2), var(--edge-light);
+}
+
+@media (min-width: 40em) {
+  .calc {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    padding: var(--space-md);
+  }
+}
+
+/* FLEXBOX — the form's fields stack in a column with even gaps. */
+.calc-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.calc-field label,
+.unit-toggle legend {
+  display: block;
+  font-weight: bold;
+  margin-bottom: var(--space-xs);
+}
+
+.calc-input {
+  width: 100%;
+  max-width: 12rem;
+  font-family: inherit;
+  font-size: 1.25rem;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-xs) var(--space-sm);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+.calc-input:focus {
+  border-color: var(--color-accent);
+}
+
+/* A <fieldset> brings its own border and padding; this one is just a row. */
+.unit-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+.unit-toggle legend {
+  padding: 0;
+}
+
+.unit-toggle label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 200ms ease, color 200ms ease;
+}
+
+/* ":has()" styles the label from the state of the radio inside it, so the
+   chosen unit is outlined in gold with no extra class or JavaScript. */
+.unit-toggle label:has(input:checked) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* accent-color recolours the browser's own radios and checkboxes while
+   keeping them fully native and accessible. */
+.unit-toggle input,
+.checklist-items input {
+  accent-color: var(--color-accent);
+}
+
+.calc-result {
+  text-align: center;
+  padding: var(--space-md) var(--space-sm);
+  border-radius: var(--radius);
+  background-image: var(--sunk-face);
+  box-shadow: var(--sunk-shadow);
+}
+
+.calc-result-label {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.calc-number {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 6vw, 2.75rem);
+  font-weight: bold;
+  line-height: 1.15;
+  color: var(--color-accent);
+  margin-block: var(--space-xs);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45), 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+:root[data-theme="light"] .calc-number {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 4px rgba(20, 19, 16, 0.12);
+}
+
+.calc-note {
+  margin-top: var(--space-sm);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+
+/* --------------------------------------------------------------------------
+   19f. FOOD CARDS
+   -------------------------------------------------------------------------- */
+.food-basis {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+/* GRID — "auto-fill" rather than the "auto-fit" used for the exercise
+   cards. When the diet filter leaves only four foods, auto-fit would stretch
+   those four across the whole row; auto-fill keeps the empty columns, so a
+   filtered card stays the same size as before. Two columns on a phone,
+   four on a tablet and on desktop. */
+.food-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(160px, 100%), 1fr));
+  gap: var(--space-sm);
+}
+
+@media (min-width: 64em) {
+  .food-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-md);
+  }
+}
+
+/* FLEXBOX — a column, with the bar pushed to the bottom (margin-top: auto
+   below) so every bar in a row lines up whatever the text above it. */
+.food-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: var(--space-sm);
+  background-color: var(--color-surface);
+  background-image: var(--surface-face);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--depth-1), var(--edge-light);
+  transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 250ms ease,
+              border-color 250ms ease;
+}
+.food-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-accent);
+  box-shadow: var(--depth-2), var(--edge-light);
+}
+
+/* display: flex above would override the browser's own [hidden] rule, so
+   the filter's hidden cards need it restated. */
+.food-card[hidden] {
+  display: none;
+}
+
+.food-card h3 {
+  font-size: 1rem;
+  color: var(--color-text);
+  margin-bottom: 0;
+}
+
+.food-grams {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: bold;
+  line-height: 1.1;
+  color: var(--color-accent);
+}
+.food-grams span {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.food-serving,
+.food-share {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.food-note {
+  font-size: 0.8125rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.food-tag {
+  align-self: flex-start;           /* hugs its text instead of stretching */
+  font-size: 0.6875rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-dim);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+}
+
+.food-meter {
+  margin-top: auto;
+  height: 0.5rem;
+  border-radius: 999px;
+  background-color: var(--color-border);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+/* --share is set by nutrition.js. It starts at 0%, so the bars grow in on
+   load and slide to their new length whenever the calculator changes. */
+.food-meter-fill {
+  display: block;
+  height: 100%;
+  width: var(--share, 0%);
+  background-image: var(--accent-face);
+  border-radius: inherit;
+  transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.food-footnote {
+  margin-top: var(--space-sm);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+
+/* --------------------------------------------------------------------------
+   19g. TIMELINE
+   FLEXBOX — a vertical line of steps on phones and tablets that turns into
+   a horizontal one on desktop. The line is the list's own border; each
+   step's ::before is the dot sitting on it.
+   -------------------------------------------------------------------------- */
+.timeline {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--color-border);
+}
+
+.timeline-step {
+  position: relative;
+}
+
+/* The dot is centred on the 2px line: back by the list's padding, a pixel
+   more for half the line, and six more for half the dot. The ring of page
+   background around it cuts the line so the dot reads as threaded on it. */
+.timeline-step::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-md) - 7px);
+  top: 0.3rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-image: var(--accent-face);
+  box-shadow: 0 0 0 4px var(--color-bg);
+}
+
+.timeline-time {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin-bottom: 0.25rem;
+}
+
+.timeline-step h3 {
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+}
+
+.timeline-step p:last-child {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 64em) {
+  .timeline {
+    flex-direction: row;
+    padding-left: 0;
+    border-left: none;
+    padding-top: var(--space-md);
+    border-top: 2px solid var(--color-border);
+  }
+
+  /* flex: 1 shares the row equally between the four steps. */
+  .timeline-step {
+    flex: 1;
+  }
+
+  .timeline-step::before {
+    left: 0;
+    top: calc(-1 * var(--space-md) - 7px);
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   19h. RECOVERY CARDS
+   GRID — three columns on desktop, two on a tablet, one on a phone.
+   min(300px, 100%) stops the minimum from being wider than a small phone.
+   -------------------------------------------------------------------------- */
+.recovery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--space-sm);
+}
+
+@media (min-width: 64em) {
+  .recovery-grid {
+    gap: var(--space-md);
+  }
+}
+
+.recovery-card {
+  padding: var(--space-md) var(--space-sm);
+  background-color: var(--color-surface);
+  background-image: var(--surface-face);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--depth-1), var(--edge-light);
+  transition: border-color 250ms ease;
+}
+.recovery-card:hover {
+  border-color: var(--color-accent);
+}
+
+/* Outlined numerals: transparent fill with a gold stroke, so they decorate
+   without competing with the heading beneath them. */
+.recovery-number {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: bold;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+.recovery-card p:last-child {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+
+/* --------------------------------------------------------------------------
+   19i. DAILY CHECKLIST
+   -------------------------------------------------------------------------- */
+.checklist {
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-image: var(--sunk-face);
+  box-shadow: var(--sunk-shadow);
+}
+
+@media (min-width: 40em) {
+  .checklist {
+    padding: var(--space-md);
+  }
+}
+
+/* min-width: 0 undoes a fieldset quirk: by default it refuses to shrink
+   below its content, which can push a narrow page sideways. */
+.checklist fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.checklist legend {
+  font-family: var(--font-heading);
+  font-size: 1.0625rem;
+  font-weight: bold;
+  padding: 0;
+  margin-bottom: var(--space-sm);
+}
+
+/* GRID — two columns of habits once there is room, one on a phone. */
+.checklist-items {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  gap: var(--space-xs);
+}
+
+/* The whole row is the <label>, so clicking anywhere on it ticks the box. */
+.checklist-items label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  height: 100%;
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-image: var(--surface-face);
+  cursor: pointer;
+  transition: border-color 200ms ease;
+}
+.checklist-items label:hover,
+.checklist-items label:has(input:checked) {
+  border-color: var(--color-accent);
+}
+
+.checklist-items input {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+}
+
+.checklist-items input:checked + span {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-accent);
+}
+
+/* FLEXBOX — progress on the left, reset button on the right, wrapping to
+   two rows on a phone. */
+.checklist-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.checklist-status {
+  flex: 1 1 16rem;
+}
+
+.checklist-count {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+
+/* <progress> is styled through browser-specific pseudo-elements: WebKit
+   and Blink split it into a track (-bar) and a fill (-value), Firefox
+   only exposes the fill. "appearance: none" switches off the native look
+   so these rules take effect. */
+.checklist-progress {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 0.75rem;
+  border: none;
+  border-radius: 999px;
+  background-color: var(--color-border);
+  overflow: hidden;
+}
+.checklist-progress::-webkit-progress-bar {
+  background-color: var(--color-border);
+  border-radius: 999px;
+}
+.checklist-progress::-webkit-progress-value {
+  background-image: var(--accent-face);
+  border-radius: 999px;
+  transition: width 300ms ease;
+}
+.checklist-progress::-moz-progress-bar {
+  background-image: var(--accent-face);
+  border-radius: 999px;
+}
+
+
+/* --------------------------------------------------------------------------
+   19j. MOTION SAFETY
+   The same promise as sections 16 and 18i, for this page's movement.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .food-card:hover,
+  .button-primary:hover,
+  .button-primary:active,
+  .button-secondary:active {
     transform: none !important;
   }
 }

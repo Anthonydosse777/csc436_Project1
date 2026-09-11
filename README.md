@@ -1,9 +1,14 @@
 # Gym Starter Guide
 
-A single-page static site for people walking into a gym for the first time. Sixteen
-core exercises grouped into push, pull, legs, and core, each with a photograph,
-muscle and difficulty labels, and plain-language coaching cues — plus straight answers
-to the questions beginners are usually too self-conscious to ask.
+A two-page static site for people walking into a gym for the first time.
+
+- **Training** (`index.html`) — sixteen core exercises grouped into push, pull, legs, and
+  core, each with a photograph, muscle and difficulty labels, and plain-language coaching
+  cues, plus progressive-overload notes that appear when you tell the page you are past
+  beginner, and straight answers to the questions beginners are too self-conscious to ask.
+- **Nutrition and recovery** (`nutrition.html`) — everything outside the gym: how to build
+  a plate, a protein calculator, twelve everyday protein sources, what to eat around a
+  workout, sleep and rest-day habits, and a daily checklist.
 
 Built for **CSC 436 · Full-Stack Web Development · Project 1: Static Foundations**.
 
@@ -30,52 +35,90 @@ python3 -m http.server 8000
 
 | File | Contents |
 | --- | --- |
-| `index.html` | All page content and structure |
-| `styles.css` | Design tokens, layout, components, animations, and media queries |
-| `script.js` | Difficulty filter, background toggle, and scroll reveal |
+| `index.html` | Training page: the sixteen exercises and the gym FAQ |
+| `nutrition.html` | Nutrition and recovery page |
+| `styles.css` | Design tokens, layout, components, animations, and media queries for both pages |
+| `script.js` | Shared by both pages: experience-level tips, background toggle, scroll reveal, card tilt |
+| `nutrition.js` | Nutrition page only: protein calculator, food bars and diet filter, daily checklist |
 | `images/photos/` | Seventeen photographs (Pexels licence) |
 | `images/favicon.svg` | Site icon |
 
 ## How the project meets the brief
 
-**Semantic structure.** One `<h1>`, no skipped heading levels, and seven `<section>`
-elements inside `<main>`, wrapped by `<header>`, two labelled `<nav>` elements, and a
-`<footer>`. Each exercise is an `<article>`; muscle and difficulty are a `<dl>` because
-they are genuinely name/value pairs. Every section is named with `aria-labelledby` so
-it appears in a screen reader's landmark list.
+**Semantic structure.** Each page has one `<h1>`, no skipped heading levels, and its
+content in `<section>` elements inside `<main>`, wrapped by `<header>`, two labelled
+`<nav>` elements, and a `<footer>`. Elements are chosen for what the content is:
 
-**Flexbox.** Six layouts: the header shell (stacked on phones, a single row on desktop),
-the navigation row, the difficulty filter bar, the interior of each card, and the footer
-links. `flex-wrap: wrap` is what keeps six nav links usable on a narrow screen.
+- each exercise and each recovery habit is an `<article>`
+- muscle/difficulty labels and the nutrition headline numbers are `<dl>` name/value pairs
+- exercise steps and the workout-timing steps are `<ol>`, because their order matters
+- the protein calculator is a real `<form>` with a `<label>`, a `<fieldset>` and
+  `<legend>` for the unit choice, and an `<output>` for the result
+- the plate diagram is a `<figure>` with a `<figcaption>`, and the checklist tracks
+  progress with a native `<progress>` element
+- both FAQs use `<details>` and `<summary>`
 
-**CSS Grid.** Two layouts: the exercise galleries and the desktop intro. The galleries
-use `repeat(auto-fit, minmax(260px, 1fr))`, so the column count responds to the
-available width with no media query at all — one column on a phone, two on a tablet,
-three on a desktop, decided by the browser.
+Every section is named with `aria-labelledby` so it appears in a screen reader's
+landmark list.
+
+**Flexbox.** Used wherever items sit in a single line that should wrap or stretch: the
+header shell (stacked below 1280px, a single row above), the nav row, the filter bars,
+the inside of each exercise and food card (a column, so bars and body text line up), the
+plate legend rows, the calculator form, the workout timeline (a vertical line on phones,
+horizontal on desktop), the checklist rows and footer, and the footer links.
+
+**CSS Grid.** Used for two-dimensional layouts: the exercise galleries, the desktop
+intro, the nutrition headline numbers, the plate beside its legend, the calculator beside
+its result, the food cards, the recovery cards, and the checklist. Most use
+`repeat(auto-fit, minmax(…, 1fr))`, so the column count follows the available width with
+no media query at all. The food cards deliberately use `auto-fill` instead, so the
+diet filter's shorter list keeps the same card size rather than stretching.
 
 **Responsive design.** Written mobile-first: the rules outside any media query describe
-the phone layout, and two `min-width` breakpoints (40em and 64em) add to it. No
-horizontal scrolling at 375px — the rule that guarantees this is `img { max-width: 100% }`,
-without which the photographs force the page wider than the screen.
+the phone layout, and `min-width` breakpoints at 40em, 64em, and 80em add to it. Checked
+at 320px, 375px, 768px, and 1280px with no horizontal scrolling on either page. Two
+details guarantee this: `img { max-width: 100% }` stops the photographs forcing the page
+wider than the screen, and the 3D scroll reveal tips sections *away* from the viewer, so
+a section that has not yet arrived is drawn narrower than the screen, never wider.
 
-**JavaScript interactivity.** Three interactions, all vanilla:
+**JavaScript interactivity.** Seven interactions across the two pages, all vanilla and
+free of console errors.
 
-1. **Difficulty filter** — selects the buttons and cards, listens for clicks, hides
-   non-matching cards with the `hidden` property, collapses any section left empty, and
-   updates a live status line that screen readers announce.
+`script.js`, shared by both pages:
+
+1. **Experience-level tips** — selects the level buttons and the tip blocks inside each
+   card, listens for clicks, and unhides the notes that match the chosen level with the
+   `hidden` property, then updates a live status line that screen readers announce.
+   Choosing a level never removes an exercise: beginners see all sixteen movements with
+   their steps, and intermediate and advanced visitors get the same sixteen plus
+   progressive-overload notes and warnings about the lifts not worth loading further.
 2. **Background toggle** — flips a `data-theme` attribute on `<html>`, which swaps the
    custom-property palette from black to white, and remembers the choice in
-   `localStorage`.
-3. **Scroll reveal** — fades sections in with `IntersectionObserver`.
+   `localStorage` across both pages.
+3. **Scroll reveal** — hinges sections into place with `IntersectionObserver`.
+4. **Card tilt** — turns each exercise card toward the mouse pointer in 3D; skipped on
+   touch screens and when the visitor asks for reduced motion.
+
+`nutrition.js`, nutrition page only:
+
+5. **Protein calculator** — reads bodyweight in kg or lb, validates it with the
+   browser's own constraint checking, and shows a daily range (1.6–2.2 g per kg) and a
+   per-meal amount, updating live as you type.
+6. **Food bars and diet filter** — every food card's bar shows what share of the daily
+   target one serving covers, and resizes when the calculator changes. A filter narrows
+   the list to vegetarian or plant-based foods.
+7. **Daily checklist** — six habits whose ticks are saved in `localStorage` against
+   today's date, so the list survives a reload and clears itself the next day.
 
 **Real content.** Sixteen genuine exercises with real coaching cues and seventeen
-photographs. No placeholder text.
+photographs; evidence-based nutrition guidance with protein figures rounded from standard
+food composition data. No placeholder text.
 
 ## Accessibility notes
 
 - Skip link as the first tab stop
 - Visible `:focus-visible` outlines on every interactive element
-- `aria-pressed` on the filter and toggle buttons; `aria-live` on the status line
+- `aria-pressed` on the level and toggle buttons; `aria-live` on the status line
 - Alt text on every image describing the actual photograph
 - `prefers-reduced-motion` disables every animation and forces revealed sections visible
 - A `<noscript>` fallback so the page is never blank if JavaScript fails
@@ -100,5 +143,6 @@ Photographs from [Pexels](https://www.pexels.com), used under the Pexels licence
 
 ## Disclaimer
 
-General fitness information only — not medical advice. Check with a doctor before
-starting a new training programme.
+General fitness and nutrition information only — not medical or dietary advice. Check
+with a doctor before starting a new training programme, and with a doctor or registered
+dietitian before changing how you eat if you have a medical condition.

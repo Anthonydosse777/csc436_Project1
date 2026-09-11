@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fuel and Recovery — Gym Starter Guide</title>
+  <meta name="description" content="What to eat, how much protein you need, and how to recover between sessions: the beginner's guide to everything that happens outside the gym.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Same safety net as the training page: without JavaScript the
+       scroll-reveal sections would stay transparent. -->
+  <noscript>
+    <style>
+      .reveal { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ============================================================
+       SITE HEADER — shared with the training page
+       ============================================================ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="site-title"><a href="index.html">Gym Starter Guide</a></p>
+
+      <nav aria-label="Primary">
+        <ul class="nav-list">
+          <li><a href="#plate">Plate</a></li>
+          <li><a href="#protein">Protein</a></li>
+          <li><a href="#timing">Timing</a></li>
+          <li><a href="#recovery">Recovery</a></li>
+          <li><a href="#checklist">Checklist</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a class="nav-page" href="index.html">Training</a></li>
+        </ul>
+      </nav>
+
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false">
+        White background
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================================
+         INTRO — the page's single h1, with three headline numbers
+         ============================================================ -->
+    <section id="intro" class="intro intro--stats" aria-labelledby="intro-heading">
+      <div class="intro-text">
+        <p class="eyebrow">Nutrition and recovery</p>
+        <h1 id="intro-heading">The other twenty-three hours</h1>
+        <p class="lede">
+          The hour you spend lifting breaks muscle down a little. The meals, the water, and the
+          sleep that follow are what build it back stronger — training is the signal, and
+          everything on this page is how your body answers it.
+        </p>
+        <p>
+          Nothing here asks you to count calories, cut out a food group, or buy anything. Get
+          these basics roughly right most days and you will out-progress people with far
+          fancier plans.
+        </p>
+      </div>
+
+      <!-- Each number and its meaning are a genuine name/value pair, so a <dl>.
+           The <div> wrappers are allowed inside a <dl> and give each pair a box. -->
+      <dl class="hero-stats">
+        <div class="hero-stat">
+          <dt>Protein a day, per kilo of bodyweight</dt>
+          <dd>1.6&nbsp;g</dd>
+        </div>
+        <div class="hero-stat">
+          <dt>Hours of sleep a night</dt>
+          <dd>7–9</dd>
+        </div>
+        <div class="hero-stat">
+          <dt>Of every plate: vegetables and fruit</dt>
+          <dd>½</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- ============================================================
+         SECTION 1: THE PLATE
+         ============================================================ -->
+    <section id="plate" class="page-section reveal" aria-labelledby="plate-heading">
+      <h2 id="plate-heading">Build a plate, not a diet</h2>
+      <p class="section-intro">
+        Forget meal plans. At most meals, fill the plate in the proportions below and use your
+        own hand to size each portion — it is always with you, and it grows with your body, so
+        the portions scale without a food scale.
+      </p>
+
+      <div class="plate-layout">
+        <figure class="plate-figure">
+          <!-- role="img" makes the plate one image to a screen reader, named by
+               aria-label; the text labels inside are for sighted visitors. -->
+          <div class="plate" role="img" aria-label="A dinner plate divided into three parts: half vegetables and fruit, a quarter protein, and a quarter carbohydrates.">
+            <span class="plate-label plate-label--veg">Veg &amp; fruit</span>
+            <span class="plate-label plate-label--protein">Protein</span>
+            <span class="plate-label plate-label--carbs">Carbs</span>
+          </div>
+          <figcaption>Half plants, a quarter protein, a quarter carbohydrates.</figcaption>
+        </figure>
+
+        <ul class="plate-legend">
+          <li>
+            <span class="swatch swatch--veg" aria-hidden="true"></span>
+            <div>
+              <h3><span class="plate-share">Half</span> Vegetables and fruit</h3>
+              <p>About two fists' worth. Anything colourful counts, and frozen is as good as fresh — usually cheaper, and it never goes off in the fridge.</p>
+            </div>
+          </li>
+          <li>
+            <span class="swatch swatch--protein" aria-hidden="true"></span>
+            <div>
+              <h3><span class="plate-share">A quarter</span> Protein</h3>
+              <p>One palm, the size and thickness of your hand. Meat, fish, eggs, tofu, beans, or Greek yogurt. Make it two palms if you are big or very hungry.</p>
+            </div>
+          </li>
+          <li>
+            <span class="swatch swatch--carbs" aria-hidden="true"></span>
+            <div>
+              <h3><span class="plate-share">A quarter</span> Carbohydrates</h3>
+              <p>A cupped handful of rice, potatoes, pasta, oats, or bread. This is what you train on — carbs are fuel, not the enemy.</p>
+            </div>
+          </li>
+          <li>
+            <span class="swatch swatch--fat" aria-hidden="true"></span>
+            <div>
+              <h3><span class="plate-share">On the side</span> A thumb of fat</h3>
+              <p>Olive oil, nuts, cheese, avocado. You need some, and it adds up fast — which is the only reason to keep an eye on it.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2: PROTEIN CALCULATOR — driven by nutrition.js
+         ============================================================ -->
+    <section id="protein" class="page-section reveal" aria-labelledby="protein-heading">
+      <h2 id="protein-heading">How much protein you actually need</h2>
+      <p class="section-intro">
+        Protein is the raw material for new muscle, and it is the nutrient beginners most often
+        fall short on. Studies of people who lift find the benefit levels off at about
+        1.6&nbsp;grams per kilogram of bodyweight a day. Going up to 2.2&nbsp;grams gives a
+        comfortable margin; past that you are paying for nothing.
+      </p>
+
+      <div class="calc">
+        <form id="protein-form" class="calc-form">
+          <div class="calc-field">
+            <label for="weight">Your bodyweight</label>
+            <input id="weight" class="calc-input" name="weight" type="number" inputmode="decimal"
+                   min="30" max="250" step="0.1" required placeholder="e.g. 70">
+          </div>
+
+          <fieldset class="unit-toggle">
+            <legend>Unit</legend>
+            <label><input type="radio" name="unit" value="kg" checked> kg</label>
+            <label><input type="radio" name="unit" value="lb"> lb</label>
+          </fieldset>
+
+          <button type="submit" class="button-primary">Work it out</button>
+        </form>
+
+        <!-- aria-live: screen readers announce the new numbers as they change. -->
+        <div class="calc-result" aria-live="polite">
+          <p class="calc-result-label">Your daily target</p>
+          <p class="calc-number"><output id="result-daily" for="weight">—</output></p>
+          <p id="result-meal" class="calc-meal">Enter your weight to see your numbers.</p>
+          <p class="calc-note">
+            Spread it out. Your body uses protein best in three or four servings through the day
+            rather than one enormous one.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3: FOODS — cards react to the calculator and the filter
+         ============================================================ -->
+    <section id="foods" class="page-section reveal" aria-labelledby="foods-heading">
+      <h2 id="foods-heading">Where the protein is</h2>
+      <p class="section-intro">
+        Twelve everyday sources and the protein in a normal serving of each. The bar under every
+        card shows how much of a day's minimum that one serving covers.
+      </p>
+      <p id="food-basis" class="food-basis">
+        Bars are based on a 70&nbsp;kg person's daily minimum of 112&nbsp;g. Use the calculator
+        above to see your own.
+      </p>
+
+      <div class="filter-bar filter-bar--inline">
+        <h3 class="filter-heading">Show foods for</h3>
+        <div class="filter-buttons" role="group" aria-label="Filter foods by diet">
+          <button type="button" class="filter-btn is-active" data-diet="all" aria-pressed="true">Everyone</button>
+          <button type="button" class="filter-btn" data-diet="vegetarian" aria-pressed="false">Vegetarian</button>
+          <button type="button" class="filter-btn" data-diet="plant" aria-pressed="false">Plant-based</button>
+        </div>
+        <p id="diet-status" class="filter-status" role="status" aria-live="polite">Showing all twelve foods.</p>
+      </div>
+
+      <!-- data-protein holds the grams per serving for the JavaScript to read;
+           data-diet says which filters the food belongs to. -->
+      <ul class="food-grid">
+        <li class="food-card" data-diet="meat" data-protein="37">
+          <h3>Chicken breast</h3>
+          <p class="food-grams">37&nbsp;g <span>protein</span></p>
+          <p class="food-serving">120&nbsp;g cooked, about one palm</p>
+          <p class="food-tag">Meat &amp; fish</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">33% of the day</p>
+        </li>
+        <li class="food-card" data-diet="meat" data-protein="27">
+          <h3>Salmon fillet</h3>
+          <p class="food-grams">27&nbsp;g <span>protein</span></p>
+          <p class="food-serving">120&nbsp;g cooked</p>
+          <p class="food-tag">Meat &amp; fish</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">24% of the day</p>
+        </li>
+        <li class="food-card" data-diet="meat" data-protein="26">
+          <h3>Lean beef mince</h3>
+          <p class="food-grams">26&nbsp;g <span>protein</span></p>
+          <p class="food-serving">100&nbsp;g cooked</p>
+          <p class="food-tag">Meat &amp; fish</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">23% of the day</p>
+        </li>
+        <li class="food-card" data-diet="meat" data-protein="25">
+          <h3>Tuna in water</h3>
+          <p class="food-grams">25&nbsp;g <span>protein</span></p>
+          <p class="food-serving">100&nbsp;g drained, most of a small tin</p>
+          <p class="food-tag">Meat &amp; fish</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">22% of the day</p>
+        </li>
+        <li class="food-card" data-diet="vegetarian" data-protein="24">
+          <h3>Cottage cheese</h3>
+          <p class="food-grams">24&nbsp;g <span>protein</span></p>
+          <p class="food-serving">One cup, about 225&nbsp;g</p>
+          <p class="food-tag">Vegetarian</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">21% of the day</p>
+        </li>
+        <li class="food-card" data-diet="vegetarian" data-protein="17">
+          <h3>Greek yogurt</h3>
+          <p class="food-grams">17&nbsp;g <span>protein</span></p>
+          <p class="food-serving">A 170&nbsp;g pot, plain</p>
+          <p class="food-tag">Vegetarian</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">15% of the day</p>
+        </li>
+        <li class="food-card" data-diet="vegetarian" data-protein="12">
+          <h3>Eggs</h3>
+          <p class="food-grams">12&nbsp;g <span>protein</span></p>
+          <p class="food-serving">Two large eggs</p>
+          <p class="food-tag">Vegetarian</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">11% of the day</p>
+        </li>
+        <li class="food-card" data-diet="vegetarian" data-protein="8">
+          <h3>Milk</h3>
+          <p class="food-grams">8&nbsp;g <span>protein</span></p>
+          <p class="food-serving">A 250&nbsp;ml glass</p>
+          <p class="food-tag">Vegetarian</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">7% of the day</p>
+        </li>
+        <li class="food-card" data-diet="plant" data-protein="20">
+          <h3>Firm tofu</h3>
+          <p class="food-grams">20&nbsp;g <span>protein</span></p>
+          <p class="food-serving">150&nbsp;g, roughly half a block</p>
+          <p class="food-tag">Plant-based</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">18% of the day</p>
+        </li>
+        <li class="food-card" data-diet="plant" data-protein="18">
+          <h3>Lentils</h3>
+          <p class="food-grams">18&nbsp;g <span>protein</span></p>
+          <p class="food-serving">One cup cooked, about 200&nbsp;g</p>
+          <p class="food-tag">Plant-based</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">16% of the day</p>
+        </li>
+        <li class="food-card" data-diet="plant" data-protein="15">
+          <h3>Chickpeas</h3>
+          <p class="food-grams">15&nbsp;g <span>protein</span></p>
+          <p class="food-serving">One cup cooked, about 165&nbsp;g</p>
+          <p class="food-tag">Plant-based</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">13% of the day</p>
+        </li>
+        <li class="food-card" data-diet="plant" data-protein="7">
+          <h3>Peanut butter</h3>
+          <p class="food-grams">7&nbsp;g <span>protein</span></p>
+          <p class="food-serving">Two tablespoons, 32&nbsp;g</p>
+          <p class="food-tag">Plant-based</p>
+          <p class="food-note">Mostly fat — count it as the thumb, not the palm.</p>
+          <div class="food-meter" aria-hidden="true"><span class="food-meter-fill"></span></div>
+          <p class="food-share">6% of the day</p>
+        </li>
+      </ul>
+      <p class="food-footnote">Figures are rounded averages. The label on the packet you actually buy is the final word.</p>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4: TIMING — an ordered list, because the order matters
+         ============================================================ -->
+    <section id="timing" class="page-section reveal" aria-labelledby="timing-heading">
+      <h2 id="timing-heading">Eating around a workout</h2>
+      <p class="section-intro">
+        Timing matters far less than the internet suggests — what you eat across the whole day
+        is what counts. Still, a little planning makes sessions feel noticeably better.
+      </p>
+
+      <ol class="timeline">
+        <li class="timeline-step">
+          <p class="timeline-time">2–3 hours before</p>
+          <h3>A normal meal</h3>
+          <p>Carbohydrates and some protein — the plate above is ideal. Training hungry is not dangerous, but you will lift less.</p>
+        </li>
+        <li class="timeline-step">
+          <p class="timeline-time">30–60 minutes before</p>
+          <h3>A small top-up, if you need one</h3>
+          <p>Only if your last meal was a long time ago. Something light and easy on the stomach: a banana, a slice of toast, a yogurt.</p>
+        </li>
+        <li class="timeline-step">
+          <p class="timeline-time">During</p>
+          <h3>Water</h3>
+          <p>Sip it between sets. A session under an hour does not need sports drinks, gels, or anything with a flavour.</p>
+        </li>
+        <li class="timeline-step">
+          <p class="timeline-time">Afterwards</p>
+          <h3>Your next meal</h3>
+          <p>Protein and carbohydrates within a couple of hours. The famous thirty-minute "anabolic window" is really several hours wide — no need to sprint for a shaker.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5: RECOVERY
+         ============================================================ -->
+    <section id="recovery" class="page-section reveal" aria-labelledby="recovery-heading">
+      <h2 id="recovery-heading">Recovery is where you grow</h2>
+      <p class="section-intro">
+        Lifting is the stimulus; the growth happens while you rest. These habits decide how much
+        of each session you actually get to keep.
+      </p>
+
+      <div class="recovery-grid">
+        <article class="recovery-card" aria-labelledby="rec-sleep">
+          <p class="recovery-number" aria-hidden="true">01</p>
+          <h3 id="rec-sleep">Sleep</h3>
+          <p>Aim for seven to nine hours. Short sleep makes every set feel heavier and slows repair, and no supplement makes up for it. A steady bedtime beats a long weekend lie-in.</p>
+        </article>
+        <article class="recovery-card" aria-labelledby="rec-rest">
+          <p class="recovery-number" aria-hidden="true">02</p>
+          <h3 id="rec-rest">Rest days</h3>
+          <p>Three sessions a week leaves four days off, and that is on purpose. Give a muscle about 48 hours before you train it hard again, so avoid hitting the same group two days running.</p>
+        </article>
+        <article class="recovery-card" aria-labelledby="rec-walk">
+          <p class="recovery-number" aria-hidden="true">03</p>
+          <h3 id="rec-walk">Walking</h3>
+          <p>A 20 to 30 minute walk on rest days eases soreness better than lying on the sofa, and it is the easiest win for your heart there is.</p>
+        </article>
+        <article class="recovery-card" aria-labelledby="rec-water">
+          <p class="recovery-number" aria-hidden="true">04</p>
+          <h3 id="rec-water">Water</h3>
+          <p>Pale-yellow urine is the simplest guide to whether you are drinking enough. A glass with every meal and a bottle at the gym covers most people.</p>
+        </article>
+        <article class="recovery-card" aria-labelledby="rec-stretch">
+          <p class="recovery-number" aria-hidden="true">05</p>
+          <h3 id="rec-stretch">Stretching</h3>
+          <p>Stretching will not prevent soreness, but a few minutes on tight spots — hips, ankles, upper back — helps you reach the positions the lifts ask for, like a deeper squat.</p>
+        </article>
+        <article class="recovery-card" aria-labelledby="rec-alcohol">
+          <p class="recovery-number" aria-hidden="true">06</p>
+          <h3 id="rec-alcohol">Alcohol</h3>
+          <p>A drink or two will not undo your training. A heavy night will: it wrecks sleep quality and slows muscle repair, so the next session pays for it.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6: DAILY CHECKLIST — driven by nutrition.js
+         ============================================================ -->
+    <section id="checklist" class="page-section reveal" aria-labelledby="checklist-heading">
+      <h2 id="checklist-heading">Today's checklist</h2>
+      <p class="section-intro">
+        Six small habits. Tick them off as you go — this page remembers today's list on this
+        device and starts fresh tomorrow.
+      </p>
+
+      <div class="checklist">
+        <fieldset>
+          <legend>Today I…</legend>
+          <ul class="checklist-items">
+            <li><label><input type="checkbox" value="protein"> <span>Ate some protein at every meal</span></label></li>
+            <li><label><input type="checkbox" value="plants"> <span>Filled half my plate with vegetables or fruit, twice</span></label></li>
+            <li><label><input type="checkbox" value="water"> <span>Drank water with every meal</span></label></li>
+            <li><label><input type="checkbox" value="sleep"> <span>Slept seven hours or more last night</span></label></li>
+            <li><label><input type="checkbox" value="move"> <span>Trained, or walked for twenty minutes</span></label></li>
+            <li><label><input type="checkbox" value="wind-down"> <span>Put my phone away half an hour before bed</span></label></li>
+          </ul>
+        </fieldset>
+
+        <div class="checklist-footer">
+          <div class="checklist-status">
+            <p id="checklist-count" class="checklist-count" aria-live="polite">0 of 6 done today</p>
+            <progress id="checklist-progress" class="checklist-progress" max="6" value="0" aria-label="Checklist progress"></progress>
+          </div>
+          <button type="button" id="checklist-reset" class="button-secondary">Clear today's list</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 7: FAQ
+         ============================================================ -->
+    <section id="faq" class="faq reveal" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Food questions</h2>
+
+      <details>
+        <summary>Do I need to count calories?</summary>
+        <p>Not to start. Build plates as above, eat protein at every meal, and weigh yourself once a week. Only start tracking if your weight has not moved the way you want after a month.</p>
+      </details>
+
+      <details>
+        <summary>Are carbs bad for me?</summary>
+        <p>No. Carbohydrates are your muscles' preferred fuel for lifting, and cutting them tends to make training miserable. Lean on whole-food sources — potatoes, rice, oats, fruit — and enjoy the rest in moderation.</p>
+      </details>
+
+      <details>
+        <summary>Can I build muscle as a vegetarian or vegan?</summary>
+        <p>Yes. Use the filter above: tofu, lentils, chickpeas, dairy, and eggs all count. Plant-based lifters do best eating a mix of sources through the day and aiming for the upper end of their protein range.</p>
+      </details>
+
+      <details>
+        <summary>Should I eat before bed?</summary>
+        <p>If you are hungry, yes. Greek yogurt, cottage cheese, or a glass of milk is an easy way to top up the day's protein, and food does not turn into fat just because it is eaten late.</p>
+      </details>
+
+      <details>
+        <summary>What about creatine?</summary>
+        <p>It is the most thoroughly researched supplement in the gym: 3–5&nbsp;g of creatine monohydrate a day gives a small but real strength boost and is considered safe for healthy adults. It is still optional, and like everything else in the supplement aisle it can wait until you have trained consistently for six months. Ask a doctor first if you have any kidney condition.</p>
+      </details>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       SITE FOOTER
+       ============================================================ -->
+  <footer class="site-footer">
+    <h2>Gym Starter Guide</h2>
+    <p class="disclaimer">
+      General nutrition information only — this is not medical or dietary advice. If you have a
+      medical condition, are pregnant, or have a history of disordered eating, talk to a doctor
+      or registered dietitian before changing how you eat.
+    </p>
+
+    <nav aria-label="Footer">
+      <ul class="footer-links">
+        <li><a href="mailto:hello@gymstarterguide.example">Contact</a></li>
+        <li><a href="https://github.com/Anthonydosse777/csc436_Project1">GitHub</a></li>
+        <li><a href="index.html">Training guide</a></li>
+        <li><a href="#intro">Back to top</a></li>
+      </ul>
+    </nav>
+
+    <p class="colophon"><small>Built for CSC 436 · Static site, no frameworks, no tracking.</small></p>
+  </footer>
+
+  <!-- script.js first: it runs the theme toggle and scroll reveal both pages
+       share. nutrition.js then adds this page's own interactions. -->
+  <script src="script.js"></script>
+  <script src="nutrition.js"></script>
+</body>
+</html>
