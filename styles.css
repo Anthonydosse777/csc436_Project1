@@ -1704,12 +1704,16 @@ h1 {
   margin-bottom: var(--space-md);
 }
 
-/* A gold call-to-action button, extruded like the level buttons. */
+/* A gold call-to-action. Used on both a <button> (the calculator) and an
+   <a> (the nutrition callout below), so it resets link underlines and sets
+   its own display rather than relying on either element's default. */
 .button-primary {
+  display: inline-block;
   align-self: flex-start;           /* keeps it button-sized inside the form's column */
   font-family: inherit;
   font-size: 1rem;
   font-weight: bold;
+  text-decoration: none;
   color: var(--color-on-accent);
   background-color: var(--color-accent);
   background-image: var(--accent-face);
@@ -2465,5 +2469,62 @@ h1 {
   .button-primary:active,
   .button-secondary:active {
     transform: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   20. CROSS-PAGE CALLOUT
+   The banner at the bottom of the training page pointing to the nutrition
+   page. It is its own section rather than part of 19 because nothing else
+   here is specific to either page — the same block would work unchanged if
+   the nutrition page ever needed to point back with one of its own.
+   ========================================================================== */
+
+/* FLEXBOX — text and button stacked on a phone; the desktop query below
+   turns it into a row with the button pinned to the right. */
+.page-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  background-color: var(--color-surface);
+  background-image: var(--surface-face);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--depth-2), var(--edge-light);
+}
+
+.page-cta-text {
+  max-width: 55ch;
+}
+
+.page-cta-text h2 {
+  margin-bottom: var(--space-xs);
+}
+
+.page-cta-text p:last-child {
+  color: var(--color-text-muted);
+}
+
+/* The callout's own button needs more room than the calculator's, so its
+   self-alignment is overridden here rather than in the shared rule. */
+.page-cta .button-primary {
+  align-self: stretch;
+  text-align: center;
+}
+
+@media (min-width: 40em) {
+  .page-cta {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-cta .button-primary {
+    align-self: center;
+    flex: none;                     /* keeps the button its own width, not the row's */
   }
 }
