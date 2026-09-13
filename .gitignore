@@ -11,3 +11,6 @@
 
 # Dependencies (none needed for this static site)
 node_modules/
+
+# Claude Code agent worktrees
+.claude/
